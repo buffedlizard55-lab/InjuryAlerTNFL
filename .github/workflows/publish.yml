@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -32,6 +33,11 @@ jobs:
         run: python scripts/refresh.py --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
       - name: Assemble static Pages artifact
         run: python scripts/build.py --output _site --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
+      - name: Wait for legacy Pages build on main pushes
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/wait_for_legacy_pages.py --sha "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

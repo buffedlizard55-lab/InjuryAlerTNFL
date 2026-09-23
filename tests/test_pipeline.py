@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,6 +17,7 @@ from refresh import (collect_news, collect_scores, discover_links, extract_round
                      normal_slug, parse_news, parse_scores, valid_player_link)  # noqa: E402
 from schema import InvalidData, official_url, validate_archive, validate_incidents, validate_review  # noqa: E402
 from verify_sources import normalize, verify  # noqa: E402
+from wait_for_legacy_pages import legacy_run, wait_for_legacy  # noqa: E402
 
 FIXTURE = ROOT / "tests/fixtures"
 NOW = datetime(2026, 9, 20, 23, 0, tzinfo=timezone.utc)
@@ -108,6 +111,30 @@ class SourceLedgerTests(unittest.TestCase):
         tampered["verifiedOn"] = "2026-09-01"
         with self.assertRaises(InvalidData):
             validate_archive(tampered)
+
+
+class PagesPublisherTests(unittest.TestCase):
+    def test_wait_targets_only_legacy_build_for_this_commit(self):
+        wanted = {"name": "pages build and deployment", "event": "dynamic", "head_sha": "abc",
+                  "status": "completed", "conclusion": "success"}
+        payload = {"workflow_runs": [dict(wanted, head_sha="old"),
+                                     dict(wanted, name="Publish source-checked injury board"), wanted]}
+        self.assertIs(wanted, legacy_run(payload, "abc"))
+        self.assertIsNone(legacy_run(payload, "other"))
+        with patch.dict(os.environ, {"GH_TOKEN": "test"}), \
+                patch("wait_for_legacy_pages.api_json", side_effect=[{"build_type": "legacy"}, payload]) as api, \
+                patch("wait_for_legacy_pages.time.sleep") as sleep:
+            wait_for_legacy("abc", "test/repo", timeout=2)
+            self.assertEqual(2, api.call_count)
+            sleep.assert_called_once_with(12)
+
+    def test_actions_only_pages_does_not_wait_for_missing_legacy_build(self):
+        with patch.dict(os.environ, {"GH_TOKEN": "test"}), \
+                patch("wait_for_legacy_pages.api_json", return_value={"build_type": "workflow"}) as api, \
+                patch("wait_for_legacy_pages.time.sleep") as sleep:
+            wait_for_legacy("abc", "test/repo", timeout=2)
+            api.assert_called_once_with("repos/test/repo/pages")
+            sleep.assert_not_called()
 
 
 class FeedTests(unittest.TestCase):
