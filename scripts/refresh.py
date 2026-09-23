@@ -16,7 +16,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
-from schema import TEAMS, official_url, validate_incidents
+from schema import TEAMS, official_url, validate_incidents, validate_review
 
 ROOT = Path(__file__).resolve().parents[1]
 NFL_INDEX = (
@@ -396,7 +396,9 @@ def main() -> int:
     now = utc_now()
     # A review flag has its own unique reason ID, distinct from the actual
     # incident ID. Never depend on free-text reasons or suffix stripping.
-    held = {flag["incidentId"] for flag in json.loads((ROOT / "data/review.json").read_text())["flags"] if flag["disposition"] == "held"}
+    review = json.loads((ROOT / "data/review.json").read_text(encoding="utf-8"))
+    validate_review(review)
+    held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
     scores = collect_scores(now)
     news = collect_news(now, scores["games"], held, score_status=scores["status"])
     validate_incidents(news["incidents"], automatic=True)

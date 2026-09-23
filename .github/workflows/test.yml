@@ -20,6 +20,23 @@ jobs:
         run: node --test tests/ui.test.mjs
       - name: Re-check each linked excerpt online (report outages, never claim success)
         continue-on-error: true
-        run: python scripts/verify_sources.py --strict
+        shell: bash
+        run: |
+          if python scripts/verify_sources.py --strict > /tmp/source-audit.txt 2>&1; then
+            cat /tmp/source-audit.txt
+            echo "::notice title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
+            result=0
+          else
+            cat /tmp/source-audit.txt
+            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt) — see audit step for missing or unreachable sources"
+            result=1
+          fi
+          {
+            echo '## Online source audit'
+            echo '```'
+            cat /tmp/source-audit.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$result"
       - name: Assemble Pages without remote data
         run: python scripts/build.py --output _site

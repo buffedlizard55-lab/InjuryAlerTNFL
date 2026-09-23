@@ -90,6 +90,14 @@ class SourceLedgerTests(unittest.TestCase):
         tampered["incidents"][0]["claims"][0]["url"] = "https://example.com/news/claim"
         with self.assertRaises(InvalidData):
             validate_archive(tampered)
+        tampered = json.loads(json.dumps(self.archive))
+        tampered["incidents"][0]["player"] = "Unrelated Player"
+        with self.assertRaises(InvalidData):
+            validate_archive(tampered)
+        tampered = json.loads(json.dumps(self.archive))
+        tampered["incidents"][0]["claims"][0]["quote"] = "Unknown event reported in the game."
+        with self.assertRaises(InvalidData):
+            validate_archive(tampered)
 
     def test_duplicate_and_future_rows_are_rejected(self):
         tampered = json.loads(json.dumps(self.archive))

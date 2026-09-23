@@ -75,7 +75,7 @@ def verify(data: dict, reader=source_text) -> list[str]:
                     issues.append(f"{row['id']} claim {index}: unavailable {url} ({type(exc).__name__})")
             if cache[url] and normalize(claim["quote"]) not in cache[url]:
                 issues.append(f"{row['id']} claim {index}: excerpt not found at {url}")
-    print(f"Checked {sum(len(row['claims']) for row in data['incidents'])} claims across {len(cache)} official article URLs; {len(issues)} issue(s)")
+    print(f"Checked {sum(len(row['claims']) for row in data['incidents'])} claims across {len(cache)} official article URLs; {len(issues)} issue(s)", flush=True)
     return issues
 
 

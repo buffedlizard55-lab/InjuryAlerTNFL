@@ -57,7 +57,8 @@ def validate_incidents(incidents: list, *, automatic: bool = False) -> None:
         require(key not in ids, f"duplicate incident: {key}")
         ids.add(key)
         event_date = date.fromisoformat(row["gameDate"])
-        require(key.startswith(f"{event_date.isoformat()}-{row['team'].lower()}-"), f"date/team in ID: {key}")
+        name_slug = re.sub(r"[^a-z0-9]+", "-", row["player"].lower()).strip("-") if isinstance(row.get("player"), str) else ""
+        require(key == f"{event_date.isoformat()}-{row['team'].lower()}-{name_slug}", f"game/team/player in ID: {key}")
         require(row["team"] in TEAMS and row["opponent"] in TEAMS and row["team"] != row["opponent"], f"teams: {key}")
         for field in ("player", "position", "injury"):
             require(isinstance(row.get(field), str) and 1 <= len(row[field]) <= 100, f"{field}: {key}")
@@ -74,6 +75,14 @@ def validate_incidents(incidents: list, *, automatic: bool = False) -> None:
             require(isinstance(claim.get("text"), str) and 12 <= len(claim["text"]) <= 320, f"claim: {key}")
             require(isinstance(claim.get("quote"), str) and 10 <= len(claim["quote"]) <= 220, f"quote: {key}")
             require(official_url(claim.get("url")), f"untrusted source: {key}")
+            if claim["kind"] == "game":
+                excerpt = claim["quote"].lower()
+                markers = {"did_not_return": ("did not return",), "returned": ("returned", "returning")}
+                if row["outcome"] == "out":
+                    require(re.search(r"\bruled(?:\s+\S+){0,3}\s+out\b", excerpt) is not None,
+                            f"game outcome not grounded by excerpt: {key}")
+                elif row["outcome"] in markers:
+                    require(any(marker in excerpt for marker in markers[row["outcome"]]), f"game outcome not grounded by excerpt: {key}")
         if automatic:
             require(row.get("automatic") is True, f"auto marker: {key}")
             require(isinstance(row.get("capturedAt"), str) and row["capturedAt"].endswith("Z"), f"capture time: {key}")
