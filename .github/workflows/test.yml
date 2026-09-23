@@ -32,6 +32,26 @@ jobs:
             for line in $(grep "REVIEW:" /tmp/source-audit.txt | head -5); do
               echo "::warning title=Online source audit detail::$line"
             done
+            cat > /tmp/diag.py <<'PY'
+            import re, sys
+            sys.path.insert(0, "scripts")
+            from verify_sources import source_text
+            urls = re.findall(r"excerpt not found at (\S+)", open("/tmp/source-audit.txt").read())
+            for url in urls:
+                try:
+                    text = source_text(url)
+                except Exception as exc:
+                    print(f"diagnostic: {url}: unavailable ({exc})")
+                    continue
+                print(f"diagnostic: {url}: fetched {len(text)} normalized chars")
+                for probe in ("harbaugh confirmed", "season-ending surgery", "john harbaugh"):
+                    i = text.find(probe)
+                    if i >= 0:
+                        print(f"diagnostic ~{probe!r}: ...{text[max(0, i - 140):i + 260]}...")
+                    else:
+                        print(f"diagnostic ~{probe!r}: not present in served text")
+            PY
+            python /tmp/diag.py | while IFS= read -r line; do echo "::warning title=Audit diagnostic::$line"; done
             result=1
           fi
           {
@@ -41,27 +61,5 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$result"
-      - name: Show served text around any ungrounded excerpt (diagnostic)
-        if: failure()
-        shell: bash
-        run: |
-          python - <<'PY'
-          import re, sys
-          sys.path.insert(0, "scripts")
-          from verify_sources import source_text
-          for url in re.findall(r"excerpt not found at (\S+)", open("/tmp/source-audit.txt").read()):
-              try:
-                  text = source_text(url)
-              except Exception as exc:
-                  print(f"{url}: unavailable ({exc})")
-                  continue
-              print(f"{url}: fetched {len(text)} normalized chars")
-              for probe in ("harbaugh confirmed", "season-ending surgery"):
-                  i = text.find(probe)
-                  if i >= 0:
-                      print(f"  ~{probe!r}: ...{text[max(0, i-140):i+260]}...")
-                  else:
-                      print(f"  ~{probe!r}: not present in served text")
-          PY
       - name: Assemble Pages without remote data
         run: python scripts/build.py --output _site
