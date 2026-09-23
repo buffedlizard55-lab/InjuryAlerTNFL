@@ -1,4 +1,4 @@
-import { OUTCOME_LABEL, mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts } from './domain.mjs';
+import { OUTCOME_LABEL, mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts, dataURL } from './domain.mjs';
 
 const $ = id => document.getElementById(id);
 const state = { archive: null, review: null, live: null, scores: null, rows: [], filter: { query: '', team: 'all', outcome: 'all' }, ready: false, notifications: false };
@@ -179,7 +179,7 @@ async function json(path) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12_000);
   try {
-    const response = await fetch(new URL(path, document.baseURI), { cache: 'no-store', signal: controller.signal });
+    const response = await fetch(dataURL(path, document.baseURI), { cache: 'no-store', signal: controller.signal });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.json();
   } finally { clearTimeout(timeout); }

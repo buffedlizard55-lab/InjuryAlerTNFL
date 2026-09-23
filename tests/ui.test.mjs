@@ -1,10 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts } from '../assets/domain.mjs';
+import { mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts, dataURL } from '../assets/domain.mjs';
 
 const t = Date.parse('2026-09-23T12:00:00Z');
 const a = { id: 'one', player: 'A.J. Brown', team: 'NE', opponent: 'SEA', injury: 'Ankle', position: 'WR', outcome: 'out', gameDate: '2026-09-09', claims: [{ date: '2026-09-10' }] };
 const b = { id: 'two', player: 'Rico Dowdle', team: 'PIT', opponent: 'NE', injury: 'Toe', position: 'RB', outcome: 'returned', gameDate: '2026-09-20', claims: [{ date: '2026-09-22' }] };
+
+test('changing feeds bypass stale Pages edge caches once per minute', () => {
+  const base = 'https://example.github.io/InjuryAlerTNFL/';
+  const live = dataURL('./data/live.json', base, t);
+  assert.equal(live.href, `${base}data/live.json?check=${Math.floor(t / 60_000)}`);
+  assert.equal(dataURL('./data/live.json', base, t + 10_000).href, live.href);
+  assert.notEqual(dataURL('./data/live.json', base, t + 60_000).href, live.href);
+  assert.ok(dataURL('./data/scoreboard.json', base, t).searchParams.has('check'));
+  assert.equal(dataURL('./data/archive.json', base, t).search, '');
+});
 
 test('curated entry wins when live feed has the same game/player', () => {
   const merged = mergeIncidents([a, b], [{ ...a, player: 'Incorrect auto label', automatic: true }]);
