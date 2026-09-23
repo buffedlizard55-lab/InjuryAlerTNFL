@@ -32,7 +32,7 @@ jobs:
             echo "::warning title=Online source audit detail::$(grep "REVIEW:" /tmp/source-audit.txt | head -3)"
             DIAG="$(python scripts/diagnose_audit.py --audit /tmp/source-audit.txt | head -8)"
             echo "$DIAG"
-            echo "::warning title=Audit diagnostic::$DIAG"
+            echo "::warning title=Audit diagnostic::${DIAG//[$'\n\r']/%0A}"
             result=1
           fi
           {
