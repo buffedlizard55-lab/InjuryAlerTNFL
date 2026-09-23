@@ -1,4 +1,15 @@
 // Pure presentation rules. No scores are used to infer injury status.
+export function dataURL(path, base, now = Date.now()) {
+  const url = new URL(path, base);
+  // Pages edge caches sometimes retain an older artifact at the same path.
+  // A shared minute bucket revalidates the changing feeds without generating
+  // one origin request for every page view or polling client.
+  if (path === './data/live.json' || path === './data/scoreboard.json') {
+    url.searchParams.set('check', String(Math.floor(now / 60_000)));
+  }
+  return url;
+}
+
 export const OUTCOME_LABEL = Object.freeze({
   out: 'Ruled out', did_not_return: 'Did not return', returned: 'Returned', unconfirmed: 'Return unconfirmed',
 });
