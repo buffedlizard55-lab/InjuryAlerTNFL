@@ -30,10 +30,10 @@ class SourceLedgerTests(unittest.TestCase):
         cls.archive = json.loads((ROOT / "data/archive.json").read_text())
         cls.review = json.loads((ROOT / "data/review.json").read_text())
 
-    def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
+    def test_archive_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(60, len(self.archive["incidents"]))
-        self.assertEqual(60, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(80, len(self.archive["incidents"]))
+        self.assertEqual(80, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-23", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
@@ -84,6 +84,16 @@ class SourceLedgerTests(unittest.TestCase):
             "david-onyemata": "out", "marcelino-mccrary-ball": "did_not_return",
             "charvarius-ward": "unconfirmed", "james-thompson-jr": "unconfirmed",
             "andrew-thomas": "did_not_return",
+            "donovan-jennings": "unconfirmed", "miles-killebrew": "unconfirmed",
+            "jarvis-brownlee-jr": "returned", "micheal-clemons": "unconfirmed",
+            "brandon-pili": "out", "davon-hamilton": "returned",
+            "jonah-coleman": "unconfirmed", "jalen-coker": "unconfirmed",
+            "jake-tonges": "unconfirmed", "arian-smith": "unconfirmed",
+            "brian-thomas-jr": "returned", "dee-winters": "unconfirmed",
+            "jaishawn-barham": "unconfirmed", "charlie-kolar": "unconfirmed",
+            "will-johnson": "unconfirmed", "mack-wilson-sr": "returned",
+            "george-holani": "unconfirmed", "josiah-trotter": "unconfirmed",
+            "bo-melton": "unconfirmed", "jordan-love": "unconfirmed",
         }
         self.assertEqual(expected, {row["id"].split("-", 4)[-1]: row["outcome"] for row in self.archive["incidents"]})
 
@@ -103,8 +113,8 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(16, len(self.review["flags"]))
-        self.assertEqual(10, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(21, len(self.review["flags"]))
+        self.assertEqual(12, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -115,6 +125,8 @@ class SourceLedgerTests(unittest.TestCase):
                 self.assertGreaterEqual(len(flag["links"]), 2)
 
     def test_untrusted_sources_cannot_enter_a_verified_record(self):
+        self.assertTrue(official_url("https://www.packers.com/news/in-game-updates-week-2-jets-2026"))
+        self.assertFalse(official_url("https://packers.com/news/claim"))
         self.assertFalse(official_url("https://www.nfl.com.attacker.test/news/claim"))
         self.assertFalse(official_url("http://www.nfl.com/news/claim"))
         self.assertFalse(official_url("https://www.nfl.com/news/claim?redirect=evil"))
@@ -246,7 +258,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(60, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(80, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":

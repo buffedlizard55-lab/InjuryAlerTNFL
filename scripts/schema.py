@@ -9,6 +9,21 @@ TEAMS = frozenset(
     "ARI ATL BAL BUF CAR CHI CIN CLE DAL DEN DET GB HOU IND JAX KC LAC LAR LV "
     "MIA MIN NE NO NYG NYJ PHI PIT SEA SF TB TEN WAS".split()
 )
+# Official league and club newsrooms whose /news/ articles may be quoted.
+# Keep this list identical to OFFICIAL_HOSTS in assets/app.js.
+OFFICIAL_HOSTS = frozenset({
+    "www.nfl.com",
+    "www.dallascowboys.com",
+    "www.packers.com",
+    "www.buccaneers.com",
+    "www.newyorkjets.com",
+    "www.colts.com",
+    "www.seahawks.com",
+    "www.jaguars.com",
+    "www.azcardinals.com",
+    "www.chargers.com",
+    "www.commanders.com",
+})
 OUTCOMES = frozenset({"out", "did_not_return", "returned", "unconfirmed"})
 KINDS = frozenset({"game", "observation", "followup"})
 OBSERVATIONS = frozenset({
@@ -37,7 +52,7 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
         return False
     return (
         parsed.scheme == "https"
-        and parsed.hostname in {"www.nfl.com", "www.dallascowboys.com"}
+        and parsed.hostname in OFFICIAL_HOSTS
         and port is None
         and parsed.username is None
         and parsed.password is None
