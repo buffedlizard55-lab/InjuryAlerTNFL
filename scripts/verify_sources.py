@@ -40,7 +40,15 @@ class VisibleText(HTMLParser):
 
 def normalize(text: str) -> str:
     text = unicodedata.normalize("NFKC", text)
-    text = text.translate(str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"', "\u00a0": " ", "–": "-", "—": "-"}))
+    # Fold typographic punctuation to the ASCII forms used in stored excerpts:
+    # curly quotes, the dash family (including the non-breaking hyphen some
+    # articles use inside compound words), and soft hyphens are the same
+    # characters to a reader.
+    text = text.translate(str.maketrans({
+        "\u2019": "'", "\u2018": "'", "\u201c": '"', "\u201d": '"', "\u00a0": " ",
+        "\u2010": "-", "\u2011": "-", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-",
+        "\u00ad": "", "\u2212": "-",
+    }))
     return " ".join(text.split()).casefold()
 
 

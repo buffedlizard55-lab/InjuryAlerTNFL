@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [arena/01a0cfe2-injuryalertnfl]
+    branches: [arena/01a0d02e-injuryalertnfl]
 permissions:
   contents: read
 jobs:
@@ -28,7 +28,11 @@ jobs:
             result=0
           else
             cat /tmp/source-audit.txt
-            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt) — see audit step for missing or unreachable sources"
+            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
+            echo "::warning title=Online source audit detail::$(grep "REVIEW:" /tmp/source-audit.txt | head -3)"
+            DIAG="$(python scripts/diagnose_audit.py --audit /tmp/source-audit.txt | head -8)"
+            echo "$DIAG"
+            echo "::warning title=Audit diagnostic::${DIAG//[$'\n\r']/%0A}"
             result=1
           fi
           {

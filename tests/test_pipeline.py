@@ -30,10 +30,10 @@ class SourceLedgerTests(unittest.TestCase):
         cls.archive = json.loads((ROOT / "data/archive.json").read_text())
         cls.review = json.loads((ROOT / "data/review.json").read_text())
 
-    def test_all_forty_entries_are_unique_with_individual_official_evidence(self):
+    def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(40, len(self.archive["incidents"]))
-        self.assertEqual(40, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(60, len(self.archive["incidents"]))
+        self.assertEqual(60, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-23", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
@@ -75,6 +75,15 @@ class SourceLedgerTests(unittest.TestCase):
             "dj-moore": "out", "samson-ebukam": "out", "tyrion-ingram-dawkins": "did_not_return",
             "mike-evans": "did_not_return", "kelvin-banks-jr": "unconfirmed", "jonathon-brooks": "unconfirmed",
             "malik-nabers": "returned", "brian-burns": "did_not_return",
+            "t-j-tampa": "out", "tyrique-stevenson": "did_not_return", "dylan-sampson": "out",
+            "keandre-lambert-smith": "did_not_return", "elijah-molden": "did_not_return",
+            "kyle-louis": "out", "jacob-parrish": "out", "chigoziem-okonkwo": "did_not_return",
+            "frankie-luvu": "did_not_return", "tyler-owens": "did_not_return",
+            "aaron-banks": "out", "anthony-campbell": "did_not_return", "eli-raridon": "out",
+            "dre-mont-jones": "did_not_return", "dell-pettus": "did_not_return",
+            "david-onyemata": "out", "marcelino-mccrary-ball": "did_not_return",
+            "charvarius-ward": "unconfirmed", "james-thompson-jr": "unconfirmed",
+            "andrew-thomas": "did_not_return",
         }
         self.assertEqual(expected, {row["id"].split("-", 4)[-1]: row["outcome"] for row in self.archive["incidents"]})
 
@@ -85,11 +94,17 @@ class SourceLedgerTests(unittest.TestCase):
             self.assertGreaterEqual(len(by_id[entry]["claims"]), min_claims, entry)
         self.assertEqual(["Walked off field", "Locker room"], by_id["2026-09-17-buf-dj-moore"]["observations"])
         self.assertEqual(["Carted to locker room"], by_id["2026-09-10-lar-davis-allen"]["observations"])
+        for entry, min_claims in (("2026-09-13-bal-t-j-tampa", 2), ("2026-09-20-gb-aaron-banks", 2),
+                                  ("2026-09-20-ne-dell-pettus", 2), ("2026-09-20-sf-james-thompson-jr", 2),
+                                  ("2026-09-13-mia-kyle-louis", 2), ("2026-09-21-nyg-andrew-thomas", 2),
+                                  ("2026-09-20-nyj-david-onyemata", 2)):
+            self.assertGreaterEqual(len(by_id[entry]["claims"]), min_claims, entry)
+        self.assertEqual("2026-09-23", by_id["2026-09-21-nyg-andrew-thomas"]["claims"][-1]["date"])
 
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(15, len(self.review["flags"]))
-        self.assertEqual(9, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(16, len(self.review["flags"]))
+        self.assertEqual(10, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -231,7 +246,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(40, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(60, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":
