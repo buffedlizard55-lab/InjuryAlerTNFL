@@ -1,0 +1,40 @@
+name: Publish source-checked injury board
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages-injury-board
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check source ledger and collector
+        run: python -m unittest discover -s tests -v
+      - name: Check browser logic
+        run: node --test tests/ui.test.mjs
+      - name: Refresh scores and official game reports (degrade visibly on outage)
+        run: python scripts/refresh.py --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
+      - name: Assemble static Pages artifact
+        run: python scripts/build.py --output _site --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
