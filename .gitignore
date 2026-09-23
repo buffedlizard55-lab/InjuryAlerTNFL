@@ -1,0 +1,6 @@
+# Local previews / generated site artifacts. The published data is rebuilt in CI.
+.preview/
+_site/
+*.pyc
+__pycache__/
+.DS_Store

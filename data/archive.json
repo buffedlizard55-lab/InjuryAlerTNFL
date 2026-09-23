@@ -1,0 +1,630 @@
+{
+  "version": 1,
+  "verifiedOn": "2026-09-23",
+  "scope": "Twenty individually checked 2026 in-game incidents; this is a sample archive, not a complete league census or live medical record.",
+  "incidents": [
+    {
+      "id": "2026-09-09-sea-sam-darnold",
+      "player": "Sam Darnold",
+      "position": "QB",
+      "team": "SEA",
+      "opponent": "NE",
+      "gameDate": "2026-09-09",
+      "injury": "Glute (initially reported as hip)",
+      "outcome": "out",
+      "observations": [
+        "Blue tent",
+        "Locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-10",
+          "kind": "game",
+          "text": "Ruled out before halftime of the Patriots game.",
+          "quote": "ruled out just prior to halftime",
+          "url": "https://www.nfl.com/news/seahawks-qb-sam-darnold-questionable-to-return-vs-patriots-with-hip-injury-drew-lock-enters-in-relief"
+        },
+        {
+          "date": "2026-09-10",
+          "kind": "observation",
+          "text": "Entered the blue tent, then walked to the locker room.",
+          "quote": "he went to the blue tent during New England's opening possession.",
+          "url": "https://www.nfl.com/news/seahawks-qb-sam-darnold-questionable-to-return-vs-patriots-with-hip-injury-drew-lock-enters-in-relief"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach expected some practice during Week 3; a game return was not confirmed in this report.",
+          "quote": "(glute) is expected to practice in \"some capacity\" this week",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-09-ne-a-j-brown",
+      "player": "A.J. Brown",
+      "position": "WR",
+      "team": "NE",
+      "opponent": "SEA",
+      "gameDate": "2026-09-09",
+      "injury": "High ankle sprain (MRI reported by NFL Network)",
+      "outcome": "out",
+      "observations": [
+        "Blue tent",
+        "Locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-10",
+          "kind": "game",
+          "text": "Ruled out of the season opener after an ankle injury.",
+          "quote": "Brown injured his ankle early in the third quarter and was ruled out",
+          "url": "https://www.nfl.com/news/patriots-wr-a-j-brown-ankle-ruled-out-of-kickoff-game-vs-seahawks"
+        },
+        {
+          "date": "2026-09-10",
+          "kind": "observation",
+          "text": "Limped to the blue tent and then went to the locker room with trainers.",
+          "quote": "limping off to the blue tent. He was then accompanied by trainers to the locker room",
+          "url": "https://www.nfl.com/news/patriots-wr-a-j-brown-ankle-ruled-out-of-kickoff-game-vs-seahawks"
+        },
+        {
+          "date": "2026-09-10",
+          "kind": "followup",
+          "text": "NFL Network reported an MRI-confirmed high ankle sprain.",
+          "quote": "suffered a high ankle sprain an MRI confirmed on Thursday",
+          "url": "https://www.nfl.com/news/patriots-wr-a-j-brown-ankle-ruled-out-of-kickoff-game-vs-seahawks"
+        },
+        {
+          "date": "2026-09-13",
+          "kind": "followup",
+          "text": "Placed on injured reserve.",
+          "quote": "Brown was placed on injured reserve this week",
+          "url": "https://www.nfl.com/news/patriots-wr-aj-brown-out-six-weeks-high-ankle-sprain"
+        },
+        {
+          "date": "2026-09-13",
+          "kind": "followup",
+          "text": "NFL Network reported a six-week expected absence, not a guaranteed return date.",
+          "quote": "The Patriots receiver is expected to miss six weeks with the high ankle sprain",
+          "url": "https://www.nfl.com/news/patriots-wr-aj-brown-out-six-weeks-high-ankle-sprain"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-10-sf-de-zhaun-stribling",
+      "player": "De'Zhaun Stribling",
+      "position": "WR",
+      "team": "SF",
+      "opponent": "LAR",
+      "gameDate": "2026-09-10",
+      "injury": "Ankle",
+      "outcome": "out",
+      "observations": [
+        "Carted to locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-10",
+          "kind": "game",
+          "text": "Carted to the locker room and ruled out against the Rams.",
+          "quote": "was carted to the locker room and ruled out after suffering an ankle injury",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10"
+        },
+        {
+          "date": "2026-09-16",
+          "kind": "followup",
+          "text": "Coach announced ankle surgery and an expected absence of 10 weeks.",
+          "quote": "is expected to miss 10 weeks after undergoing ankle surgery on Wednesday",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-min-kyler-murray",
+      "player": "Kyler Murray",
+      "position": "QB",
+      "team": "MIN",
+      "opponent": "GB",
+      "gameDate": "2026-09-13",
+      "injury": "Concussion",
+      "outcome": "did_not_return",
+      "observations": [
+        "Walked off field",
+        "Locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Suffered a concussion and did not return against the Packers.",
+          "quote": "suffered a concussion in Sunday's 39-22 win over the Green Bay Packers and did not return.",
+          "url": "https://www.nfl.com/news/vikings-qb-kyler-murray-evaluated-concussion-packers"
+        },
+        {
+          "date": "2026-09-13",
+          "kind": "observation",
+          "text": "Walked off under his own power before going to the locker room.",
+          "quote": "walking off under his own power and exiting to the locker room",
+          "url": "https://www.nfl.com/news/vikings-qb-kyler-murray-evaluated-concussion-packers"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach announced he cleared concussion protocol and is set to start Week 3.",
+          "quote": "has been cleared from the NFL's concussion protocol",
+          "url": "https://www.nfl.com/news/kyler-murray-clears-concussion-protocol-will-start-vikings-bears"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-bal-zay-flowers",
+      "player": "Zay Flowers",
+      "position": "WR",
+      "team": "BAL",
+      "opponent": "IND",
+      "gameDate": "2026-09-13",
+      "injury": "Hamstring",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Ruled out of the Week 1 Colts game with a hamstring injury.",
+          "quote": "wide receiver Zay Flowers (hamstring) was ruled out",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        },
+        {
+          "date": "2026-09-20",
+          "kind": "followup",
+          "text": "Listed OUT for the Week 2 Saints game on the league's pregame injury report; this is not a Week 1 in-game designation.",
+          "quote": "OUT: WR Zay Flowers (hamstring)",
+          "url": "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-bal-ja-kobi-lane",
+      "player": "Ja'Kobi Lane",
+      "position": "WR",
+      "team": "BAL",
+      "opponent": "IND",
+      "gameDate": "2026-09-13",
+      "injury": "Fractured wrist (NFL Network report)",
+      "outcome": "unconfirmed",
+      "observations": [
+        "Injured during game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Wrist fracture reported after the Colts game; the cited report does not give an in-game return designation.",
+          "quote": "Lane suffered a fractured wrist in the Ravens’ 41-23 win",
+          "url": "https://www.nfl.com/news/ravens-rookie-wr-ja-kobi-lane-to-miss-several-weeks-with-fractured-wrist"
+        },
+        {
+          "date": "2026-09-13",
+          "kind": "followup",
+          "text": "NFL Network reported he was expected to miss several weeks, pending more testing.",
+          "quote": "is expected to miss several weeks",
+          "url": "https://www.nfl.com/news/ravens-rookie-wr-ja-kobi-lane-to-miss-several-weeks-with-fractured-wrist"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-chi-caleb-williams",
+      "player": "Caleb Williams",
+      "position": "QB",
+      "team": "CHI",
+      "opponent": "MIN",
+      "gameDate": "2026-09-20",
+      "injury": "Hamstring",
+      "outcome": "unconfirmed",
+      "observations": [
+        "Helped off field",
+        "Carted to locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Exited in the fourth quarter; the linked report says he was replaced but does not give a formal ruled-out designation.",
+          "quote": "exited Sunday's 9-3 loss to the Minnesota Vikings after suffering a hamstring injury",
+          "url": "https://www.nfl.com/news/bears-qb-caleb-williams-injury-vikings"
+        },
+        {
+          "date": "2026-09-20",
+          "kind": "observation",
+          "text": "Helped off the field, then carted from the sideline to the locker room.",
+          "quote": "had to be helped off the field and was carted from the sideline to the locker room",
+          "url": "https://www.nfl.com/news/bears-qb-caleb-williams-injury-vikings"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach described the injury as week to week and said he would likely miss some time.",
+          "quote": "sounds like it's week-to-week but will likely miss some time",
+          "url": "https://www.nfl.com/news/bears-qb-caleb-williams-considered-week-to-week-after-suffering-hamstring-injury"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-was-jayden-daniels",
+      "player": "Jayden Daniels",
+      "position": "QB",
+      "team": "WAS",
+      "opponent": "DAL",
+      "gameDate": "2026-09-20",
+      "injury": "Dislocated left elbow (coach confirmed)",
+      "outcome": "out",
+      "observations": [
+        "Carted to locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Carted to the locker room after a first-half injury and ruled out after halftime.",
+          "quote": "The Commanders ruled Daniels out after halftime.",
+          "url": "https://www.nfl.com/news/commanders-qb-jayden-daniels-suffers-left-elbow-injury-vs-cowboys"
+        },
+        {
+          "date": "2026-09-20",
+          "kind": "observation",
+          "text": "Carted to the locker room; coach identified a dislocated left elbow after the game.",
+          "quote": "he was eventually carted to the locker room",
+          "url": "https://www.nfl.com/news/commanders-qb-jayden-daniels-suffers-left-elbow-injury-vs-cowboys"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach said Mariota will start Week 3; no return timeline yet for Daniels.",
+          "quote": "does not yet have a timeline for return",
+          "url": "https://www.nfl.com/news/marcus-mariota-commanders-week-3-qb-jayden-daniels-elbow"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ind-alec-pierce",
+      "player": "Alec Pierce",
+      "position": "WR",
+      "team": "IND",
+      "opponent": "KC",
+      "gameDate": "2026-09-20",
+      "injury": "Heel",
+      "outcome": "out",
+      "observations": [
+        "Carted to locker room"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Carted to the locker room and ruled out against the Chiefs.",
+          "quote": "Alec Pierce was carted to the locker room during the first half versus the Chiefs and ruled out with a heel injury.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-23",
+          "kind": "followup",
+          "text": "Coach said Pierce will be placed on injured reserve; the cited report describes a planned move, not proof that it was completed.",
+          "quote": "(heel) will be placed on injured reserve, head coach Shane Steichen told reporters",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-21-nyg-jaxson-dart",
+      "player": "Jaxson Dart",
+      "position": "QB",
+      "team": "NYG",
+      "opponent": "LAR",
+      "gameDate": "2026-09-21",
+      "injury": "Left knee (later imaging changed early assessment)",
+      "outcome": "out",
+      "observations": [
+        "Walked off field",
+        "Blue tent"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-21",
+          "kind": "game",
+          "text": "Ruled out of the Rams game after the first drive; initially walked to sideline and entered the blue tent.",
+          "quote": "Jaxson Dart (knee) was ruled out of Monday's game against the Rams.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "observation",
+          "text": "Walked to the sideline under his own power and entered the blue tent.",
+          "quote": "walking to the sideline under his own power, entering the blue tent",
+          "url": "https://www.nfl.com/news/giants-qb-jaxson-dart-suffers-apparent-knee-injury-on-first-drive-vs-rams"
+        },
+        {
+          "date": "2026-09-23",
+          "kind": "followup",
+          "text": "NFL Network reported season-ending knee surgery is expected; this is a report, not a confirmed completed procedure.",
+          "quote": "is expected to undergo season-ending knee surgery",
+          "url": "https://www.nfl.com/news/giants-qb-jaxson-dart-season-ending-knee-surgery"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-phi-saquon-barkley",
+      "player": "Saquon Barkley",
+      "position": "RB",
+      "team": "PHI",
+      "opponent": "TEN",
+      "gameDate": "2026-09-20",
+      "injury": "Stinger (reported)",
+      "outcome": "returned",
+      "observations": [
+        "Left game",
+        "Returned after halftime"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Missed most of the first half after a reported stinger; returned after halftime.",
+          "quote": "Barkley returned to the field after halftime.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-pit-rico-dowdle",
+      "player": "Rico Dowdle",
+      "position": "RB",
+      "team": "PIT",
+      "opponent": "NE",
+      "gameDate": "2026-09-20",
+      "injury": "Toe",
+      "outcome": "returned",
+      "observations": [
+        "Left game",
+        "Returned after halftime"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Missed part of the first half of the Patriots game and returned after halftime.",
+          "quote": "Rico Dowdle (toe) missed part of the first half of Sunday's loss to the Patriots before returning after halftime.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-22",
+          "kind": "followup",
+          "text": "Later described as day to day; returning to that game did not establish next-game availability.",
+          "quote": "Rico Dowdle is considered day to day after suffering a toe injury",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-bal-ronnie-stanley",
+      "player": "Ronnie Stanley",
+      "position": "OT",
+      "team": "BAL",
+      "opponent": "NO",
+      "gameDate": "2026-09-20",
+      "injury": "Toe",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the Saints game with a reported toe injury; later availability not established here.",
+          "quote": "offensive tackle Ronnie Stanley (toe) did not return to Sunday's loss to the Saints.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-mia-jaylen-wright",
+      "player": "Jaylen Wright",
+      "position": "RB",
+      "team": "MIA",
+      "opponent": "SF",
+      "gameDate": "2026-09-20",
+      "injury": "Stinger (reported)",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return against the 49ers after a reported stinger.",
+          "quote": "Jaylen Wright (stinger) and defensive end Robert Beal Jr. (hamstring) did not return",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-phi-dallas-goedert",
+      "player": "Dallas Goedert",
+      "position": "TE",
+      "team": "PHI",
+      "opponent": "TEN",
+      "gameDate": "2026-09-20",
+      "injury": "Knee (MCL sprain reported later)",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the Titans game with a knee injury.",
+          "quote": "tight end Dallas Goedert (knee) did not return to Sunday's win over the Titans.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "NFL Network reported an MCL sprain and expected absence of a few weeks; that is an estimate.",
+          "quote": "is expected to miss a few weeks after suffering an MCL sprain",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-sf-demarcus-robinson",
+      "player": "Demarcus Robinson",
+      "position": "WR",
+      "team": "SF",
+      "opponent": "MIA",
+      "gameDate": "2026-09-20",
+      "injury": "Ankle (coach later said high ankle sprain)",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out against the Dolphins with an ankle injury.",
+          "quote": "receiver Demarcus Robinson (ankle) was ruled out of Sunday's game against the Dolphins.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach identified a high ankle sprain; no return date was confirmed in this report.",
+          "quote": "Demarcus Robinson suffered a high ankle sprain vs. the Dolphins, per Shanahan.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-dal-p-j-locke",
+      "player": "P.J. Locke",
+      "position": "S",
+      "team": "DAL",
+      "opponent": "WAS",
+      "gameDate": "2026-09-20",
+      "injury": "Foot (coach later said torn plantar fascia)",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game",
+        "Walking boot after game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-21",
+          "kind": "game",
+          "text": "The Cowboys report he suffered a foot injury early against Washington and did not return.",
+          "quote": "P.J. Locke, who was starting in place of Malik Hooker (forearm), suffered a foot injury early in the game and did not return.",
+          "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "observation",
+          "text": "The Cowboys reported a walking boot after the game; this is an observation, not a severity rating.",
+          "quote": "He was seen in a walking boot after the game.",
+          "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Coach reported a torn plantar fascia; said he could miss some time, with no IR decision yet.",
+          "quote": "P.J. Locke tore his plantar fascia in his right foot and could miss some time",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ne-mike-onwenu",
+      "player": "Mike Onwenu",
+      "position": "OL",
+      "team": "NE",
+      "opponent": "PIT",
+      "gameDate": "2026-09-20",
+      "injury": "Ankle",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out in the first half of the Steelers game with an ankle injury.",
+          "quote": "Mike Onwenu (ankle) was ruled out in the first half",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-22",
+          "kind": "followup",
+          "text": "NFL.com reports he was placed on injured reserve.",
+          "quote": "Mike Onwenu was placed on injured reserve.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-atl-a-j-terrell",
+      "player": "A.J. Terrell",
+      "position": "CB",
+      "team": "ATL",
+      "opponent": "CAR",
+      "gameDate": "2026-09-20",
+      "injury": "Groin (in-game report)",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out of the Panthers game with a groin injury.",
+          "quote": "cornerback A.J. Terrell (groin) was ruled out of Sunday's loss to the Panthers.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-22",
+          "kind": "followup",
+          "text": "Placed on injured reserve with a groin injury; NFL.com reports at least four games out.",
+          "quote": "A.J. Terrell (groin) was placed on injured reserve. Terrell will miss at least four games.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-mia-robert-beal-jr",
+      "player": "Robert Beal Jr.",
+      "position": "DE",
+      "team": "MIA",
+      "opponent": "SF",
+      "gameDate": "2026-09-20",
+      "injury": "Hamstring",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return against the 49ers with a reported hamstring injury.",
+          "quote": "defensive end Robert Beal Jr. (hamstring) did not return",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "verifiedOn": "2026-09-23",
+  "flags": [
+    {
+      "id": "2026-09-20-gb-jayden-reed-area",
+      "subject": "Jayden Reed · GB",
+      "reason": "NFL.com's Sunday roundup calls the game injury neck; Monday's roundup calls it back. Do not silently merge the anatomical descriptions or guess a diagnosis.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+      ],
+      "incidentId": "2026-09-20-gb-jayden-reed",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-gb-zach-bako-bewele-link",
+      "subject": "Zach Bako-Bewele · GB",
+      "reason": "NFL.com's roundup displays this name but the linked player URL is /players/zach-tom/. Player identity cannot be resolved from that link; excluded from automated matching.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/players/zach-tom/"
+      ],
+      "incidentId": "2026-09-20-gb-zach-bako-bewele",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-lac-david-njoku-area",
+      "subject": "David Njoku · LAC",
+      "reason": "Sunday NFL.com game roundup says knee; Monday NFL.com roundup says fibula. Source descriptions conflict; no unified injury claim is published.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+      ],
+      "incidentId": "2026-09-20-lac-david-njoku",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-sea-jadarian-price-area",
+      "subject": "Jadarian Price · SEA",
+      "reason": "Sunday coverage initially called it a chest issue; Monday coach called it a shoulder issue. The later correction is linked, but the injury is held from the verified list until reconciled.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+      ],
+      "incidentId": "2026-09-20-sea-jadarian-price",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-car-nick-scott-area",
+      "subject": "Nick Scott · CAR",
+      "reason": "Sunday roundup labels abdomen while Wednesday's practice report labels rib. It is not established whether this is one injury or two.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+      ],
+      "incidentId": "2026-09-20-car-nick-scott",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-ari-max-melton-area",
+      "subject": "Max Melton · ARI",
+      "reason": "NFL.com's pregame Week 2 report lists ankle; Sunday's in-game roundup lists toe. A pregame designation is not automatically the same incident as an in-game report.",
+      "links": [
+        "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games",
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+      ],
+      "incidentId": "2026-09-20-ari-max-melton",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-atl-a-j-terrell-area",
+      "subject": "A.J. Terrell · ATL",
+      "reason": "Listed with a shoulder issue before Week 2; the game report and later IR move cite a groin injury. The verified entry describes the game/IR groin report only, not a connection to the shoulder listing.",
+      "links": [
+        "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games",
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+      ],
+      "incidentId": "2026-09-20-atl-a-j-terrell",
+      "disposition": "annotated"
+    },
+    {
+      "id": "2026-09-21-nyg-jaxson-dart-revision",
+      "incidentId": "2026-09-21-nyg-jaxson-dart",
+      "disposition": "annotated",
+      "subject": "Jaxson Dart · NYG",
+      "reason": "Initial postgame reporting discussed a possible MCL sprain; later testing prompted a report that season-ending surgery is expected. The verified record keeps the newer expectation attributed, not a confirmed completed surgery.",
+      "links": [
+        "https://www.nfl.com/news/giants-qb-jaxson-dart-suffers-apparent-knee-injury-on-first-drive-vs-rams",
+        "https://www.nfl.com/news/giants-qb-jaxson-dart-season-ending-knee-surgery"
+      ]
+    }
+  ]
+}

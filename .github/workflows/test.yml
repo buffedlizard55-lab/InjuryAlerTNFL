@@ -1,0 +1,42 @@
+name: Verify sources and site
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [arena/01a0cfe2-injuryalertnfl]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check the source ledger and fail-closed collector
+        run: python -m unittest discover -s tests -v
+      - name: Check browser presentation rules
+        run: node --test tests/ui.test.mjs
+      - name: Re-check each linked excerpt online (report outages, never claim success)
+        continue-on-error: true
+        shell: bash
+        run: |
+          if python scripts/verify_sources.py --strict > /tmp/source-audit.txt 2>&1; then
+            cat /tmp/source-audit.txt
+            echo "::notice title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
+            result=0
+          else
+            cat /tmp/source-audit.txt
+            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt) — see audit step for missing or unreachable sources"
+            result=1
+          fi
+          {
+            echo '## Online source audit'
+            echo '```'
+            cat /tmp/source-audit.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$result"
+      - name: Assemble Pages without remote data
+        run: python scripts/build.py --output _site

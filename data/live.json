@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "checkedAt": null,
+  "status": "not_checked",
+  "coverage": "NFL.com in-game roundups only; an empty list does not mean no injuries",
+  "discovery": {"links": 0, "recentRoundups": 0, "accepted": 0},
+  "incidents": [],
+  "flags": [],
+  "warnings": []
+}
