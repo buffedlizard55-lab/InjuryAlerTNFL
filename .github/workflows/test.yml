@@ -28,7 +28,10 @@ jobs:
             result=0
           else
             cat /tmp/source-audit.txt
-            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt) — see audit step for missing or unreachable sources"
+            echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
+            for line in $(grep "REVIEW:" /tmp/source-audit.txt | head -5); do
+              echo "::warning title=Online source audit detail::$line"
+            done
             result=1
           fi
           {
