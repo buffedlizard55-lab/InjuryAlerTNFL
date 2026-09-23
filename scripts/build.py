@@ -9,7 +9,7 @@ from email.utils import format_datetime
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from schema import validate_archive, validate_incidents, validate_review
+from schema import InvalidData, validate_archive, validate_incidents, validate_review
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -41,6 +41,9 @@ def assemble(output: Path, live_path: Path, score_path: Path) -> None:
     validate_archive(archive)
     validate_review(review)
     validate_incidents(live["incidents"], automatic=True)
+    held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
+    if any(row["id"] in held for row in archive["incidents"] + live["incidents"]):
+        raise InvalidData("a held source issue cannot be published as verified")
     if live.get("version") != 1 or scores.get("version") != 1 or not isinstance(scores.get("games"), list):
         raise ValueError("unsupported live/scoreboard schema")
     if output.resolve() == ROOT:

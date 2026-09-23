@@ -55,7 +55,7 @@ function reportCard(row) {
   top.append(heading, el('span', `status-pill ${row.outcome}`, OUTCOME_LABEL[row.outcome] || 'Unverified'));
   card.append(top);
   const detail = el('p', 'report-detail');
-  detail.append(el('strong', '', 'Reported area: '), document.createTextNode(row.injury));
+  detail.append(el('strong', '', 'Reported area: '), document.createTextNode(row.injury), el('span', 'severity-note', ' · Clinical severity not rated'));
   if (row.automatic) detail.append(el('span', 'auto-mark', 'AUTOMATIC · NFL.COM'));
   card.append(detail);
   const grid = el('div', 'report-grid');
@@ -86,7 +86,15 @@ function renderReports() {
   if (!state.archive) return;
   state.rows = mergeIncidents(state.archive.incidents, state.live?.incidents || []);
   const current = filterIncidents(state.rows, state.filter);
-  $('report-list').replaceChildren(...(current.length ? current.map(reportCard) : [notice('No reports match these filters. Try another team or outcome.')]));
+  const list = $('report-list');
+  const expanded = new Set([...list.querySelectorAll('.report-card')].filter(card => card.querySelector('details')?.open).map(card => card.id));
+  const focused = document.activeElement?.matches('summary') ? document.activeElement.closest('.report-card')?.id : null;
+  list.replaceChildren(...(current.length ? current.map(reportCard) : [notice('No reports match these filters. Try another team or outcome.')]));
+  for (const id of expanded) {
+    const card = document.getElementById(id);
+    if (card?.querySelector('details')) card.querySelector('details').open = true;
+  }
+  if (focused) document.getElementById(focused)?.querySelector('summary')?.focus({ preventScroll: true });
   $('count-total').textContent = String(state.archive.incidents.length);
   $('count-returned').textContent = String(state.archive.incidents.filter(row => row.outcome === 'returned').length);
   $('result-count').textContent = `${current.length} SHOWN`;
@@ -203,8 +211,12 @@ async function enableAlerts() {
   }
   updateNotificationButton();
 }
+const incidentSignature = rows => JSON.stringify((rows || []).map(row => [row.id, row.injury, row.outcome, row.observations, row.claims]));
+const reviewSignature = rows => JSON.stringify(rows || []);
 async function poll() {
   const previous = state.live?.incidents || [];
+  const beforeIncidents = incidentSignature(previous);
+  const beforeFlags = reviewSignature(state.live?.flags);
   const results = await Promise.allSettled([json('./data/live.json'), json('./data/scoreboard.json')]);
   if (results[0].status === 'fulfilled' && validLive(results[0].value)) {
     state.live = results[0].value;
@@ -218,8 +230,8 @@ async function poll() {
   }
   if (results[1].status === 'fulfilled' && validScores(results[1].value)) state.scores = results[1].value;
   else state.scores = { ...(state.scores || { games: [] }), status: 'unavailable' };
-  if (state.archive) { setupTeams(); renderReports(); }
-  if (state.review) renderReview();
+  if (state.archive && (!state.ready || beforeIncidents !== incidentSignature(state.live?.incidents))) { setupTeams(); renderReports(); }
+  if (state.review && (!state.ready || beforeFlags !== reviewSignature(state.live?.flags))) renderReview();
   renderHealth();
   renderScores();
 }
