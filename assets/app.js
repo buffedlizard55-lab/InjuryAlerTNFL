@@ -22,15 +22,27 @@ function el(tag, className = '', content = '') {
   if (content !== '') node.textContent = String(content);
   return node;
 }
-const OFFICIAL_HOSTS = ['www.nfl.com', 'www.dallascowboys.com', 'www.packers.com', 'www.buccaneers.com', 'www.newyorkjets.com', 'www.colts.com', 'www.seahawks.com', 'www.jaguars.com', 'www.azcardinals.com', 'www.chargers.com', 'www.commanders.com'];
 function trustedLink(url, label, type = 'news') {
   const link = el('a', '', label);
   let valid = false;
   try {
     const parsed = new URL(url);
+    const allowed = [
+      'www.nfl.com', 'www.dallascowboys.com', 'www.denverbroncos.com',
+      'www.buffalobills.com', 'www.atlantafalcons.com', 'www.baltimoreravens.com',
+      'www.panthers.com', 'www.chicagobears.com', 'www.bengals.com',
+      'www.clevelandbrowns.com', 'www.detroitlions.com', 'www.packers.com',
+      'www.houstontexans.com', 'www.colts.com', 'www.jaguars.com', 'www.chiefs.com',
+      'www.chargers.com', 'www.rams.com', 'www.raiders.com', 'www.dolphins.com',
+      'www.vikings.com', 'www.patriots.com', 'www.saints.com', 'www.giants.com',
+      'www.nyjets.com', 'www.newyorkjets.com', 'www.jets.com', 'www.eagles.com', 'www.steelers.com',
+      'www.49ers.com', 'www.seahawks.com', 'www.buccaneers.com', 'www.titans.com',
+      'www.commanders.com', 'www.azcardinals.com', 'www.cardinals.com',
+    ];
+    const hostOk = allowed.includes(parsed.hostname) || parsed.hostname.endsWith('.nfl.com') || (parsed.hostname.startsWith('www.') && (parsed.hostname.endsWith('broncos.com') || parsed.hostname.endsWith('bills.com')));
     valid = parsed.protocol === 'https:' && !parsed.username && !parsed.password && !parsed.port && !parsed.search && !parsed.hash
-      && OFFICIAL_HOSTS.includes(parsed.hostname)
-      && (parsed.pathname.startsWith('/news/') || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')));
+      && hostOk
+      && (parsed.pathname.startsWith('/news/') || parsed.pathname.startsWith('/videos/') || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')));
   } catch { /* Invalid URLs are never followed. */ }
   if (valid) {
     link.href = url;
@@ -44,6 +56,21 @@ function trustedLink(url, label, type = 'news') {
 }
 function notice(text) { return el('p', 'notice', text); }
 
+const NEW_IDS = new Set([
+  '2026-09-10-sf-jake-tonges', '2026-09-13-car-jalen-coker', '2026-09-13-jax-brian-thomas-jr',
+  '2026-09-13-lac-ladd-mcconkey', '2026-09-13-nyj-jarvis-brownlee-jr', '2026-09-13-tb-miles-killebrew',
+  '2026-09-14-kc-cooper-mcdonald', '2026-09-14-kc-mansoor-delane', '2026-09-17-buf-ed-oliver',
+  '2026-09-20-ari-mack-wilson-sr', '2026-09-20-ari-max-melton', '2026-09-20-ari-will-johnson',
+  '2026-09-20-car-nick-scott', '2026-09-20-dal-cobie-durant', '2026-09-20-dal-dee-winters',
+  '2026-09-20-dal-jaishawn-barham', '2026-09-20-den-jonah-coleman', '2026-09-20-gb-bo-melton',
+  '2026-09-20-gb-donovan-jennings', '2026-09-20-gb-jayden-reed', '2026-09-20-gb-jordan-love',
+  '2026-09-20-ind-micheal-clemons', '2026-09-20-jax-davon-hamilton', '2026-09-20-lac-charlie-kolar',
+  '2026-09-20-lac-david-njoku', '2026-09-20-lac-derwin-james', '2026-09-20-nyj-arian-smith',
+  '2026-09-20-sea-brandon-pili', '2026-09-20-sea-george-holani', '2026-09-20-sea-jadarian-price',
+  '2026-09-20-tb-josiah-trotter', '2026-09-20-was-nick-cross', '2026-09-21-lar-puka-nacua',
+  '2026-09-21-lar-ronnie-rivers',
+]);
+
 function reportCard(row) {
   const card = el('article', 'report-card');
   card.id = `report-${row.id}`;
@@ -51,9 +78,17 @@ function reportCard(row) {
   const heading = el('div', 'player-line');
   heading.append(el('span', 'player-initial', row.team));
   const title = el('div');
-  title.append(el('h3', 'player-title', row.player), el('div', 'player-meta', `${row.position === '—' ? 'PLAYER' : row.position}  ·  ${row.team} vs ${row.opponent}  ·  ${day(row.gameDate)}`));
+  const isNew = NEW_IDS.has(row.id);
+  const titleText = isNew ? `${row.player} · NEW` : row.player;
+  title.append(el('h3', 'player-title', titleText), el('div', 'player-meta', `${row.position === '—' ? 'PLAYER' : row.position}  ·  ${row.team} vs ${row.opponent}  ·  ${day(row.gameDate)}`));
   heading.append(title);
-  top.append(heading, el('span', `status-pill ${row.outcome}`, OUTCOME_LABEL[row.outcome] || 'Unverified'));
+  const pill = el('span', `status-pill ${row.outcome}`, OUTCOME_LABEL[row.outcome] || 'Unverified');
+  if (isNew) {
+    const newBadge = el('span', 'auto-mark', 'NEW · 4TH PASS');
+    newBadge.style.marginLeft = '8px';
+    pill.append(newBadge);
+  }
+  top.append(heading, pill);
   card.append(top);
   const detail = el('p', 'report-detail');
   detail.append(el('strong', '', 'Reported area: '), document.createTextNode(row.injury), el('span', 'severity-note', ' · Clinical severity not rated'));

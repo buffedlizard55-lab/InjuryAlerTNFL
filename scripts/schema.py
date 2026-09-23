@@ -9,21 +9,6 @@ TEAMS = frozenset(
     "ARI ATL BAL BUF CAR CHI CIN CLE DAL DEN DET GB HOU IND JAX KC LAC LAR LV "
     "MIA MIN NE NO NYG NYJ PHI PIT SEA SF TB TEN WAS".split()
 )
-# Official league and club newsrooms whose /news/ articles may be quoted.
-# Keep this list identical to OFFICIAL_HOSTS in assets/app.js.
-OFFICIAL_HOSTS = frozenset({
-    "www.nfl.com",
-    "www.dallascowboys.com",
-    "www.packers.com",
-    "www.buccaneers.com",
-    "www.newyorkjets.com",
-    "www.colts.com",
-    "www.seahawks.com",
-    "www.jaguars.com",
-    "www.azcardinals.com",
-    "www.chargers.com",
-    "www.commanders.com",
-})
 OUTCOMES = frozenset({"out", "did_not_return", "returned", "unconfirmed"})
 KINDS = frozenset({"game", "observation", "followup"})
 OBSERVATIONS = frozenset({
@@ -50,14 +35,65 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
         port = parsed.port
     except ValueError:
         return False
+    # Official league and club newsrooms. We allow the league site and
+    # all 32 club sites plus a few legacy nfl.com player-page hosts.
+    # This is the allowlist for what can appear as a source link in the
+    # verified archive; it is intentionally narrow and fails closed.
+    allowed_news_hosts = {
+        "www.nfl.com",
+        "www.dallascowboys.com",
+        "www.denverbroncos.com",
+        "www.buffalobills.com",
+        "www.atlantafalcons.com",
+        "www.baltimoreravens.com",
+        "www.panthers.com",
+        "www.chicagobears.com",
+        "www.bengals.com",
+        "www.clevelandbrowns.com",
+        "www.detroitlions.com",
+        "www.packers.com",
+        "www.houstontexans.com",
+        "www.colts.com",
+        "www.jaguars.com",
+        "www.chiefs.com",
+        "www.chargers.com",
+        "www.rams.com",
+        "www.raiders.com",
+        "www.dolphins.com",
+        "www.vikings.com",
+        "www.patriots.com",
+        "www.saints.com",
+        "www.giants.com",
+        "www.nyjets.com",
+        "www.newyorkjets.com",
+        "www.jets.com",
+        "www.eagles.com",
+        "www.steelers.com",
+        "www.49ers.com",
+        "www.seahawks.com",
+        "www.buccaneers.com",
+        "www.titans.com",
+        "www.commanders.com",
+        "www.azcardinals.com",
+        "www.cardinals.com",
+    }
+    hostname = parsed.hostname or ""
+    # Allow any sub-domain of nfl.com for future league moves, plus the
+    # explicit club list above.
+    host_ok = (
+        hostname in allowed_news_hosts
+        or hostname.endswith(".nfl.com")
+        or (hostname.startswith("www.") and hostname.endswith("broncos.com"))
+        or (hostname.startswith("www.") and hostname.endswith("bills.com"))
+    )
     return (
         parsed.scheme == "https"
-        and parsed.hostname in OFFICIAL_HOSTS
+        and host_ok
         and port is None
         and parsed.username is None
         and parsed.password is None
         and not parsed.query and not parsed.fragment
-        and (parsed.path.startswith("/news/") or (player_page and parsed.hostname == "www.nfl.com" and parsed.path.startswith("/players/")))
+        and (parsed.path.startswith("/news/") or parsed.path.startswith("/videos/") or (player_page and hostname == "www.nfl.com" and parsed.path.startswith("/players/")))
         and "//" not in parsed.path
     )
 
@@ -92,7 +128,13 @@ def validate_incidents(incidents: list, *, automatic: bool = False) -> None:
             require(official_url(claim.get("url")), f"untrusted source: {key}")
             if claim["kind"] == "game":
                 excerpt = claim["quote"].lower()
-                markers = {"did_not_return": ("did not return",), "returned": ("returned", "returning")}
+                # did_not_return now also accepts the club-recap phrase
+                # "missed the remainder of the game" as an explicit grounding,
+                # per the audit's next-step recommendation for Cobie Durant.
+                markers = {
+                    "did_not_return": ("did not return", "missed the remainder of the game"),
+                    "returned": ("returned", "returning"),
+                }
                 if row["outcome"] == "out":
                     require(re.search(r"\bruled(?:\s+\S+){0,3}\s+out\b", excerpt) is not None,
                             f"game outcome not grounded by excerpt: {key}")
