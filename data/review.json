@@ -27,10 +27,11 @@
     {
       "id": "2026-09-20-lac-david-njoku-area",
       "subject": "David Njoku · LAC",
-      "reason": "Sunday NFL.com game roundup says knee; Monday NFL.com roundup says fibula. Source descriptions conflict; no unified injury claim is published.",
+      "reason": "Sunday NFL.com game roundup says knee; Monday NFL.com roundup says fibula. Chargers.com later says he suffered a fibula injury in Sunday's game. That adds a fibula report; it does not reconcile the knee label.",
       "links": [
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
-        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21",
+        "https://www.chargers.com/news/charlie-kolar-david-njoku-injured-reserve-fantasy"
       ],
       "incidentId": "2026-09-20-lac-david-njoku",
       "disposition": "held"
@@ -38,10 +39,12 @@
     {
       "id": "2026-09-20-sea-jadarian-price-area",
       "subject": "Jadarian Price · SEA",
-      "reason": "Sunday coverage initially called it a chest issue; Monday coach called it a shoulder issue. The later correction is linked, but the injury is held from the verified list until reconciled.",
+      "reason": "Sunday coverage initially called it a chest issue; Monday's coach called it a shoulder issue. Seahawks.com and Cardinals.com game reports also say chest. The shoulder label is still unreconciled, so the incident stays held.",
       "links": [
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
-        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21",
+        "https://www.seahawks.com/news/2026-week-2-seahawks-at-cardinals-in-game-injury-updates",
+        "https://www.azcardinals.com/news/working-to-not-waste-plays-and-seahawks-aftermath"
       ],
       "incidentId": "2026-09-20-sea-jadarian-price",
       "disposition": "held"
@@ -60,10 +63,13 @@
     {
       "id": "2026-09-20-ari-max-melton-area",
       "subject": "Max Melton · ARI",
-      "reason": "NFL.com's pregame Week 2 report lists ankle; Sunday's in-game roundup lists toe. A pregame designation is not automatically the same incident as an in-game report.",
+      "reason": "NFL.com's pregame Week 2 report lists ankle; Sunday's in-game roundup lists toe. Cardinals.com's recap also says he left with a toe injury, while a later Cardinals note lists foot. Those sentences are extra evidence, not a resolution.",
       "links": [
         "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games",
-        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.azcardinals.com/news/cardinals-can-t-find-way-to-dent-seahawks-in-loss",
+        "https://www.azcardinals.com/news/lafleur-will-johnson-could-be-sidelined-for-season",
+        "https://www.azcardinals.com/news/working-to-not-waste-plays-and-seahawks-aftermath"
       ],
       "incidentId": "2026-09-20-ari-max-melton",
       "disposition": "held"
@@ -183,6 +189,61 @@
         "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
       ],
       "incidentId": "2026-09-20-dal-cobie-durant",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-20-den-jonah-coleman-spelling",
+      "subject": "Jonah Coleman · DEN",
+      "reason": "The Wednesday NFL.com roundup links Jonah Coleman and says he suffered a sprained ankle in the Broncos' Week 2 win, then spells the next sentence Colmeman. The linked name is used; the misspelling is flagged, not silently corrected.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23",
+        "https://www.nfl.com/players/jonah-coleman/"
+      ],
+      "incidentId": "2026-09-20-den-jonah-coleman",
+      "disposition": "annotated"
+    },
+    {
+      "id": "2026-09-20-sea-brandon-pili-venue",
+      "subject": "Brandon Pili · SEA",
+      "reason": "Seahawks.com rules Brandon Pili out with a concussion before halftime of the Week 2 game at Arizona. The same article's photo-gallery caption says the warmup photos are at Lumen Field, while photo captions and the postgame report say State Farm Stadium. The venue conflict is flagged; the incident uses the at-Arizona reporting.",
+      "links": [
+        "https://www.seahawks.com/news/2026-week-2-seahawks-at-cardinals-in-game-injury-updates",
+        "https://www.seahawks.com/news/seahawks-injury-updates-from-mike-macdonald-following-sunday-s-week-2-win-at-arizona"
+      ],
+      "incidentId": "2026-09-20-sea-brandon-pili",
+      "disposition": "annotated"
+    },
+    {
+      "id": "2026-09-20-min-tyrion-ingram-dawkins-area",
+      "subject": "Tyrion Ingram-Dawkins · MIN",
+      "reason": "The Week 2 game report says Tyrion Ingram-Dawkins did not return with a hip injury. The Sept. 23 injury report published by the Buccaneers lists him as oblique and limited. The labels are not merged; the verified entry keeps the in-game hip claim.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.buccaneers.com/news/buccaneers-vikings-injury-report-sept-23-week-3-2026"
+      ],
+      "incidentId": "2026-09-20-min-tyrion-ingram-dawkins",
+      "disposition": "annotated"
+    },
+    {
+      "id": "2026-09-20-was-nick-cross-anchor",
+      "subject": "Nick Cross · WAS",
+      "reason": "NFL.com says Nick Cross suffered an internal injury and was hospitalized overnight in Dallas after Week 2's game, and will not play the next game. The sentence does not say he left that game or was injured during play, so it is held rather than published as an in-game event.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23",
+        "https://www.commanders.com/news/jayden-daniels-dan-quinn-commanders"
+      ],
+      "incidentId": "2026-09-20-was-nick-cross",
+      "disposition": "held"
+    },
+    {
+      "id": "2026-09-14-kc-mansoor-delane-status",
+      "subject": "Mansoor Delane · KC",
+      "reason": "NFL.com's Monday, Sept. 14 roundup says Mansoor Delane was ruled out of Monday's game and also that he recorded an interception on the third play. Those statements conflict, so the item is held rather than published as an in-game exit.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
+        "https://www.nfl.com/players/mansoor-delane/"
+      ],
+      "incidentId": "2026-09-14-kc-mansoor-delane",
       "disposition": "held"
     }
   ]

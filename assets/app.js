@@ -22,13 +22,14 @@ function el(tag, className = '', content = '') {
   if (content !== '') node.textContent = String(content);
   return node;
 }
+const OFFICIAL_HOSTS = ['www.nfl.com', 'www.dallascowboys.com', 'www.packers.com', 'www.buccaneers.com', 'www.newyorkjets.com', 'www.colts.com', 'www.seahawks.com', 'www.jaguars.com', 'www.azcardinals.com', 'www.chargers.com', 'www.commanders.com'];
 function trustedLink(url, label, type = 'news') {
   const link = el('a', '', label);
   let valid = false;
   try {
     const parsed = new URL(url);
     valid = parsed.protocol === 'https:' && !parsed.username && !parsed.password && !parsed.port && !parsed.search && !parsed.hash
-      && ['www.nfl.com', 'www.dallascowboys.com'].includes(parsed.hostname)
+      && OFFICIAL_HOSTS.includes(parsed.hostname)
       && (parsed.pathname.startsWith('/news/') || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')));
   } catch { /* Invalid URLs are never followed. */ }
   if (valid) {
