@@ -29,12 +29,10 @@ jobs:
           else
             cat /tmp/source-audit.txt
             echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
-            for line in $(grep "REVIEW:" /tmp/source-audit.txt | head -5); do
-              echo "::warning title=Online source audit detail::$line"
-            done
-            python scripts/diagnose_audit.py --audit /tmp/source-audit.txt | while IFS= read -r line; do
-              echo "::warning title=Audit diagnostic::$line"
-            done
+            echo "::warning title=Online source audit detail::$(grep "REVIEW:" /tmp/source-audit.txt | head -3)"
+            DIAG="$(python scripts/diagnose_audit.py --audit /tmp/source-audit.txt | head -8)"
+            echo "$DIAG"
+            echo "::warning title=Audit diagnostic::$DIAG"
             result=1
           fi
           {
