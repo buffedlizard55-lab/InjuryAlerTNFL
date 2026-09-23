@@ -1,7 +1,7 @@
 {
   "version": 1,
   "verifiedOn": "2026-09-23",
-  "scope": "Forty individually checked 2026 in-game incidents across Weeks 1-2; this is a sample archive, not a complete league census or live medical record.",
+  "scope": "Sixty individually checked 2026 in-game incidents across Weeks 1-2; this is a sample archive, not a complete league census or live medical record.",
   "incidents": [
     {
       "id": "2026-09-09-sea-sam-darnold",
@@ -1025,7 +1025,7 @@
           "date": "2026-09-21",
           "kind": "followup",
           "text": "Coach said the foot injury requires surgery and he will miss the remainder of the season.",
-          "quote": "DB Avonte Maddox's foot injury requires surgery, and he will miss the remainder of the season, coach Dan Campbell said Monday.",
+          "quote": "foot injury requires surgery, and he will miss the remainder of the season, coach Dan Campbell said Monday",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
         }
       ]
@@ -1149,7 +1149,7 @@
           "date": "2026-09-21",
           "kind": "followup",
           "text": "Coach said the hip injury will have to be managed through the week; no availability call is claimed here.",
-          "quote": "WR Mike Evans's hip injury suffered during Sunday's win over the Dolphins will have to be managed through the week, per head coach Kyle Shanahan.",
+          "quote": "hip injury suffered during Sunday's win over the Dolphins will have to be managed through the week, per head coach Kyle Shanahan",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
         }
       ]
@@ -1214,7 +1214,7 @@
           "date": "2026-09-23",
           "kind": "followup",
           "text": "Surgery to repair a core muscle injury was expected; the later report uses a different label than the in-game groin report, and both stay attributed here.",
-          "quote": "RB Jonathon Brooks is expected to have surgery Wednesday to repair a core muscle injury, NFL Network Insider Ian Rapoport reported, per sources",
+          "quote": "is expected to have surgery Wednesday to repair a core muscle injury",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
         },
         {
@@ -1273,6 +1273,502 @@
           "kind": "followup",
           "text": "Reported expected to miss some time without needing surgery; expectations, not designations or a return date.",
           "quote": "LB Brian Burns (ankle) is expected to miss some time but is not expected to need surgery, per Schefter.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-bal-t-j-tampa",
+      "player": "T.J. Tampa",
+      "position": "CB",
+      "team": "BAL",
+      "opponent": "IND",
+      "gameDate": "2026-09-13",
+      "injury": "Knee",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Ruled out in the first half of the Colts game; the roundup gives no exit detail beyond the reported area.",
+          "quote": "Cornerback T.J. Tampa (knee) was ruled out in the first half.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        },
+        {
+          "date": "2026-09-14",
+          "kind": "followup",
+          "text": "Coach said Monday he could miss time while the team gathered information; no return date was given.",
+          "quote": "CB T.J. Tampa (knee) could miss time with his injury, but the team is still gathering information, Minter said.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-chi-tyrique-stevenson",
+      "player": "Tyrique Stevenson",
+      "position": "CB",
+      "team": "CHI",
+      "opponent": "CAR",
+      "gameDate": "2026-09-13",
+      "injury": "Shoulder",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Exited the win over the Panthers and did not return to that game.",
+          "quote": "cornerback Tyrique Stevenson (shoulder) exited Sunday's win over the Panthers and did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-cle-dylan-sampson",
+      "player": "Dylan Sampson",
+      "position": "RB",
+      "team": "CLE",
+      "opponent": "JAX",
+      "gameDate": "2026-09-13",
+      "injury": "Ankle",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Ruled out in the first half of the loss to the Jaguars.",
+          "quote": "running back Dylan Sampson (ankle) was ruled out in the first half of Sunday's loss to the Jaguars.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-lac-keandre-lambert-smith",
+      "player": "KeAndre Lambert-Smith",
+      "position": "WR",
+      "team": "LAC",
+      "opponent": "ARI",
+      "gameDate": "2026-09-13",
+      "injury": "Hamstring",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Did not return to the loss to the Cardinals; listed in the same roundup bullet as two teammates, with his own hamstring label.",
+          "quote": "wide receiver KeAndre Lambert-Smith (hamstring) and cornerback Elijah Molden (hamstring) did not return to Sunday's loss to the Cardinals.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-lac-elijah-molden",
+      "player": "Elijah Molden",
+      "position": "CB",
+      "team": "LAC",
+      "opponent": "ARI",
+      "gameDate": "2026-09-13",
+      "injury": "Hamstring",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Did not return to the loss to the Cardinals; listed in the same roundup bullet as two teammates, with his own hamstring label.",
+          "quote": "wide receiver KeAndre Lambert-Smith (hamstring) and cornerback Elijah Molden (hamstring) did not return to Sunday's loss to the Cardinals.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        },
+        {
+          "date": "2026-09-17",
+          "kind": "followup",
+          "text": "Listed as a non-participant in Thursday's Week 2 practice; a practice designation, not a game-status ruling.",
+          "quote": "DB Elijah Molden (hamstring) DNP",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-mia-kyle-louis",
+      "player": "Kyle Louis",
+      "position": "S",
+      "team": "MIA",
+      "opponent": "LV",
+      "gameDate": "2026-09-13",
+      "injury": "Knee",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Ruled out of the loss to the Raiders.",
+          "quote": "safety Kyle Louis (knee) was ruled out of Sunday's loss to the Raiders.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        },
+        {
+          "date": "2026-09-16",
+          "kind": "followup",
+          "text": "Placed on injured reserve Wednesday after the knee injury; the move means a minimum four-game absence.",
+          "quote": "S Kyle Louis (knee) placed on injured reserve",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-tb-jacob-parrish",
+      "player": "Jacob Parrish",
+      "position": "CB",
+      "team": "TB",
+      "opponent": "CIN",
+      "gameDate": "2026-09-13",
+      "injury": "Back",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Ruled out of the loss to the Bengals.",
+          "quote": "cornerback Jacob Parrish (back) was ruled out of Sunday's loss to the Bengals.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-was-chigoziem-okonkwo",
+      "player": "Chigoziem Okonkwo",
+      "position": "TE",
+      "team": "WAS",
+      "opponent": "PHI",
+      "gameDate": "2026-09-13",
+      "injury": "Hamstring",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Did not return to the loss to the Eagles; listed in one roundup bullet with two teammates, each with his own reported area.",
+          "quote": "tight end Chigoziem Okonkwo (hamstring), linebacker Frankie Luvu (groin) and safety Tyler Owens (ankle) did not return to Sunday's loss to the Eagles.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-was-frankie-luvu",
+      "player": "Frankie Luvu",
+      "position": "LB",
+      "team": "WAS",
+      "opponent": "PHI",
+      "gameDate": "2026-09-13",
+      "injury": "Groin",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Did not return to the loss to the Eagles; listed in one roundup bullet with two teammates, each with his own reported area.",
+          "quote": "tight end Chigoziem Okonkwo (hamstring), linebacker Frankie Luvu (groin) and safety Tyler Owens (ankle) did not return to Sunday's loss to the Eagles.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-13-was-tyler-owens",
+      "player": "Tyler Owens",
+      "position": "S",
+      "team": "WAS",
+      "opponent": "PHI",
+      "gameDate": "2026-09-13",
+      "injury": "Ankle",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-13",
+          "kind": "game",
+          "text": "Did not return to the loss to the Eagles; listed in one roundup bullet with two teammates, each with his own reported area.",
+          "quote": "tight end Chigoziem Okonkwo (hamstring), linebacker Frankie Luvu (groin) and safety Tyler Owens (ankle) did not return to Sunday's loss to the Eagles.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-gb-aaron-banks",
+      "player": "Aaron Banks",
+      "position": "G",
+      "team": "GB",
+      "opponent": "NYJ",
+      "gameDate": "2026-09-20",
+      "injury": "Toe (in-game; knee/toe listing next day)",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out in the fourth quarter of the win over the Jets; the same bullet covers a teammate's ankle injury.",
+          "quote": "Guard Aaron Banks (toe) was ruled out in the fourth quarter, and defensive tackle Anthony Campbell (ankle) did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-22",
+          "kind": "followup",
+          "text": "Tuesday's report listed knee/toe as a non-participant; a practice listing, not a new game event.",
+          "quote": "G Aaron Banks (knee/toe) DNP",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-gb-anthony-campbell",
+      "player": "Anthony Campbell",
+      "position": "DT",
+      "team": "GB",
+      "opponent": "NYJ",
+      "gameDate": "2026-09-20",
+      "injury": "Ankle",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the win over the Jets; the same bullet covers a teammate's fourth-quarter ruled-out status.",
+          "quote": "Guard Aaron Banks (toe) was ruled out in the fourth quarter, and defensive tackle Anthony Campbell (ankle) did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ne-eli-raridon",
+      "player": "Eli Raridon",
+      "position": "TE",
+      "team": "NE",
+      "opponent": "PIT",
+      "gameDate": "2026-09-20",
+      "injury": "Thigh",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out of the win over the Steelers, in the bullet that followed Mike Onwenu's ankle item.",
+          "quote": "Tight end Eli Raridon (thigh) also was ruled out.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ne-dre-mont-jones",
+      "player": "Dre'Mont Jones",
+      "position": "LB",
+      "team": "NE",
+      "opponent": "PIT",
+      "gameDate": "2026-09-20",
+      "injury": "Shoulder",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the win over the Steelers; listed in the same bullet as a teammate with an ankle label.",
+          "quote": "Linebacker Dre'Mont Jones (shoulder) and safety Dell Pettus (ankle) did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ne-dell-pettus",
+      "player": "Dell Pettus",
+      "position": "S",
+      "team": "NE",
+      "opponent": "PIT",
+      "gameDate": "2026-09-20",
+      "injury": "Ankle",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the win over the Steelers; listed in the same bullet as a teammate with a shoulder label.",
+          "quote": "Linebacker Dre'Mont Jones (shoulder) and safety Dell Pettus (ankle) did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-23",
+          "kind": "followup",
+          "text": "Placed on injured reserve Wednesday, per the roundup; a completed roster move as stated by the source.",
+          "quote": "S Dell Pettus was placed on injured reserve.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-nyj-david-onyemata",
+      "player": "David Onyemata",
+      "position": "DL",
+      "team": "NYJ",
+      "opponent": "GB",
+      "gameDate": "2026-09-20",
+      "injury": "Groin",
+      "outcome": "out",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Ruled out of the loss to the Packers.",
+          "quote": "defensive lineman David Onyemata (groin) was ruled out of Sunday's loss to the Packers.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-23",
+          "kind": "followup",
+          "text": "The groin injury led to reported core muscle surgery; the coach said he is expected back by the end of the season.",
+          "quote": "DT David Onyemata underwent core muscle surgery and is expected to be back by the end of the season, Glenn said.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-nyj-marcelino-mccrary-ball",
+      "player": "Marcelino McCrary-Ball",
+      "position": "LB",
+      "team": "NYJ",
+      "opponent": "GB",
+      "gameDate": "2026-09-20",
+      "injury": "Ankle",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Did not return to the loss to the Packers; the same bullet also names a teammate whose identity link is separately held in the review queue.",
+          "quote": "Linebackers Marcelino McCrary-Ball (ankle) and Kiko Mauigoa (quad) also did not return.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-ind-charvarius-ward",
+      "player": "Charvarius Ward",
+      "position": "CB",
+      "team": "IND",
+      "opponent": "KC",
+      "gameDate": "2026-09-20",
+      "injury": "Groin",
+      "outcome": "unconfirmed",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Left the Sunday night loss with a groin injury; the roundup gives no return designation, so none is recorded.",
+          "quote": "CB Charvarius Ward left Sunday night's loss with a groin injury.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-20-sf-james-thompson-jr",
+      "player": "James Thompson Jr.",
+      "position": "DT",
+      "team": "SF",
+      "opponent": "MIA",
+      "gameDate": "2026-09-20",
+      "injury": "High ankle sprain (coach reported)",
+      "outcome": "unconfirmed",
+      "observations": [
+        "Injured during game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-20",
+          "kind": "game",
+          "text": "Coach Shanahan said after the Dolphins game that Thompson has a high ankle sprain; no in-game return designation was reported.",
+          "quote": "Head coach Kyle Shanahan told reporters after the game Robinson and DT James Thompson Jr. have high ankle sprains.",
+          "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+        },
+        {
+          "date": "2026-09-21",
+          "kind": "followup",
+          "text": "Monday's roundup restated the high ankle sprain as a single-player item, attributed to the coach.",
+          "quote": "DL James Thompson Jr. suffered a high ankle sprain vs. the Dolphins, per Shanahan.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-21-nyg-andrew-thomas",
+      "player": "Andrew Thomas",
+      "position": "OT",
+      "team": "NYG",
+      "opponent": "LAR",
+      "gameDate": "2026-09-21",
+      "injury": "Groin",
+      "outcome": "did_not_return",
+      "observations": [
+        "Left game"
+      ],
+      "claims": [
+        {
+          "date": "2026-09-21",
+          "kind": "game",
+          "text": "Injured late in the Monday night win over the Rams and did not return to that game.",
+          "quote": "OT Andrew Thomas (groin) was injured late in Monday's game and did not return.",
+          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+        },
+        {
+          "date": "2026-09-23",
+          "kind": "followup",
+          "text": "Wednesday's report described the groin/adductor injury as not serious, with a chance to return in Week 3; a possibility, not a confirmed return.",
+          "quote": "groin/adductor injury that he suffered Monday night is not considered serious, and he has a chance to return Sunday vs. the Titans",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
         }
       ]

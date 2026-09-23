@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [arena/01a0cfe2-injuryalertnfl]
+    branches: [arena/01a0d02e-injuryalertnfl]
 permissions:
   contents: read
 jobs:

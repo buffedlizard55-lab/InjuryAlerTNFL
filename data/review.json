@@ -173,6 +173,17 @@
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
       ]
+    },
+    {
+      "id": "2026-09-20-dal-cobie-durant-wording",
+      "subject": "Cobie Durant · DAL",
+      "reason": "Two official reports of the same Week 2 exit use wording the strict matcher cannot ground: NFL.com's roundup says \"did not to return\" (a source typo) while the Cowboys' recap says he \"missed the remainder of the game with a hamstring injury.\" Meaning is equivalent, but the verified list only publishes exact-wording-grounded outcomes, so the entry is held.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
+      ],
+      "incidentId": "2026-09-20-dal-cobie-durant",
+      "disposition": "held"
     }
   ]
 }
