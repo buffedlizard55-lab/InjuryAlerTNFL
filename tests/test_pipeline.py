@@ -170,6 +170,17 @@ class FeedTests(unittest.TestCase):
         self.assertEqual([], scores["games"])
         self.assertEqual([], news["incidents"])
 
+    def test_build_refuses_a_held_case_even_if_collector_regresses(self):
+        accepted, _ = extract_roundup(self.page, URL, self.page.published, self.games, NOW, set())
+        held_row = next(row for row in accepted if row["player"] == "Jadarian Price")
+        with tempfile.TemporaryDirectory() as tmp:
+            live = json.loads((ROOT / "data/live.json").read_text())
+            live["incidents"] = [held_row]
+            live_path = Path(tmp) / "live.json"
+            live_path.write_text(json.dumps(live))
+            with self.assertRaises(InvalidData):
+                assemble(Path(tmp) / "site", live_path, ROOT / "data/scoreboard.json")
+
     def test_build_keeps_offline_fallback_and_never_rss_alerts_from_archive(self):
         with tempfile.TemporaryDirectory() as tmp:
             dest = Path(tmp) / "public"
