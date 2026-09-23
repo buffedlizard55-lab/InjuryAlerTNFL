@@ -85,10 +85,93 @@
       "incidentId": "2026-09-21-nyg-jaxson-dart",
       "disposition": "annotated",
       "subject": "Jaxson Dart · NYG",
-      "reason": "Initial postgame reporting discussed a possible MCL sprain; later testing prompted a report that season-ending surgery is expected. The verified record keeps the newer expectation attributed, not a confirmed completed surgery.",
+      "reason": "Initial postgame reporting discussed a possible MCL sprain; testing led to reported and coach-confirmed season-ending surgery. The verified record keeps the reports dated and attributed, not a claim about the procedure's completion.",
       "links": [
         "https://www.nfl.com/news/giants-qb-jaxson-dart-suffers-apparent-knee-injury-on-first-drive-vs-rams",
         "https://www.nfl.com/news/giants-qb-jaxson-dart-season-ending-knee-surgery"
+      ]
+    },
+    {
+      "id": "2026-09-13-lac-ladd-mcconkey-area",
+      "incidentId": "2026-09-13-lac-ladd-mcconkey",
+      "disposition": "held",
+      "subject": "Ladd McConkey · LAC",
+      "reason": "Week 1's game roundup and its headline call it a chest injury, while Monday's coach report and the Wednesday and Thursday practice reports all list ribs. The in-game chest report and the later ribs reports are not silently merged; the incident is held from the verified list until reconciled.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+      ]
+    },
+    {
+      "id": "2026-09-20-nyj-kiko-mauigoa-link",
+      "incidentId": "2026-09-20-nyj-kiko-mauigoa",
+      "disposition": "held",
+      "subject": "Kiko Mauigoa · NYJ",
+      "reason": "The Week 2 roundup displays 'Kiko Mauigoa' but links to /players/francisco-mauigoa/, and Thursday's report lists 'Francis Mauigoa' (shoulder) under the Giants. Player identity cannot be resolved from these links, so the quad report is withheld from the verified list.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
+        "https://www.nfl.com/players/francisco-mauigoa/",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+      ]
+    },
+    {
+      "id": "2026-09-10-lar-kam-curl-link",
+      "incidentId": "2026-09-10-lar-kam-curl",
+      "disposition": "held",
+      "subject": "Kam Curl · LAR",
+      "reason": "The Thursday, Sept. 10 roundup displays 'Kam Curl' but links to /players/kamren-curl/. Applying the same rule as other name/URL mismatches, identity is not auto-resolved and the in-game ankle report stays out of the verified list.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10",
+        "https://www.nfl.com/players/kamren-curl/"
+      ]
+    },
+    {
+      "id": "2026-09-13-hou-jake-hummel-area",
+      "incidentId": "2026-09-13-hou-jake-hummel",
+      "disposition": "annotated",
+      "subject": "Jake Hummel · HOU",
+      "reason": "Sunday's game roundup labels abdomen; Thursday's practice report labels groin. The verified entry keeps the in-game abdomen label only and does not assert that the two labels describe one injury.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+      ]
+    },
+    {
+      "id": "2026-09-13-det-christian-mahogany-area",
+      "incidentId": "2026-09-13-det-christian-mahogany",
+      "disposition": "annotated",
+      "subject": "Christian Mahogany · DET",
+      "reason": "The game report labels knee; Monday's and Wednesday's reports list hip, and Wednesday rules him out for Week 2. The verified entry keeps the in-game knee claim and the later hip-labelled reports separately attributed.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+      ]
+    },
+    {
+      "id": "2026-09-13-atl-da-shawn-hand-area",
+      "incidentId": "2026-09-13-atl-da-shawn-hand",
+      "disposition": "annotated",
+      "subject": "Da'Shawn Hand · ATL",
+      "reason": "Listed with a knee issue in Week 1 practice, ruled out in-game with a knee label, then reported Monday as a believed torn quad with season-ending surgery, and placed on IR under a quad label Wednesday. Each dated report stays attributed; the labels are not merged into one diagnosis.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10",
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+      ]
+    },
+    {
+      "id": "2026-09-20-car-jonathon-brooks-area",
+      "incidentId": "2026-09-20-car-jonathon-brooks",
+      "disposition": "annotated",
+      "subject": "Jonathon Brooks · CAR",
+      "reason": "Brooks was listed with a groin issue in Week 1 practice before the Week 2 game; the in-game report cites a groin injury suffered in that game, and the IR report describes a core muscle injury. The record keeps the reports separate and does not claim they are one injury.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
       ]
     }
   ]

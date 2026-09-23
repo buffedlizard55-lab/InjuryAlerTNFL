@@ -30,10 +30,10 @@ class SourceLedgerTests(unittest.TestCase):
         cls.archive = json.loads((ROOT / "data/archive.json").read_text())
         cls.review = json.loads((ROOT / "data/review.json").read_text())
 
-    def test_all_twenty_new_entries_are_unique_with_individual_official_evidence(self):
+    def test_all_forty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(20, len(self.archive["incidents"]))
-        self.assertEqual(20, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(40, len(self.archive["incidents"]))
+        self.assertEqual(40, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-23", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
@@ -68,13 +68,28 @@ class SourceLedgerTests(unittest.TestCase):
             "dallas-goedert": "did_not_return", "demarcus-robinson": "out",
             "p-j-locke": "did_not_return", "mike-onwenu": "out",
             "a-j-terrell": "out", "robert-beal-jr": "did_not_return",
+            "chris-lindstrom": "out", "da-shawn-hand": "out", "demarvion-overshown": "unconfirmed",
+            "malik-hooker": "unconfirmed", "christian-mahogany": "did_not_return", "jake-hummel": "out",
+            "minkah-fitzpatrick": "did_not_return", "omar-cooper-jr": "out", "kitan-crawford": "unconfirmed",
+            "davis-allen": "unconfirmed", "bj-green-ii": "did_not_return", "avonte-maddox": "out",
+            "dj-moore": "out", "samson-ebukam": "out", "tyrion-ingram-dawkins": "did_not_return",
+            "mike-evans": "did_not_return", "kelvin-banks-jr": "unconfirmed", "jonathon-brooks": "unconfirmed",
+            "malik-nabers": "returned", "brian-burns": "did_not_return",
         }
         self.assertEqual(expected, {row["id"].split("-", 4)[-1]: row["outcome"] for row in self.archive["incidents"]})
 
+    def test_session_two_entries_carry_dated_followups_and_observation_labels(self):
+        by_id = {row["id"]: row for row in self.archive["incidents"]}
+        for entry, min_claims in (("2026-09-17-buf-dj-moore", 3), ("2026-09-21-nyg-brian-burns", 2),
+                                  ("2026-09-20-no-kelvin-banks-jr", 3), ("2026-09-13-dal-malik-hooker", 4)):
+            self.assertGreaterEqual(len(by_id[entry]["claims"]), min_claims, entry)
+        self.assertEqual(["Walked off field", "Locker room"], by_id["2026-09-17-buf-dj-moore"]["observations"])
+        self.assertEqual(["Carted to locker room"], by_id["2026-09-10-lar-davis-allen"]["observations"])
+
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(8, len(self.review["flags"]))
-        self.assertEqual(6, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(15, len(self.review["flags"]))
+        self.assertEqual(9, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -216,7 +231,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(20, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(40, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":
