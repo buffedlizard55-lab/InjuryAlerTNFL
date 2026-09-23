@@ -14,9 +14,24 @@ concurrency:
   group: pages-injury-board
   cancel-in-progress: false
 jobs:
-  publish:
+  unblock-stale-deployments:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Close stale github-pages deployments that block the queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python scripts/unblock_deployments.py
+  publish:
+    needs: unblock-stale-deployments
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

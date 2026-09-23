@@ -251,3 +251,19 @@ class FeedTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UnblockDeploymentPolicy(unittest.TestCase):
+    """The stale-deployment closer must only touch old, unsettled deployments."""
+
+    def test_only_stale_states_and_old_enough(self):
+        from unblock_deployments import STALE_STATES, should_close
+        for state in ("waiting", "in_progress", "queued", "pending"):
+            self.assertTrue(should_close(state, 3600))
+            self.assertFalse(should_close(state, 60))  # too young: maybe live
+        for state in ("success", "failure", "error", "inactive", "unknown"):
+            self.assertFalse(should_close(state, 86400))
+
+
+if __name__ == "__main__":
+    unittest.main()
