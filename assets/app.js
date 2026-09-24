@@ -1,13 +1,33 @@
-import { OUTCOME_LABEL, mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts, dataURL } from './domain.mjs';
+import {
+  OUTCOME_LABEL, mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts, dataURL,
+  tierLabel, detectInGameSignals, rankSignals, signalWeight, humanizeSeconds, latencySeconds,
+  liveGames, shouldWatchForInGame, socialSearchLinks, eligiblePartnerAlerts,
+} from './domain.mjs';
 
 const $ = id => document.getElementById(id);
-const state = { archive: null, review: null, live: null, scores: null, rows: [], filter: { query: '', team: 'all', outcome: 'all' }, ready: false, notifications: false };
+const state = {
+  archive: null, review: null, live: null, scores: null, sources: null, leads: null, rows: [],
+  filter: { query: '', team: 'all', outcome: 'all' }, ready: false, notifications: false,
+  // Live lanes. `laneStatus` is honest about every lane: ok, blocked (the browser
+  // could not reach it) or idle (no game in the watch window).
+  laneStatus: { header: 'idle', news: 'idle' }, liveSignals: [], partnerArticles: [], lastLaneCheck: null,
+};
+const ESPN_HEADER = 'https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=football&league=nfl';
+const ESPN_NEWS = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=25';
+const LIVE_LANE_HEADER_MS = 20_000;
+const LIVE_LANE_NEWS_MS = 45_000;
 const validArchive = value => value?.version === 1 && typeof value.scope === 'string' && Array.isArray(value.incidents)
   && value.incidents.every(row => typeof row.id === 'string' && typeof row.player === 'string' && Array.isArray(row.claims)
     && row.claims.length && row.claims.every(claim => typeof claim.date === 'string' && typeof claim.quote === 'string' && typeof claim.url === 'string'));
 const validReview = value => value?.version === 1 && Array.isArray(value.flags);
 const validLive = value => value?.version === 1 && Array.isArray(value.incidents) && Array.isArray(value.flags) && typeof value.status === 'string';
 const validScores = value => value?.version === 1 && Array.isArray(value.games) && typeof value.status === 'string';
+const validSources = value => value?.version === 1 && Array.isArray(value.sources) && value.sources.length > 0
+  && value.sources.every(entry => typeof entry.id === 'string' && ['official', 'partner', 'unofficial'].includes(entry.tier)
+    && typeof entry.role === 'string' && typeof entry.name === 'string' && typeof entry.url === 'string');
+const validLeads = value => value?.version === 1 && Array.isArray(value.leads)
+  && value.leads.every(lead => typeof lead.id === 'string' && typeof lead.subject === 'string' && typeof lead.text === 'string'
+    && lead.source && typeof lead.source.url === 'string' && lead.source.tier !== 'official');
 const day = value => {
   const date = new Date(`${value}T12:00:00Z`);
   return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date) : 'Date unverified';
@@ -42,7 +62,8 @@ function trustedLink(url, label, type = 'news') {
     const hostOk = allowed.includes(parsed.hostname) || parsed.hostname.endsWith('.nfl.com') || (parsed.hostname.startsWith('www.') && (parsed.hostname.endsWith('broncos.com') || parsed.hostname.endsWith('bills.com')));
     valid = parsed.protocol === 'https:' && !parsed.username && !parsed.password && !parsed.port && !parsed.search && !parsed.hash
       && hostOk
-      && (parsed.pathname.startsWith('/news/') || parsed.pathname.startsWith('/videos/') || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')));
+      && (parsed.pathname.startsWith('/news/') || parsed.pathname.startsWith('/videos/') || parsed.pathname.startsWith('/game-day/')
+        || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')));
   } catch { /* Invalid URLs are never followed. */ }
   if (valid) {
     link.href = url;
@@ -55,6 +76,18 @@ function trustedLink(url, label, type = 'news') {
   return link;
 }
 function notice(text) { return el('p', 'notice', text); }
+// Partner and unofficial links are displayed with their tier and never treated as evidence.
+function tierLink(url, label, tier) {
+  const link = el('a', `tier-link tier-${tier}`, label);
+  let ok = false;
+  try {
+    const parsed = new URL(url);
+    ok = parsed.protocol === 'https:' && !parsed.username && !parsed.password && Boolean(parsed.hostname);
+  } catch { /* A malformed URL is never followed. */ }
+  if (ok) { link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+  else { link.textContent = 'Link unavailable'; link.removeAttribute('href'); }
+  return link;
+}
 
 const NEW_IDS = new Set([
   // Pass 5 (September 24, 2026): incidents newly promoted to the verified archive.
@@ -262,6 +295,9 @@ async function poll() {
   if (state.review && (!state.ready || beforeFlags !== reviewSignature(state.live?.flags))) renderReview();
   renderHealth();
   renderScores();
+  // A refreshed scoreboard can open or close the in-game watch window, so the
+  // priority rail is re-rendered on every poll, not only on its own timer.
+  renderLiveWatch();
 }
 async function init() {
   $('today-label').textContent = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(new Date()).toUpperCase();
@@ -280,7 +316,13 @@ async function init() {
   });
   $('notify-button').addEventListener('click', enableAlerts);
   try { updateNotificationButton(); } catch { $('notify-button').disabled = true; }
-  const [archive, review] = await Promise.allSettled([json('./data/archive.json'), json('./data/review.json')]);
+  const [archive, review, sources, leads] = await Promise.allSettled([
+    json('./data/archive.json'), json('./data/review.json'), json('./data/sources.json'), json('./data/leads.json'),
+  ]);
+  if (sources.status === 'fulfilled' && validSources(sources.value)) state.sources = sources.value;
+  else $('sources-board')?.replaceChildren(notice('The source registry could not be loaded. Treat every unlabelled item as unverified.'));
+  if (leads.status === 'fulfilled' && validLeads(leads.value)) state.leads = leads.value;
+  else $('leads-list')?.replaceChildren(notice('The unofficial lead list could not be loaded.'));
   if (archive.status === 'fulfilled' && validArchive(archive.value)) state.archive = archive.value;
   else {
     $('report-list').replaceChildren(notice('Verified archive could not be loaded. Do not interpret this as no injuries; retry later.'));
@@ -288,8 +330,286 @@ async function init() {
   }
   if (review.status === 'fulfilled' && validReview(review.value)) state.review = review.value;
   else $('review-list').replaceChildren(notice('Review queue could not be loaded.'));
+  renderSources();
+  renderLeads();
   await poll();
+  await pollLiveLanes();
   state.ready = true;
   window.setInterval(poll, 60_000);
+  // The in-game lane runs on its own clock: a live game is the highest-priority
+  // thing on this page, so it is the only lane that polls faster than a minute.
+  window.setInterval(pollLiveLanes, LIVE_LANE_HEADER_MS);
+  window.setInterval(async () => { if (state.laneStatus.news === 'ok') await pollLiveLanes(); }, LIVE_LANE_NEWS_MS);
 }
 init();
+
+/* ---------------------------------------------------------------------------
+   LIVE IN-GAME WATCH — the lowest-latency lane this page can run.
+
+   Priority: an in-game event during a game that is being played right now is
+   the first thing the page looks for and the first thing it shows. Two lanes
+   are polled directly from the browser:
+
+     * ESPN scoreboard header (every 20s)  -> is a game live, period and clock
+     * ESPN NFL news feed     (every 45s)  -> timestamped published articles
+
+   Both are partner feeds, not league or club publications. Nothing they return
+   is ever presented as verified: the panel says PARTNER FEED and UNVERIFIED,
+   carries the provider's own timestamp, and links out. If the browser cannot
+   reach a lane (offline, blocked, CORS), the lane reports that instead of
+   going quiet.
+   --------------------------------------------------------------------------- */
+async function fetchJSON(url, timeoutMs = 10_000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { cache: 'no-store', signal: controller.signal, referrerPolicy: 'no-referrer' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally { clearTimeout(timer); }
+}
+
+function currentWatchGames() {
+  const status = state.scores?.status;
+  if (status && status !== 'ok' && status !== 'partial') return [];
+  return liveGames(state.scores?.games || [], Date.now());
+}
+
+function laneFromHeader(payload) {
+  const sports = Array.isArray(payload?.sports) ? payload.sports : [];
+  const leagues = sports.flatMap(sport => sport.leagues || []);
+  const events = leagues.flatMap(league => league.events || []);
+  return events.map(event => {
+    const teams = (event.competitors || []).map(team => ({
+      code: team.abbreviation || team.team?.abbreviation || '',
+      score: team.score ?? '—',
+      homeAway: team.homeAway || '',
+    }));
+    const state_ = event.fullStatus?.type?.state || event.status || '';
+    return {
+      id: String(event.id || ''),
+      name: event.shortName || event.name || '',
+      date: event.date || '',
+      phase: state_ === 'in' ? 'live' : state_ === 'post' ? 'final' : 'scheduled',
+      detail: event.fullStatus?.type?.shortDetail || event.summary || '',
+      clock: event.fullStatus?.displayClock || '',
+      period: event.fullStatus?.displayPeriod || '',
+      home: teams.find(team => team.homeAway === 'home')?.code || '',
+      away: teams.find(team => team.homeAway === 'away')?.code || '',
+      homeScore: teams.find(team => team.homeAway === 'home')?.score ?? null,
+      awayScore: teams.find(team => team.homeAway === 'away')?.score ?? null,
+    };
+  });
+}
+
+function laneFromNews(articles, detectedAt) {
+  return (articles || []).flatMap(article => {
+    const text = `${article.headline || ''}. ${article.description || ''}`;
+    const signal = detectInGameSignals(text);
+    if (!signal) return [];
+    const teams = (article.categories || [])
+      .filter(category => category.type === 'team')
+      .map(category => category.team?.abbreviation)
+      .filter(Boolean);
+    return [{
+      id: String(article.id || article.nowId || article.headline || ''),
+      headline: article.headline || 'Untitled',
+      text,
+      signal,
+      teams,
+      published: article.published || article.lastModified || null,
+      url: article.links?.web?.href || article.links?.mobile?.href || '',
+      detectedAt,
+      tier: 'partner',
+      lane: 'ESPN NFL news feed',
+    }];
+  });
+}
+
+function signalCard(item) {
+  const card = el('article', `live-signal signal-${item.signal.status}`);
+  const head = el('div', 'live-signal-top');
+  const who = item.teams?.length ? item.teams.join(' / ') : (item.player ? `${item.player} · ${item.team}` : 'League');
+  head.append(el('span', 'live-badge', item.tier === 'partner' ? 'PARTNER FEED · UNVERIFIED' : 'UNOFFICIAL · UNVERIFIED'),
+    el('span', 'live-time', item.published ? `provider timestamp ${instant(item.published)}` : `detected ${instant(item.detectedAt)}`));
+  card.append(head);
+  card.append(el('h4', '', who), el('p', 'live-text', item.text.length > 280 ? `${item.text.slice(0, 277)}…` : item.text));
+  const meta = el('div', 'live-meta');
+  meta.append(el('span', 'signal-chip', item.signal.status === 'out' ? 'OUT / will not return wording'
+    : item.signal.status === 'returned' ? 'RETURNED wording'
+    : item.signal.status === 'questionable' ? 'RETURN UNCERTAIN wording'
+    : item.signal.observation || 'observation wording'));
+  const latency = latencySeconds(item.detectedAt, item.published);
+  if (latency !== null) meta.append(el('span', 'latency-chip', `saw it ${humanizeSeconds(latency)} after the provider published`));
+  if (item.url) meta.append(tierLink(item.url, 'Provider item ↗', item.tier));
+  card.append(meta);
+  card.append(el('p', 'microcopy', `Matched the word “${item.signal.phrase}” in ${item.lane}. Wording from a partner feed is not a league or club statement, and this is not a diagnosis or a return date.`));
+  return card;
+}
+
+function renderLiveWatch() {
+  const box = $('live-watch-feed');
+  if (!box) return;
+  const now = Date.now();
+  const watch = currentWatchGames();
+  const live = watch.filter(game => game.phase === 'live');
+  const signals = rankSignals(state.liveSignals);
+  const status = $('live-watch-status');
+  const laneText = {
+    ok: 'live lane reachable', blocked: 'live lane unreachable from this browser', idle: 'waiting for a live game',
+  };
+  if (status) {
+    status.textContent = `${live.length ? `${live.length} game(s) in progress` : `${watch.length} game(s) in the watch window`}`
+      + ` · header lane: ${laneText[state.laneStatus.header] || state.laneStatus.header}`
+      + ` · news lane: ${laneText[state.laneStatus.news] || state.laneStatus.news}`
+      + (state.lastLaneCheck ? ` · last lane check ${instant(state.lastLaneCheck)}` : '');
+  }
+  const children = [];
+  if (live.length) {
+    const strip = el('div', 'live-games');
+    for (const game of live) {
+      const item = el('div', 'live-game');
+      item.append(el('span', 'live-dot'), el('span', '', `${game.away} ${game.awayScore ?? '—'} · ${game.home} ${game.homeScore ?? '—'}`),
+        el('span', 'live-clock', `${game.period || ''} ${game.clock || game.detail || ''}`.trim()));
+      const searches = el('div', 'social-links');
+      for (const link of socialSearchLinks('injury', `${game.away} ${game.home}`).slice(0, 4)) {
+        searches.append(tierLink(link.url, link.name, 'unofficial'));
+      }
+      item.append(searches);
+      strip.append(item);
+    }
+    children.push(strip);
+  }
+  if (signals.length) {
+    children.push(el('h3', 'live-heading', `In-game wording found now (${signals.length})`));
+    children.push(...signals.slice(0, 8).map(signalCard));
+  } else if (state.laneStatus.news === 'ok') {
+    children.push(notice('No in-game injury wording in the partner news lane right now. An empty lane is not an all-clear: most in-game events are announced by clubs, not by this feed.'));
+  } else if (state.laneStatus.news === 'blocked') {
+    children.push(notice('The partner lane could not be reached from this browser (offline, blocked, or cross-origin). The source-checked feed below is unaffected; nothing here implies a player is healthy.'));
+  } else {
+    children.push(notice('Live watch is idle: it only starts polling when a game is in progress and the scoreboard lane is healthy.'));
+  }
+  box.replaceChildren(...children);
+}
+
+async function pollLiveLanes() {
+  const now = Date.now();
+  if (!shouldWatchForInGame(state.scores?.games || [], now)) {
+    state.laneStatus = { header: 'idle', news: 'idle' };
+    state.liveSignals = [];
+    renderLiveWatch();
+    return;
+  }
+  const previous = new Set(state.liveSignals.map(item => item.id));
+  const results = await Promise.allSettled([fetchJSON(ESPN_HEADER), fetchJSON(ESPN_NEWS)]);
+  const detectedAt = new Date().toISOString();
+  state.lastLaneCheck = detectedAt;
+  // The header lane keeps the watch window honest even when the tracked
+  // scoreboard.json snapshot is minutes old (CI cadence is best-effort).
+  if (results[0].status === 'fulfilled') {
+    const events = laneFromHeader(results[0].value);
+    if (events.length) {
+      state.laneStatus.header = 'ok';
+      const tracker = new Map((state.scores?.games || []).map(game => [game.id, game]));
+      for (const event of events) {
+        const existing = tracker.get(event.id);
+        tracker.set(event.id, { ...(existing || {}), ...event, url: existing?.url || `https://www.espn.com/nfl/game/_/gameId/${event.id}` });
+      }
+      state.scores = { ...(state.scores || { version: 1 }), games: [...tracker.values()], laneCheckedAt: detectedAt, status: state.scores?.status || 'ok' };
+      renderScores();
+    } else {
+      state.laneStatus.header = 'blocked';
+    }
+  } else {
+    state.laneStatus.header = 'blocked';
+  }
+  if (results[1].status === 'fulfilled') {
+    state.laneStatus.news = 'ok';
+    const articles = Array.isArray(results[1].value?.articles) ? results[1].value.articles : [];
+    state.partnerArticles = articles;
+    state.liveSignals = rankSignals([
+      ...laneFromNews(articles, detectedAt),
+      ...eligiblePartnerAlerts(articles.flatMap(article => [{
+        headline: article.headline, description: article.description, published: article.published,
+        url: article.links?.web?.href || '', id: String(article.id || ''),
+        teamAbbreviations: (article.categories || []).filter(c => c.type === 'team').map(c => c.team?.abbreviation).filter(Boolean),
+      }]), state.scores?.games || [], now),
+    ].filter((item, index, all) => all.findIndex(other => other.id === item.id) === index));
+  } else {
+    state.laneStatus.news = 'blocked';
+  }
+  const fresh = state.liveSignals.filter(item => signalWeight(item.signal) >= 4 && !previous.has(item.id));
+  if (state.notifications && fresh.length) {
+    for (const item of fresh.slice(0, 3)) {
+      try {
+        new Notification('UNVERIFIED in-game wording (partner feed)', {
+          body: `${item.headline} — “${item.signal.phrase}”. Not a league or club statement yet; open the page for the provider item.`,
+        });
+      } catch { /* Permission may have been revoked. */ }
+    }
+  }
+  renderLiveWatch();
+}
+
+function renderSources() {
+  const box = $('sources-board');
+  if (!box || !state.sources) return;
+  const groups = [
+    ['official', 'Official — league and club'],
+    ['partner', 'Partner feeds — free, keyless, not official'],
+    ['unofficial', 'Unofficial — social and aggregators (leads only)'],
+  ];
+  const children = [];
+  for (const [tier, heading] of groups) {
+    const rows = state.sources.sources.filter(entry => entry.tier === tier);
+    if (!rows.length) continue;
+    children.push(el('h3', `sources-heading tier-heading-${tier}`, `${heading} · ${rows.length}`));
+    const list = el('div', 'source-rows');
+    for (const entry of rows) {
+      const card = el('article', `source-card source-${tier}`);
+      const top = el('div', 'source-top');
+      top.append(el('span', 'source-tier', tierLabel(entry.tier)), el('span', `source-status status-${entry.verification.status}`, entry.verification.status.replace(/-/g, ' ')));
+      card.append(top, el('h4', '', entry.name), el('p', 'source-org', `${entry.org} · ${entry.role.replace(/-/g, ' ')}${entry.inGame ? ' · in-game capable' : ''}`));
+      card.append(el('p', '', entry.what));
+      const facts = el('dl', 'source-facts');
+      facts.append(el('dt', '', 'Can prove'), el('dd', '', entry.proves));
+      facts.append(el('dt', '', 'Latency'), el('dd', '', entry.latency));
+      facts.append(el('dt', '', 'Checked'), el('dd', '', `${entry.verification.checkedOn || 'not re-checked this session'} — ${entry.verification.method}`));
+      card.append(facts);
+      const links = el('div', 'source-links');
+      links.append(tierLink(entry.url, 'Open the source ↗', entry.tier));
+      if (entry.verification.evidence && entry.verification.evidence !== entry.url) {
+        links.append(tierLink(entry.verification.evidence, 'Probe evidence ↗', entry.tier));
+      }
+      card.append(links);
+      card.append(el('p', 'microcopy', entry.notes));
+      if (entry.autoPublish) card.append(el('p', 'microcopy', 'May ground a row in the verified archive (official only).'));
+      else card.append(el('p', 'microcopy', 'Can never ground a verified archive row on its own.'));
+      list.append(card);
+    }
+    children.push(list);
+  }
+  children.push(el('p', 'microcopy', state.sources.policy.rule));
+  box.replaceChildren(...children);
+}
+
+function renderLeads() {
+  const box = $('leads-list');
+  if (!box || !state.leads) return;
+  const count = $('count-leads');
+  if (count) count.textContent = String(state.leads.leads.length);
+  const cards = state.leads.leads.map(lead => {
+    const card = el('article', 'lead-card');
+    const top = el('div', 'lead-top');
+    top.append(el('span', 'lead-tier', tierLabel(lead.source.tier)), el('span', 'lead-team', `${lead.team}${lead.opponent ? ` vs ${lead.opponent}` : ''}${lead.gameDate ? ` · ${day(lead.gameDate)}` : ''}`));
+    card.append(top);
+    card.append(el('h3', '', `${lead.subject} — ${lead.reportedStatus}`), el('p', 'lead-text', lead.text));
+    const meta = el('div', 'lead-meta');
+    meta.append(el('span', '', `${lead.source.name} · captured ${day(lead.capturedOn)}`), tierLink(lead.source.url, 'Read the outlet ↗', lead.source.tier));
+    card.append(meta, el('p', 'microcopy', `To promote: ${lead.verifyNext}`), el('p', 'microcopy', lead.notes));
+    return card;
+  });
+  if (!cards.length) box.replaceChildren(notice('No unofficial leads captured.'));
+  else box.replaceChildren(el('p', 'microcopy', state.leads.label), ...cards);
+}

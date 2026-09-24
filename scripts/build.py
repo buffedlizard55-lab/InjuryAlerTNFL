@@ -9,7 +9,7 @@ from email.utils import format_datetime
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from schema import InvalidData, validate_archive, validate_incidents, validate_review
+from schema import InvalidData, validate_archive, validate_incidents, validate_leads, validate_review, validate_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -36,10 +36,17 @@ def rss(live: dict) -> str:
 def assemble(output: Path, live_path: Path, score_path: Path) -> None:
     archive = json.loads((ROOT / "data/archive.json").read_text(encoding="utf-8"))
     review = json.loads((ROOT / "data/review.json").read_text(encoding="utf-8"))
+    sources = json.loads((ROOT / "data/sources.json").read_text(encoding="utf-8"))
+    leads = json.loads((ROOT / "data/leads.json").read_text(encoding="utf-8"))
     live = json.loads(live_path.read_text(encoding="utf-8"))
     scores = json.loads(score_path.read_text(encoding="utf-8"))
     validate_archive(archive)
     validate_review(review)
+    # The provenance files are part of the public contract: a page that shows a
+    # source tier must ship the registry that justifies it, and a lead list must
+    # never contain an official row.
+    validate_sources(sources)
+    validate_leads(leads)
     validate_incidents(live["incidents"], automatic=True)
     held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
     if any(row["id"] in held for row in archive["incidents"] + live["incidents"]):
@@ -55,7 +62,7 @@ def assemble(output: Path, live_path: Path, score_path: Path) -> None:
         shutil.copy2(ROOT / file, output / file)
     for file in ("app.js", "domain.mjs", "styles.css"):
         shutil.copy2(ROOT / "assets" / file, output / "assets" / file)
-    for file in ("archive.json", "review.json"):
+    for file in ("archive.json", "review.json", "sources.json", "leads.json"):
         shutil.copy2(ROOT / "data" / file, output / "data" / file)
     shutil.copy2(live_path, output / "data/live.json")
     shutil.copy2(score_path, output / "data/scoreboard.json")

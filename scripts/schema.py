@@ -59,6 +59,12 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
         "www.chargers.com",
         "www.rams.com",
         "www.raiders.com",
+        # Real club hosts for clubs whose newsroom domain differs from the
+        # short form (found while grounding the Saints' Week 2 recap, which
+        # lives on neworleanssaints.com, not saints.com).
+        "www.miamidolphins.com",
+        "www.tennesseetitans.com",
+        "www.neworleanssaints.com",
         "www.dolphins.com",
         "www.vikings.com",
         "www.patriots.com",
@@ -94,7 +100,15 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
         and parsed.username is None
         and parsed.password is None
         and not parsed.query and not parsed.fragment
-        and (parsed.path.startswith("/news/") or parsed.path.startswith("/videos/") or (player_page and hostname == "www.nfl.com" and parsed.path.startswith("/players/")))
+        and (
+            parsed.path.startswith("/news/")
+            or parsed.path.startswith("/videos/")
+            # Club game-day recap pages (e.g. .../game-day/2026/reg-week2/ravens-vs-saints/recap)
+            # are club-authored and state in-game injuries; the Saints' Week 2 recap is the
+            # worked example that put Martin Emerson Jr. in the ledger.
+            or parsed.path.startswith("/game-day/")
+            or (player_page and hostname == "www.nfl.com" and parsed.path.startswith("/players/"))
+        )
         and "//" not in parsed.path
     )
 
@@ -180,3 +194,113 @@ def validate_review(data: dict) -> None:
         require(isinstance(row.get("reason"), str) and 15 <= len(row["reason"]) <= 400, "review reason")
         require(isinstance(row.get("links"), list) and len(row["links"]) >= 2, "review links")
         require(all(official_url(link, player_page=True) for link in row["links"]), "untrusted review link")
+
+
+TIERS = frozenset({"official", "partner", "unofficial"})
+SOURCE_STATUS = frozenset({"verified", "verified-exists", "verified-endpoint", "blocked", "link-out-only", "pending-reprobe"})
+SOURCE_ROLES = frozenset({
+    "in-game-signal", "in-game-discovery", "followup-signal", "pregame-status", "official-play-by-play",
+    "club-in-game-and-followup", "postgame-signal", "scores-only", "live-game-state", "news-lead",
+    "status-context", "play-by-play-unverified", "game-enumeration", "social-lead",
+})
+LEAD_STATUS = frozenset({"unverified"})
+
+
+def https_url(url: str) -> bool:
+    """Any well-formed public https URL. Used only for non-evidence tiers."""
+    if not isinstance(url, str) or len(url) > 400:
+        return False
+    parsed = urlparse(url)
+    return (
+        parsed.scheme == "https"
+        and bool(parsed.hostname)
+        and "." in (parsed.hostname or "")
+        and parsed.username is None
+        and parsed.password is None
+    )
+
+
+def validate_sources(data: dict) -> None:
+    """The registry must fail closed: a bad tier, role or missing probe record is an error.
+
+    The point of the file is that every row states how it was checked and what it can
+    and cannot prove. An entry that only claims to be trustworthy cannot pass.
+    """
+    require(data.get("version") == 1, "sources version")
+    date.fromisoformat(data["verifiedOn"])
+    policy = data.get("policy")
+    require(isinstance(policy, dict) and set(policy) >= {"official", "partner", "unofficial", "rule"},
+            "sources policy block")
+    sources = data.get("sources")
+    require(isinstance(sources, list) and len(sources) >= 8, "sources list")
+    ids: set[str] = set()
+    for entry in sources:
+        require(isinstance(entry, dict), "source entry")
+        key = entry.get("id")
+        require(isinstance(key, str) and key and key not in ids, f"source id: {key}")
+        ids.add(key)
+        require(entry.get("tier") in TIERS, f"source tier: {key}")
+        require(entry.get("role") in SOURCE_ROLES, f"source role: {key}")
+        for field in ("name", "org", "what", "proves", "notes"):
+            require(isinstance(entry.get(field), str) and entry[field], f"source {field}: {key}")
+        require(isinstance(entry.get("latency"), str) and entry["latency"], f"source latency: {key}")
+        require(isinstance(entry.get("inGame"), bool), f"source inGame flag: {key}")
+        require(isinstance(entry.get("autoPublish"), bool), f"source autoPublish flag: {key}")
+        require(https_url(entry.get("url", "")), f"source url: {key}")
+        # Only a league/club row may auto-publish into the verified ledger.
+        if entry["autoPublish"]:
+            require(entry["tier"] == "official", f"only official sources may auto-publish: {key}")
+        # An unofficial lane may report in-game chatter, but it can never be an evidence lane,
+        # and it must be labelled as a lead wherever it is shown.
+        if entry["tier"] != "official":
+            require(not entry["autoPublish"], f"non-official source cannot auto-publish: {key}")
+        if entry["tier"] == "unofficial":
+            require(entry["role"] in {"social-lead", "news-lead"}, f"unofficial source must be a lead role: {key}")
+        check = entry.get("verification")
+        require(isinstance(check, dict), f"source verification: {key}")
+        require(check.get("status") in SOURCE_STATUS, f"source verification status: {key}")
+        require(isinstance(check.get("method"), str) and len(check["method"]) >= 20, f"source probe method: {key}")
+        require(isinstance(check.get("evidence"), str) and https_url(check["evidence"]), f"source evidence url: {key}")
+        if check["status"] == "pending-reprobe":
+            require(check.get("checkedOn") is None, f"pending source cannot claim a re-check date: {key}")
+        else:
+            date.fromisoformat(check["checkedOn"])
+    # The registry must always carry the boundary sources a reader would ask about.
+    required_lanes = {"nfl-gamecenter-json", "espn-scoreboard", "espn-summary-plays", "x-twitter", "reddit-json"}
+    require(required_lanes <= ids, "registry is missing a boundary source (auth-gated NFL JSON, ESPN lanes, X, Reddit)")
+
+
+def validate_leads(data: dict) -> None:
+    """Unofficial leads are structurally checkable but never evidence: no archive claims allowed."""
+    require(data.get("version") == 1, "leads version")
+    date.fromisoformat(data["capturedOn"])
+    require(isinstance(data.get("label"), str) and "UNOFFICIAL" in data["label"].upper(), "leads label")
+    leads = data.get("leads")
+    require(isinstance(leads, list) and leads, "leads list")
+    ids: set[str] = set()
+    for lead in leads:
+        require(isinstance(lead, dict), "lead entry")
+        key = lead.get("id")
+        require(isinstance(key, str) and key.startswith("lead-") and key not in ids, f"lead id: {key}")
+        ids.add(key)
+        require(isinstance(lead.get("subject"), str) and lead["subject"], f"lead subject: {key}")
+        require(lead.get("team") in TEAMS, f"lead team: {key}")
+        require(isinstance(lead.get("text"), str) and 15 <= len(lead["text"]) <= 400, f"lead text: {key}")
+        require(isinstance(lead.get("capturedOn"), str), f"lead capture date: {key}")
+        date.fromisoformat(lead["capturedOn"])
+        require(isinstance(lead.get("verifyNext"), str) and len(lead["verifyNext"]) >= 20, f"lead next step: {key}")
+        require(isinstance(lead.get("notes"), str) and lead["notes"], f"lead notes: {key}")
+        source = lead.get("source")
+        require(isinstance(source, dict), f"lead source: {key}")
+        require(source.get("tier") in TIERS, f"lead source tier: {key}")
+        # A lead is by definition unverified: a league/club row must never sit in this file.
+        require(source["tier"] != "official", f"official material belongs in the archive, not the leads file: {key}")
+        require(https_url(source.get("url", "")), f"lead source url: {key}")
+        require(isinstance(source.get("name"), str) and source["name"], f"lead source name: {key}")
+        if "gameDate" in lead and lead["gameDate"] is not None:
+            date.fromisoformat(lead["gameDate"])
+        # A lead may intentionally shadow an archived incident when its whole purpose
+        # is to re-check that incident for newer dated claims. It has to say so.
+        if lead.get("duplicateOf") is not None:
+            require(isinstance(lead["duplicateOf"], str) and ID.fullmatch(lead["duplicateOf"]) is not None,
+                    f"lead duplicate marker: {key}")
