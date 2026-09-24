@@ -141,6 +141,10 @@ def validate_incidents(incidents: list, *, automatic: bool = False) -> None:
                             f"game outcome not grounded by excerpt: {key}")
                 elif row["outcome"] in markers:
                     require(any(marker in excerpt for marker in markers[row["outcome"]]), f"game outcome not grounded by excerpt: {key}")
+        # One source sentence is one claim: repeating the same excerpt under the same
+        # URL adds no evidence and inflates the claim ledger a reviewer counts on.
+        require(len({(str(c.get("url")), str(c.get("quote"))) for c in claims}) == len(claims),
+                f"duplicate claim in {key}")
         if automatic:
             require(row.get("automatic") is True, f"auto marker: {key}")
             require(isinstance(row.get("capturedAt"), str) and row["capturedAt"].endswith("Z"), f"capture time: {key}")
