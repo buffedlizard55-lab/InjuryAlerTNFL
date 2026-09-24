@@ -32,9 +32,9 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(94, len(self.archive["incidents"]))
-        self.assertEqual(94, len({row["id"] for row in self.archive["incidents"]}))
-        self.assertEqual("2026-09-23", self.archive["verifiedOn"])
+        self.assertEqual(102, len(self.archive["incidents"]))
+        self.assertEqual(102, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual("2026-09-24", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
                 self.assertTrue(any(claim["kind"] == "game" for claim in row["claims"]))
@@ -155,7 +155,16 @@ class SourceLedgerTests(unittest.TestCase):
             "will-johnson": "unconfirmed",
             "zay-flowers": "out",
         }
-        self.assertEqual(expected, {row["id"].split("-", 4)[-1]: row["outcome"] for row in self.archive["incidents"]})
+        # Pass 5 added a second A.J. Terrell incident (Week 1 shoulder, graded
+        # unconfirmed), so the ledger is compared as (player slug, outcome) pairs
+        # rather than a slug-keyed dict.
+        pairs = {tuple(item) for item in expected.items()} | {("a-j-terrell", "unconfirmed")}
+        pairs |= {
+            ("zion-johnson", "unconfirmed"), ("cooper-dejean", "unconfirmed"), ("jalen-carter", "unconfirmed"),
+            ("tyson-bagent", "unconfirmed"), ("kiko-mauigoa", "did_not_return"), ("mason-taylor", "unconfirmed"),
+            ("romello-height", "unconfirmed"),
+        }
+        self.assertEqual(pairs, {(row["id"].split("-", 4)[-1], row["outcome"]) for row in self.archive["incidents"]})
 
     def test_session_two_entries_carry_dated_followups_and_observation_labels(self):
         by_id = {row["id"]: row for row in self.archive["incidents"]}
@@ -173,8 +182,8 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(21, len(self.review["flags"]))
-        self.assertEqual(3, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(29, len(self.review["flags"]))
+        self.assertEqual(2, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -283,11 +292,14 @@ class FeedTests(unittest.TestCase):
     def test_held_issue_does_not_auto_publish(self):
         review = json.loads((ROOT / "data/review.json").read_text())
         held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
-        # After promoting 7 of the original 10 held to annotated, 3 identity-mismatch
-        # cases remain held: Kam Curl, Kiko Mauigoa, Zach Bako-Bewele.
+        # Pass 5 promoted Kiko Mauigoa (the Jets' own recap grounds the exit and the
+        # club links the name to its roster page), so two identity-mismatch cases stay
+        # held: Kam Curl and Zach Bako-Bewele.
         self.assertIn("2026-09-10-lar-kam-curl", held)
-        self.assertIn("2026-09-20-nyj-kiko-mauigoa", held)
         self.assertIn("2026-09-20-gb-zach-bako-bewele", held)
+        self.assertNotIn("2026-09-20-nyj-kiko-mauigoa", held)
+        annotated = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "annotated"}
+        self.assertIn("2026-09-20-nyj-kiko-mauigoa", annotated)
         self.assertNotIn("2026-09-20-sea-jadarian-price", held)
         # The synthetic fixture contains Jadarian Price as a valid single-player
         # bullet, so without the held set it would be accepted; with the held set
@@ -311,7 +323,7 @@ class FeedTests(unittest.TestCase):
         self.assertEqual([], news["incidents"])
 
     def test_build_refuses_a_held_case_even_if_collector_regresses(self):
-        # After promotion, 3 identity-mismatch cases remain held: Kam Curl,
+        # After promotion, 2 identity-mismatch cases remain held: Kam Curl,
         # Kiko Mauigoa, Zach Bako-Bewele. The synthetic fixture does not contain
         # Kam Curl, but the build must still refuse any held ID, even if a
         # collector regresses and emits it.
@@ -351,7 +363,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(94, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(102, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":

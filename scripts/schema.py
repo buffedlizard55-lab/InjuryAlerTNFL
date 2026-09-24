@@ -68,6 +68,7 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
         "www.newyorkjets.com",
         "www.jets.com",
         "www.eagles.com",
+        "www.philadelphiaeagles.com",
         "www.steelers.com",
         "www.49ers.com",
         "www.seahawks.com",
