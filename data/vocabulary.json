@@ -1,206 +1,206 @@
 {
- "version": 1,
- "note": "The closed list of phrases a provider actually has to write before this project shows an in-game availability signal. It classifies text; it never invents a diagnosis, a severity or a cause. Patterns are JavaScript/Python-compatible regular expressions applied case-insensitively. Order inside a rule is insignificant; rules are ranked by weight, so a sentence that says both 'questionable to return' and 'returned' surfaces the availability-uncertain wording first.",
- "rules": [
-  {
-   "status": "out",
-   "observation": "",
-   "label": "OUT / will not return wording",
-   "weight": 5,
-   "patterns": [
-    "\\bwill not return\\b",
-    "\\bdid not return\\b",
-    "\\bdoes not return\\b",
-    "\\bwon't return\\b",
-    "\\bru(?:led|ling) out\\b",
-    "\\bout for the (?:game|remainder|rest of the game|day)\\b",
-    "\\bmissed the remainder of the game\\b",
-    "\\bmissed the rest of the game\\b",
-    "\\bout for the season\\b"
-   ]
-  },
-  {
-   "status": "questionable",
-   "observation": "",
-   "label": "RETURN UNCERTAIN wording",
-   "weight": 4,
-   "patterns": [
-    "\\bquestionable to return\\b",
-    "\\breturn is questionable\\b",
-    "\\bdoubtful to return\\b",
-    "\\buncertain to return\\b",
-    "\\breturn (?:is|remains) uncertain\\b",
-    "\\bmay not return\\b",
-    "\\bmay return\\b"
-   ]
-  },
-  {
-   "status": "evaluated",
-   "observation": "Concussion evaluation",
-   "label": "CONCUSSION PROTOCOL wording",
-   "weight": 3,
-   "patterns": [
-    "\\bconcussion protocol\\b",
-    "\\bevaluated for a concussion\\b",
-    "\\bbeing evaluated for a concussion\\b",
-    "\\bentered the concussion protocol\\b"
-   ]
-  },
-  {
-   "status": "evaluated",
-   "observation": "Medical tent evaluation",
-   "label": "MEDICAL TENT wording",
-   "weight": 3,
-   "patterns": [
-    "\\bblue (?:medical )?tent\\b",
-    "\\bmedical tent\\b",
-    "\\binjury tent\\b"
-   ]
-  },
-  {
-   "status": "observed",
-   "observation": "Cart or stretcher",
-   "label": "CART / STRETCHER wording",
-   "weight": 2,
-   "patterns": [
-    "\\bcart(?:ed)? off\\b",
-    "\\bcarted to the locker room\\b",
-    "\\bon a stretcher\\b",
-    "\\bstretcher\\b",
-    "\\bimmobilized\\b",
-    "\\bair cast\\b"
-   ]
-  },
-  {
-   "status": "returned",
-   "observation": "Returned to the game",
-   "label": "RETURNED wording",
-   "weight": 2,
-   "patterns": [
-    "\\breturned to the game\\b",
-    "\\breturned to the field\\b",
-    "\\bback on the field\\b",
-    "\\bhas returned\\b",
-    "\\breturned after (?:halftime|the break)\\b",
-    "\\bcleared to return\\b",
-    "\\bre-entered the game\\b",
-    "\\bback in the game\\b",
-    "\\breturned to the huddle\\b",
-    "\\bevaluated and returned\\b"
-   ]
-  },
-  {
-   "status": "observed",
-   "observation": "Left game",
-   "label": "LEFT THE GAME wording",
-   "weight": 1,
-   "patterns": [
-    "\\bleft the game\\b",
-    "\\bexited the game\\b",
-    "\\bwent to the locker room\\b",
-    "\\bwas taken to the locker room\\b",
-    "\\bwalked off (?:the field )?(?:slowly|under his own power)\\b"
-   ]
-  },
-  {
-   "status": "observed",
-   "observation": "Injury mentioned",
-   "label": "INJURY MENTIONED wording",
-   "weight": 1,
-   "patterns": [
-    "\\binjur(?:y|ed|ies)\\b",
-    "\\bwent down\\b",
-    "\\bdown on the (?:field|turf)\\b",
-    "\\blimped\\b",
-    "\\bwas hurt\\b"
-   ]
-  },
-  {
-   "status": "evaluated",
-   "observation": "On-field medical evaluation",
-   "label": "FIELD EVALUATION wording",
-   "weight": 3,
-   "patterns": [
-    "\\bunder evaluation\\b",
-    "\\bbeing evaluated\\b",
-    "\\bevaluated on the field\\b",
-    "\\bfield evaluation\\b"
-   ]
-  },
-  {
-   "status": "observed",
-   "observation": "Got up and back on feet",
-   "label": "GOT UP / BACK ON FEET wording",
-   "weight": 1,
-   "patterns": [
-    "\\bgot up and walked\\b",
-    "\\bback on (?:his|her) feet\\b",
-    "\\breturned to (?:his|her) feet\\b"
-   ]
+  "version": 1,
+  "note": "The closed list of phrases a provider actually has to write before this project shows an in-game availability signal. It classifies text; it never invents a diagnosis, a severity or a cause. Patterns are JavaScript/Python-compatible regular expressions applied case-insensitively. Order inside a rule is insignificant; rules are ranked by weight, so a sentence that says both 'questionable to return' and 'returned' surfaces the availability-uncertain wording first.",
+  "rules": [
+    {
+      "status": "out",
+      "observation": "",
+      "label": "OUT / will not return wording",
+      "weight": 5,
+      "patterns": [
+        "\\bwill not return\\b",
+        "\\bdid not return\\b",
+        "\\bdoes not return\\b",
+        "\\bwon't return\\b",
+        "\\bru(?:led|ling) out\\b",
+        "\\bout for the (?:game|remainder|rest of the game|day)\\b",
+        "\\bmissed the remainder of the game\\b",
+        "\\bmissed the rest of the game\\b",
+        "\\bout for the season\\b"
+      ]
+    },
+    {
+      "status": "questionable",
+      "observation": "",
+      "label": "RETURN UNCERTAIN wording",
+      "weight": 4,
+      "patterns": [
+        "\\bquestionable to return\\b",
+        "\\breturn is questionable\\b",
+        "\\bdoubtful to return\\b",
+        "\\buncertain to return\\b",
+        "\\breturn (?:is|remains) uncertain\\b",
+        "\\bmay not return\\b",
+        "\\bmay return\\b"
+      ]
+    },
+    {
+      "status": "evaluated",
+      "observation": "Concussion evaluation",
+      "label": "CONCUSSION PROTOCOL wording",
+      "weight": 3,
+      "patterns": [
+        "\\bconcussion protocol\\b",
+        "\\bevaluated for a concussion\\b",
+        "\\bbeing evaluated for a concussion\\b",
+        "\\bentered the concussion protocol\\b"
+      ]
+    },
+    {
+      "status": "evaluated",
+      "observation": "Medical tent evaluation",
+      "label": "MEDICAL TENT wording",
+      "weight": 3,
+      "patterns": [
+        "\\bblue (?:medical )?tent\\b",
+        "\\bmedical tent\\b",
+        "\\binjury tent\\b"
+      ]
+    },
+    {
+      "status": "observed",
+      "observation": "Cart or stretcher",
+      "label": "CART / STRETCHER wording",
+      "weight": 2,
+      "patterns": [
+        "\\bcart(?:ed)? off\\b",
+        "\\bcarted to the locker room\\b",
+        "\\bon a stretcher\\b",
+        "\\bstretcher\\b",
+        "\\bimmobilized\\b",
+        "\\bair cast\\b"
+      ]
+    },
+    {
+      "status": "returned",
+      "observation": "Returned to the game",
+      "label": "RETURNED wording",
+      "weight": 2,
+      "patterns": [
+        "\\breturned to the game\\b",
+        "\\breturned to the field\\b",
+        "\\bback on the field\\b",
+        "\\bhas returned\\b",
+        "\\breturned after (?:halftime|the break)\\b",
+        "\\bcleared to return\\b",
+        "\\bre-entered the game\\b",
+        "\\bback in the game\\b",
+        "\\breturned to the huddle\\b",
+        "\\bevaluated and returned\\b"
+      ]
+    },
+    {
+      "status": "observed",
+      "observation": "Left game",
+      "label": "LEFT THE GAME wording",
+      "weight": 1,
+      "patterns": [
+        "\\bleft the game\\b",
+        "\\bexited the game\\b",
+        "\\bwent to the locker room\\b",
+        "\\bwas taken to the locker room\\b",
+        "\\bwalked off (?:the field )?(?:slowly|under his own power)\\b"
+      ]
+    },
+    {
+      "status": "observed",
+      "observation": "Injury mentioned",
+      "label": "INJURY MENTIONED wording",
+      "weight": 1,
+      "patterns": [
+        "\\binjur(?:y|ed|ies)\\b",
+        "\\bwent down\\b",
+        "\\bdown on the (?:field|turf)\\b",
+        "\\blimped\\b",
+        "\\bwas hurt\\b"
+      ]
+    },
+    {
+      "status": "evaluated",
+      "observation": "On-field medical evaluation",
+      "label": "FIELD EVALUATION wording",
+      "weight": 3,
+      "patterns": [
+        "\\bunder evaluation\\b",
+        "\\bbeing evaluated\\b",
+        "\\bevaluated on the field\\b",
+        "\\bfield evaluation\\b"
+      ]
+    },
+    {
+      "status": "observed",
+      "observation": "Got up and back on feet",
+      "label": "GOT UP / BACK ON FEET wording",
+      "weight": 1,
+      "patterns": [
+        "\\bgot up and walked\\b",
+        "\\bback on (?:his|her) feet\\b",
+        "\\breturned to (?:his|her) feet\\b"
+      ]
+    }
+  ],
+  "contexts": {
+    "note": "Discovery gates used by scripts/clubscan.py and scripts/watch_live.py. A sentence is only recorded as a candidate when it carries an in-game phrase AND survives the practice-context exclusion. The exclusion is deliberately blunt: practice and injury-report stories describe a status, not a moment during a game.",
+    "inGame": [
+      "did not return",
+      "will not return",
+      "ruled out",
+      "left the game",
+      "exited the game",
+      "carted",
+      "stretcher",
+      "medical tent",
+      "blue tent",
+      "concussion protocol",
+      "returned to the game",
+      "returned to the field",
+      "questionable to return",
+      "missed the remainder of the game",
+      "suffered",
+      "went down",
+      "in the first quarter",
+      "in the second quarter",
+      "in the third quarter",
+      "in the fourth quarter",
+      "before halftime",
+      "after halftime",
+      "at halftime",
+      "under evaluation",
+      "being evaluated",
+      "field evaluation",
+      "re-entered the game",
+      "back in the game",
+      "returned to the huddle",
+      "got up and walked",
+      "back on his feet"
+    ],
+    "practiceExclusion": [
+      "practice",
+      "injury report",
+      "did not participate",
+      "did not practice",
+      "limited participant",
+      "full participant",
+      "participation",
+      "game status",
+      "listed as",
+      "estimated",
+      "practice squad",
+      "questionable for Sunday",
+      "doubtful for Sunday",
+      "out for Sunday",
+      "will not play Sunday",
+      "inactive",
+      "has been ruled out for"
+    ],
+    "gameDateHint": [
+      "sunday",
+      "monday",
+      "thursday",
+      "saturday",
+      "week ",
+      "tonight",
+      "season opener"
+    ]
   }
- ],
- "contexts": {
-  "note": "Discovery gates used by scripts/clubscan.py and scripts/watch_live.py. A sentence is only recorded as a candidate when it carries an in-game phrase AND survives the practice-context exclusion. The exclusion is deliberately blunt: practice and injury-report stories describe a status, not a moment during a game.",
-  "inGame": [
-   "did not return",
-   "will not return",
-   "ruled out",
-   "left the game",
-   "exited the game",
-   "carted",
-   "stretcher",
-   "medical tent",
-   "blue tent",
-   "concussion protocol",
-   "returned to the game",
-   "returned to the field",
-   "questionable to return",
-   "missed the remainder of the game",
-   "suffered",
-   "went down",
-   "in the first quarter",
-   "in the second quarter",
-   "in the third quarter",
-   "in the fourth quarter",
-   "before halftime",
-   "after halftime",
-   "at halftime",
-   "under evaluation",
-   "being evaluated",
-   "field evaluation",
-   "re-entered the game",
-   "back in the game",
-   "returned to the huddle",
-   "got up and walked",
-   "back on his feet"
-  ],
-  "practiceExclusion": [
-   "practice",
-   "injury report",
-   "did not participate",
-   "did not practice",
-   "limited participant",
-   "full participant",
-   "participation",
-   "game status",
-   "listed as",
-   "estimated",
-   "practice squad",
-   "questionable for Sunday",
-   "doubtful for Sunday",
-   "out for Sunday",
-   "will not play Sunday",
-   "inactive",
-   "has been ruled out for"
-  ],
-  "gameDateHint": [
-   "sunday",
-   "monday",
-   "thursday",
-   "saturday",
-   "week ",
-   "tonight",
-   "season opener"
-  ]
- }
 }

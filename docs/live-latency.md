@@ -20,8 +20,10 @@ and, since Pass 8, its **browser reachability** (`browserProbe`) in exactly four
 states: `allowed` (this page's own JavaScript reached the host), `blocked` (a
 refusal was measured: NFL game-centre JSON `401`, Reddit `403`, Bluesky search
 `403`), `not-applicable` (link-out lanes that are never fetched) or `not-tested`
-(no claim made). The old `probe` field is the *verifier's* reach, a different
-client, and the registry no longer uses it to justify what the page can claim.
+(no claim made). The existing `verification` field records what the *verifier's*
+server-side fetch reached — a different client from the reader's browser, and
+server fetches are not subject to CORS — so browser-reachability claims come
+from `browserProbe` alone.
 `scripts/schema.py` enforces the rules; a lane that is neither official nor partner
 is forced into a lead role, the category must match the tier prefix, a link-out lane
 must declare link-out latency, a `browserProbe.allowed` lane must be keyless JSON,

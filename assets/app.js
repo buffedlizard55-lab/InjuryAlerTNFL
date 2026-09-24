@@ -872,7 +872,14 @@ const validLog = value => value?.version === 1 && Array.isArray(value.entries);
 const validCandidates = value => value?.version === 1 && Array.isArray(value.candidates);
 const validWatch = value => value?.version === 1 && Array.isArray(value.signals);
 
+let pollInFlight = false;
 async function poll() {
+  // Re-entrancy guard: the 30-second interval and the visibilitychange handler
+  // can overlap. A second poll racing an in-flight fetch would double-fire
+  // notifications and duplicate session-log entries for the same log file.
+  if (pollInFlight) return;
+  pollInFlight = true;
+  try {
   const previousLive = state.live?.incidents || [];
   const beforeIncidents = JSON.stringify(previousLive.map(row => [row.id, row.injury, row.outcome]));
   const beforeLog = (state.alertLog?.entries || []).length;
@@ -928,6 +935,7 @@ async function poll() {
   renderLog();
   renderLaneDashboard();
   renderLiveWatch();
+  } finally { pollInFlight = false; }
 }
 
 /* ------------------------------------------------------------------ notifications */

@@ -157,7 +157,7 @@ This pass researched twelve further candidates and published one. The six below 
 
 ## Pass 8 probe and re-check ledger (September 24, 2026)
 
-No new verified incidents this pass — the week-3 official corpus (league roundup, game recaps) is still being published as games are played, and this pass's job was the registry's reachability claims plus the sources behind the live lanes. Everything below was measured this pass and is recorded in the registry's new `browserProbe` field; the old `probe` field (the *verifier's* fetch reach) no longer supports any browser claim.
+No new verified incidents this pass — the week-3 official corpus (league roundup, game recaps) is still being published as games are played, and this pass's job was the registry's reachability claims plus the sources behind the live lanes. Everything below was measured this pass and is recorded in the registry's new `browserProbe` field; the existing `verification` field (the *verifier's* server-side fetch reach, a different client that is not subject to CORS) no longer supports any browser claim.
 
 **Verified this pass:**
 
