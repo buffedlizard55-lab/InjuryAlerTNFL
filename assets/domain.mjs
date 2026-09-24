@@ -8,10 +8,14 @@ export { IN_GAME_RULES, CONTEXTS };
 export function dataURL(path, base, now = Date.now()) {
   const url = new URL(path, base);
   // Pages edge caches sometimes retain an older artifact at the same path.
-  // A shared minute bucket revalidates the changing feeds without generating
-  // one origin request for every page view or polling client.
-  if (path === './data/live.json' || path === './data/scoreboard.json') {
-    url.searchParams.set('check', String(Math.floor(now / 60_000)));
+  // A shared 30-second bucket revalidates the changing feed files without
+  // generating one origin request for every page view or polling client. The
+  // bucket covers every machine-written file the page reads, so the alert log
+  // and the club-scan results revalidate on the same clock as the scores.
+  if (path === './data/live.json' || path === './data/scoreboard.json'
+    || path === './data/alert-log.json' || path === './data/candidates.json'
+    || path === './data/watch.json') {
+    url.searchParams.set('check', String(Math.floor(now / 30_000)));
   }
   return url;
 }

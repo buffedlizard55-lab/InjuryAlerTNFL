@@ -101,6 +101,11 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
             # are club-authored and state in-game injuries; the Saints' Week 2 recap is the
             # worked example that put Martin Emerson Jr. in the ledger.
             or parsed.path.startswith("/game-day/")
+            # The league's own weekly injury report page (nfl.com/injuries/). It is
+            # pregame status: its tables say "Out" / "Did Not Participate" and none of
+            # those strings satisfy the in-game outcome grounding below, so it can
+            # carry a review link or a followup claim but can never ground a game row.
+            or (hostname == "www.nfl.com" and parsed.path.startswith("/injuries/"))
             or (player_page and hostname == "www.nfl.com" and parsed.path.startswith("/players/"))
         )
         and "//" not in parsed.path
@@ -209,6 +214,12 @@ def validate_review(data: dict) -> None:
 
 TIERS = frozenset({"official", "partner", "unofficial"})
 SOURCE_STATUS = frozenset({"verified", "verified-exists", "verified-endpoint", "blocked", "link-out-only", "pending-reprobe"})
+# Browser-reachability probe: only four honest states are allowed. "allowed"
+# means the page's own production browser lane reaches that host (or the
+# endpoint was re-verified keyless on it); "blocked" means a refusal was
+# measured; "not-applicable" is a link-out lane the browser never fetches;
+# "not-tested" is the default — the project makes no CORS claim it did not make.
+BROWSER_PROBE_STATES = frozenset({"allowed", "blocked", "not-applicable", "not-tested"})
 SOURCE_ROLES = frozenset({
     "in-game-signal", "in-game-discovery", "followup-signal", "pregame-status", "official-play-by-play",
     "club-in-game-and-followup", "postgame-signal", "scores-only", "live-game-state", "news-lead",
@@ -296,6 +307,20 @@ def validate_sources(data: dict) -> None:
             require(entry["role"] in {"social-lead", "news-lead", "injury-aggregator", "social-video-lead",
                                       "play-by-play-unverified"},
                     f"unofficial source must be a lead role: {key}")
+        # Browser-reachability is part of the latency story: a reader has to be
+        # able to tell, per lane, whether the page's own browser is known to
+        # reach it. Only measured statements are allowed (see BROWSER_PROBE_STATES).
+        probe = entry.get("browserProbe")
+        require(isinstance(probe, dict), f"source browserProbe: {key}")
+        require(probe.get("status") in BROWSER_PROBE_STATES, f"browserProbe status: {key}")
+        require(isinstance(probe.get("method"), str) and len(probe["method"]) >= 20,
+                f"browserProbe method: {key}")
+        require(https_url(probe.get("evidence", "")), f"browserProbe evidence: {key}")
+        if probe["status"] == "allowed":
+            # A lane the browser polls must be JSON the browser can parse, or a
+            # page the project has measured. "allowed" is never a guess.
+            require(entry["access"] in {"keyless-json", "html", "rss"},
+                    f"an allowed browser lane must be a fetchable access mode: {key}")
         check = entry.get("verification")
         require(isinstance(check, dict), f"source verification: {key}")
         require(check.get("status") in SOURCE_STATUS, f"source verification status: {key}")

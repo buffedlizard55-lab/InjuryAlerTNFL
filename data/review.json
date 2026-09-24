@@ -403,6 +403,17 @@
     "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
     "https://www.neworleanssaints.com/game-day/2026/reg-week2/ravens-vs-saints/recap"
    ]
+  },
+  {
+   "id": "2026-09-20-gb-zach-bako-bewele-week3-report-slug",
+   "incidentId": "2026-09-20-gb-zach-bako-bewele",
+   "disposition": "annotated",
+   "subject": "Zach Bako-Bewele · GB — league injury report links to the wrong player page",
+   "reason": "The league's own Week 3 injury report (nfl.com/injuries, re-read 2026-09-24) displays 'Zach Bako-Bewele' under the Packers but its hyperlink points to /players/zach-tom/, the same mismatch the Sept. 22 roundup bullet carried. The row stands on the Packers' own recap and in-game file; the league link is recorded here and not followed for identity.",
+   "links": [
+    "https://www.nfl.com/injuries/",
+    "https://www.nfl.com/players/zach-tom/"
+   ]
   }
  ]
 }

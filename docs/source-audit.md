@@ -155,9 +155,34 @@ This pass researched twelve further candidates and published one. The six below 
 5. **J.K. Dobbins · DEN (hip, per the league roundup) vs hamstring/leg cramps (third-party):** the only official sentence is a practice line. Next check: a club injury report that names the game moment, so the label conflict can be recorded against a grounded event.
 6. **Anthony Bradford · SEA (IR):** club statements place the roster move without an in-game sentence for the injury itself. Next check: the Seahawks' Week 2 in-game page or a postgame update naming the play.
 
+## Pass 8 probe and re-check ledger (September 24, 2026)
+
+No new verified incidents this pass — the week-3 official corpus (league roundup, game recaps) is still being published as games are played, and this pass's job was the registry's reachability claims plus the sources behind the live lanes. Everything below was measured this pass and is recorded in the registry's new `browserProbe` field; the old `probe` field (the *verifier's* fetch reach) no longer supports any browser claim.
+
+**Verified this pass:**
+
+1. **www.nfl.com/injuries/** (the league's weekly injury report) — re-read live; the page serves "Injuries — WEEK 3" with THURSDAY SEPTEMBER 24 tables. The lane's status moved from `pending-reprobe` to **verified** (date 2026-09-24). The re-read surfaced the name/slug anomaly in [annotation 37](#heldannotated-source-issues) (a display name whose link points at a different player). Because the table wording contains none of the strings that satisfy the in-game outcome grounding regex, the page is linkable from the site (review links only) but can never ground a game row — that property is now locked by a test.
+2. **sports.yahoo.com/nfl/injuries/** — live, per-club dated status tables (e.g. “Out (Thumb) 9/23”, “Doubtful (Hamstring) 9/24”). Registered as **yahoo-nfl-injuries**: unofficial tier, day-precision timestamps, `inGame: false`, no auto-publish. It is a *mirror for noticing status changes*, not an in-game source.
+3. **espn.com/nfl/injuries** — live (Sep 24); the partner lane already in the registry, re-confirmed.
+4. **TheSportsDB `eventsday.php`** — keyless read OK; `strTimestamp` is minute precision (re-confirmed).
+5. **Mastodon public timeline API** (mastodon.social, tag `#nfl`) — keyless read OK; `created_at` is second precision (re-confirmed).
+
+**Blocked, measured (no assumption):**
+
+6. **api.nfl.com game-centre JSON** — `401` for anonymous reads (re-confirmed 2026-09-24); stays **blocked**.
+7. **reddit.com** `new.json` — `403` (re-confirmed); stays **blocked**.
+8. **Bluesky public search** — `403` (re-confirmed); stays **blocked**.
+
+**Negative probes — deliberately not registered:**
+
+9. **bleacherreport.com** `/articles/tag/nfl-injury` and `/nfl-injury` — both `404`. No injury-lane content was located, so registering a Bleacher Report lane would be a claim without content; the 404s are recorded here instead.
+10. **profootballnetwork.com** — live, but the site is tools-first (odds/stats widgets); no per-incident injury corpus located. Not registered.
+
+**Browser-reachability distribution now recorded for all 67 lanes:** `allowed` 8 (the ESPN site and sports.core.api.espn.com lanes — the page's own production browser lane polls exactly those hosts, which is why index.html's CSP `connect-src` names them), `blocked` 3 (items 6-8), `not-applicable` 6 (link-out social lanes the browser never fetches), `not-tested` 50 (no CORS claim made — the honest default, and the next probe queue). `scripts/schema.py` rejects a registry that deviates from these four states.
+
 ## Held/annotated source issues
 
-These are **not** silent corrections. Two subjects are withheld from the verified list and one withdrawn row is retained. Thirty-two entries are annotated: each annotation keeps separately dated, attributed reports side by side instead of merging conflicting labels into one diagnosis.
+These are **not** silent corrections. Two subjects are withheld from the verified list and one withdrawn row is retained (the withdrawal is itself annotated). Thirty-four entries are annotated: each annotation keeps separately dated, attributed reports side by side instead of merging conflicting labels into one diagnosis.
 
 1. **Kam Curl · LAR:** The Thursday, Sept. 10 roundup displays 'Kam Curl' but links to /players/kamren-curl/. Applying the same rule as other name/URL mismatches, identity is not auto-resolved and the in-game ankle report stays out of the verified list. [Source 1](https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10) · [Source 2](https://www.nfl.com/players/kamren-curl/)
 2. **Da'Shawn Hand · ATL:** Listed with a knee issue in Week 1 practice, ruled out in-game with a knee label, then reported Monday as a believed torn quad with season-ending surgery, and placed on IR under a quad label Wednesday. Each dated report stays attributed; the labels are not merged into one diagnosis. [Source 1](https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10) · [Source 2](https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026) · [Source 3](https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14) · [Source 4](https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16)
@@ -195,3 +220,4 @@ These are **not** silent corrections. Two subjects are withheld from the verifie
 34. **Brett Thorson · MIN (injury origin) — resolved by a club source:** vikings.com states that Thorson "suffered a hamstring injury Sunday at Chicago", so row 104 now stands on a club sentence. It stays annotated because reporting that disagreed (woke up sore vs. left the game) remains in the record and because the Week 3 report that lists him (right hamstring, DNP) is a practice status, not an in-game event. [Source 1](https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games) · [Source 2](https://www.nbcsports.com/fantasy/football/player-news/2026-09-23/dobbins-harvey-limited-coleman-sits-out-wed)
 35. **Treydan Stukes · LV (in-game origin):** the concussion-protocol status is official, but the connection to the Chargers game is third-party only, so the candidate sits in the leads lane instead of the archive. [Source 1](https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23) · [Source 2](https://www.reviewjournal.com/sports/raiders/brock-bowers-limited-aidan-oconnell-treydan-stukes-miss-raiders-practice-3890420/)
 36. **Official in-game corpus for Weeks 1-2 is exhausted:** every league notable-injuries bullet for both weeks is already in the master list, so further rows must come from club pages. The measured gap at the end of this pass is club-level: Cincinnati, Las Vegas and Tennessee have no archived incident at all, and the club pages that do carry an injury section are the pattern to copy (the Jaguars' game report covers both sidelines on one page). This annotation exists so a later pass does not re-hunt the league roundups expecting new material.
+37. **Zach Bako-Bewele · GB (league injury-report slug):** on the league's *weekly* injury report (www.nfl.com/injuries/), the Week 3 table row displays “Zach Bako-Bewele” (GB, DNP — Out, right knee) but the player link points to /players/zach-tom/ — the same name/slug conflict as item 14, this time on the report page itself rather than the Week 2 roundup. The row stands on the Packers' own game file and in-game page; the report-page link is flagged, not followed. [Source 1](https://www.nfl.com/injuries/) · [Source 2](https://www.nfl.com/players/zach-tom/) · [Source 3](https://www.packers.com/news/in-game-updates-week-2-jets-2026)

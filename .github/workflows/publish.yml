@@ -46,6 +46,26 @@ jobs:
         run: node --test tests/ui.test.mjs
       - name: Refresh scores and official game reports (degrade visibly on outage)
         run: python scripts/refresh.py --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
+      # While a game is in the watch window this single cycle reads the ESPN
+      # header (which games are live), the per-game summary injuries section
+      # and the play-by-play with per-play wall-clock timestamps, writes
+      # data/watch.json with a per-lane status, and appends second-precision
+      # entries to data/alert-log.json. During a live game this is what makes
+      # the scheduled run an in-game lane instead of a pregame one. It degrades
+      # visibly (lane states) rather than failing the build.
+      - name: Run one game-window watch cycle (logs lane states to the second)
+        continue-on-error: true
+        run: python scripts/watch_live.py --once
+      # The per-club discovery scan reads every club newsroom index and the
+      # game-day articles it picks, keeps only sentences that carry the closed
+      # in-game vocabulary, and records them as candidates. It runs with
+      # --no-promote on purpose: the verified master list in the repository is
+      # only grown by a reviewed pass (promotion needs a second independent
+      # read and a resolvable game), while the deployed site still shows the
+      # freshest auto-matched club text from this scan.
+      - name: Scan the 32 club newsrooms for in-game sentences (no auto-promotion)
+        continue-on-error: true
+        run: python scripts/clubscan.py --per-club 3 --budget 160 --no-promote
       - name: Assemble static Pages artifact
         run: python scripts/build.py --output _site --live /tmp/injury-live.json --scoreboard /tmp/injury-scores.json
       - name: Wait for legacy Pages build on main pushes

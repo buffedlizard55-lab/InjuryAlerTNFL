@@ -42,10 +42,24 @@ Two page shapes pay best, and both are official: the **club game-day recap**
 ### Where to look first
 
 Coverage measured at the end of Pass 7: **29 of 32 clubs** appear at least once
-(Week 1: 22 clubs, Week 2: 26). The two lanes added this pass are the shapes to keep
+(Week 1: 22 clubs, Week 2: 26). The two lanes added that pass are the shapes to keep
 mining: a **club game recap** (Packers → Bako-Bewele) and a **roster-move or
 injury-news story that names the game** (Vikings → Jordan Mason; Jets → Arian Smith).
 Club practice reports and presser transcripts remain the most common dead end.
+
+**Pass 8 changed who does the mining, not just who reads it.** The live season is
+now in progress (Week 3 began Thursday, September 24), and `publish.yml` runs
+`scripts/watch_live.py --once` plus `scripts/clubscan.py --per-club 3 --budget 160
+--no-promote` on every publish, fail-soft (`continue-on-error`). So candidates and
+watch state now ship in the deployed artifact automatically; the next session's job
+is to *review* them: each `club-candidate` in the deployed `data/alert-log.json` and
+`data/candidates.json` gets a two-read check in the repository before anything is
+promoted. **Known limitation of the automated scan:** `scripts/lanes.py::schedule_index`
+hard-codes `SEASON=2026` and weeks 1-3 (the window this repository's content was
+verified against). Outside that window `resolve_game` finds no game, candidates keep
+`gameDate: ""`, and the promotion gate rejects them — the scanner fails *closed*,
+never by guessing. Extending the window is a one-line change per window and must be
+paired with a fresh re-verification of whatever the scanner finds in it.
 
 | Gap | What is missing | First pages to try |
 | --- | --- | --- |
@@ -60,9 +74,12 @@ Club practice reports and presser transcripts remain the most common dead end.
 
 - The browser lane is the only low-latency lane this architecture can offer
   (10 s header / 20 s game lanes while a game is in the watch window, with the
-  play-by-play lane using ESPN's per-play wall-clock timestamps). A closed tab
-  receives nothing. `scripts/watch_live.py` is the same lane as a worker, for anyone
-  who can host a long-running process.
+  play-by-play lane using ESPN's per-play wall-clock timestamps; the five
+  machine-written data files poll every 30 s, and the page re-polls immediately
+  when the tab becomes visible again, so a returning reader never sees the last
+  frozen background-tab state). A closed tab receives nothing.
+  `scripts/watch_live.py` is the same lane as a worker — CI now runs one cycle per
+  publish, and anyone who can host a long-running process can run the full worker.
 - GitHub Actions scheduled runs are throttled: measured on 2026-09-24 the `*/5`
   cron fired at **17:04Z, 12:03Z, 06:23Z, 01:22Z** — roughly every 4-6 hours.
 - A genuinely server-side 15-30 s lane needs a long-running worker or a paid
@@ -79,6 +96,18 @@ Club practice reports and presser transcripts remain the most common dead end.
 - `scripts/verify_sources.py --strict` re-fetches every excerpt in CI and files one
   annotation per drifted claim. It is `continue-on-error` because a provider outage
   must not fail a build — but a *drift* warning is a work item, not noise.
+- **The browser-reachability queue is 50 lanes.** Every lane in `data/sources.json`
+  carries a `browserProbe`, and 50 of the 67 are honestly `not-tested` (no CORS
+  claim made). Closing the queue needs a small probe harness that runs *from the
+  deployed Pages origin* (a test page that fetches each `html` lane and records the
+  result in the registry), because a claim made from this repository's tooling is a
+  claim about a different client. Until then the page prints "not tested" and makes
+  no reachability promise about those lanes.
+- **The deployed alert log is the CI heartbeat.** `publish.yml` never commits back,
+  so the repo's `data/alert-log.json` stays at zero entries by design; the *deployed*
+  `https://buffedlizard55-lab.github.io/InjuryAlerTNFL/data/alert-log.json` is where
+  the watch/clubscan cycles leave their second-precision marks. An empty deployed
+  log after a publish is a warning sign to investigate, not a neutral state.
 - Club and league pages get reworded after publication. A citation that was exact
   when written can stop being readable; that is how the withdrawn Puka Nacua row
   happened. Re-read before re-quoting.
