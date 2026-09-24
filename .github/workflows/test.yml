@@ -29,7 +29,11 @@ jobs:
           else
             cat /tmp/source-audit.txt
             echo "::warning title=Online source audit::$(head -n 1 /tmp/source-audit.txt)"
-            echo "::warning title=Online source audit detail::$(grep "REVIEW:" /tmp/source-audit.txt | head -3)"
+            # One annotation per drifted claim, so a reviewer sees the whole list in
+            # the Checks UI instead of only the first three lines.
+            grep "REVIEW:" /tmp/source-audit.txt | head -50 | while IFS= read -r line; do
+              echo "::warning file=data/archive.json,title=Excerpt drift::${line#REVIEW: }"
+            done
             DIAG="$(python scripts/diagnose_audit.py --audit /tmp/source-audit.txt | head -8)"
             echo "$DIAG"
             echo "::warning title=Audit diagnostic::${DIAG//[$'\n\r']/%0A}"

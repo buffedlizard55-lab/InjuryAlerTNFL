@@ -35,7 +35,7 @@ function trustedLink(url, label, type = 'news') {
       'www.houstontexans.com', 'www.colts.com', 'www.jaguars.com', 'www.chiefs.com',
       'www.chargers.com', 'www.rams.com', 'www.raiders.com', 'www.dolphins.com',
       'www.vikings.com', 'www.patriots.com', 'www.saints.com', 'www.giants.com',
-      'www.nyjets.com', 'www.newyorkjets.com', 'www.jets.com', 'www.eagles.com', 'www.steelers.com',
+      'www.nyjets.com', 'www.newyorkjets.com', 'www.jets.com', 'www.eagles.com', 'www.philadelphiaeagles.com', 'www.steelers.com',
       'www.49ers.com', 'www.seahawks.com', 'www.buccaneers.com', 'www.titans.com',
       'www.commanders.com', 'www.azcardinals.com', 'www.cardinals.com',
     ];
@@ -57,18 +57,10 @@ function trustedLink(url, label, type = 'news') {
 function notice(text) { return el('p', 'notice', text); }
 
 const NEW_IDS = new Set([
-  '2026-09-10-sf-jake-tonges', '2026-09-13-car-jalen-coker', '2026-09-13-jax-brian-thomas-jr',
-  '2026-09-13-lac-ladd-mcconkey', '2026-09-13-nyj-jarvis-brownlee-jr', '2026-09-13-tb-miles-killebrew',
-  '2026-09-14-kc-cooper-mcdonald', '2026-09-14-kc-mansoor-delane', '2026-09-17-buf-ed-oliver',
-  '2026-09-20-ari-mack-wilson-sr', '2026-09-20-ari-max-melton', '2026-09-20-ari-will-johnson',
-  '2026-09-20-car-nick-scott', '2026-09-20-dal-cobie-durant', '2026-09-20-dal-dee-winters',
-  '2026-09-20-dal-jaishawn-barham', '2026-09-20-den-jonah-coleman', '2026-09-20-gb-bo-melton',
-  '2026-09-20-gb-donovan-jennings', '2026-09-20-gb-jayden-reed', '2026-09-20-gb-jordan-love',
-  '2026-09-20-ind-micheal-clemons', '2026-09-20-jax-davon-hamilton', '2026-09-20-lac-charlie-kolar',
-  '2026-09-20-lac-david-njoku', '2026-09-20-lac-derwin-james', '2026-09-20-nyj-arian-smith',
-  '2026-09-20-sea-brandon-pili', '2026-09-20-sea-george-holani', '2026-09-20-sea-jadarian-price',
-  '2026-09-20-tb-josiah-trotter', '2026-09-20-was-nick-cross', '2026-09-21-lar-puka-nacua',
-  '2026-09-21-lar-ronnie-rivers',
+  // Pass 5 (September 24, 2026): incidents newly promoted to the verified archive.
+  '2026-09-13-atl-a-j-terrell', '2026-09-13-cle-zion-johnson', '2026-09-13-phi-cooper-dejean',
+  '2026-09-13-phi-jalen-carter', '2026-09-20-chi-tyson-bagent', '2026-09-20-nyj-kiko-mauigoa',
+  '2026-09-20-nyj-mason-taylor', '2026-09-20-sf-romello-height',
 ]);
 
 function reportCard(row) {
@@ -84,7 +76,7 @@ function reportCard(row) {
   heading.append(title);
   const pill = el('span', `status-pill ${row.outcome}`, OUTCOME_LABEL[row.outcome] || 'Unverified');
   if (isNew) {
-    const newBadge = el('span', 'auto-mark', 'NEW · 4TH PASS');
+    const newBadge = el('span', 'auto-mark', 'NEW · 5TH PASS');
     newBadge.style.marginLeft = '8px';
     pill.append(newBadge);
   }

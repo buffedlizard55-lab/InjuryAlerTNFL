@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "verifiedOn": "2026-09-23",
+  "verifiedOn": "2026-09-24",
   "flags": [
     {
       "id": "2026-09-10-lar-kam-curl-link",
@@ -14,6 +14,17 @@
       ]
     },
     {
+      "id": "2026-09-13-atl-a-j-terrell-wording",
+      "incidentId": "2026-09-13-atl-a-j-terrell",
+      "disposition": "annotated",
+      "subject": "A.J. Terrell \u00b7 ATL",
+      "reason": "The Falcons' recap says Terrell returned to the Steelers game, but the club's wording is 'it was determined he could return to the game safely, which he did' and 'briefly left the game'; neither sentence carries the archive's returned marker, so the row is graded unconfirmed rather than upgrading the outcome.",
+      "links": [
+        "https://www.atlantafalcons.com/news/game-breakdown-what-happened-in-falcons-vs-steelers",
+        "https://www.atlantafalcons.com/news/falcons-injury-report-a-j-terrell-chris-lindstrom-tua-tagovailoa-panthers"
+      ]
+    },
+    {
       "id": "2026-09-13-atl-da-shawn-hand-area",
       "incidentId": "2026-09-13-atl-da-shawn-hand",
       "disposition": "annotated",
@@ -24,6 +35,29 @@
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+      ]
+    },
+    {
+      "id": "2026-09-13-cle-dylan-sampson-area",
+      "incidentId": "2026-09-13-cle-dylan-sampson",
+      "disposition": "annotated",
+      "subject": "Dylan Sampson \u00b7 CLE",
+      "reason": "NFL.com's Week 1 game roundup labels the injury ankle, while the Browns' Monday notes and a Browns headline label it a knee injury sustained in the first quarter. Both labels are carried with their sources; the archive does not pick one diagnosis.",
+      "links": [
+        "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
+        "https://www.clevelandbrowns.com/news/deshaun-watson-expected-to-start-week-2-against-the-buccaneers-news-notes",
+        "https://www.clevelandbrowns.com/news/dylan-sampson-questionable-to-return-vs-jaguars-with-knee-injury"
+      ]
+    },
+    {
+      "id": "2026-09-13-cle-zion-johnson-marker",
+      "incidentId": "2026-09-13-cle-zion-johnson",
+      "disposition": "annotated",
+      "subject": "Zion Johnson \u00b7 CLE",
+      "reason": "The club's only sentence on the matter says Johnson 'was injured in the first half against the Jaguars but later re-entered the game'. No body part is named and 're-entered' is not the archive's returned marker, so the row keeps the Not specified injury label and an unconfirmed outcome.",
+      "links": [
+        "https://www.clevelandbrowns.com/news/deshaun-watson-expected-to-start-week-2-against-the-buccaneers-news-notes",
+        "https://www.nfl.com/players/zion-johnson/"
       ]
     },
     {
@@ -59,6 +93,28 @@
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+      ]
+    },
+    {
+      "id": "2026-09-13-phi-cooper-dejean-anchor",
+      "incidentId": "2026-09-13-phi-cooper-dejean",
+      "disposition": "annotated",
+      "subject": "Cooper DeJean \u00b7 PHI",
+      "reason": "Like Carter's, the anchor is the Eagles' Friday practice report plus DeJean's own postgame account of the tackle in the second quarter. The club never published an in-game status for him in Week 1, so the row stays unconfirmed; the two injuries are kept as one club-labelled pair.",
+      "links": [
+        "https://www.philadelphiaeagles.com/news/eagles-at-titans-injury-report-jalen-carter-cooper-dejean-2026-nfl-week-2-regular-season",
+        "https://www.nfl.com/players/cooper-dejean/"
+      ]
+    },
+    {
+      "id": "2026-09-13-phi-jalen-carter-anchor",
+      "incidentId": "2026-09-13-phi-jalen-carter",
+      "disposition": "annotated",
+      "subject": "Jalen Carter \u00b7 PHI",
+      "reason": "The only official account found is the Eagles' Friday, Sept. 18 practice report, which states retrospectively that Carter hurt the wrist against the Commanders. No contemporaneous in-game status announcement was found, so no return designation is claimed and the injury area is not corroborated by a second source.",
+      "links": [
+        "https://www.philadelphiaeagles.com/news/eagles-at-titans-injury-report-jalen-carter-cooper-dejean-2026-nfl-week-2-regular-season",
+        "https://www.nfl.com/players/jalen-carter/"
       ]
     },
     {
@@ -122,6 +178,18 @@
       "disposition": "annotated"
     },
     {
+      "id": "2026-09-20-chi-tyson-bagent-causation",
+      "incidentId": "2026-09-20-chi-tyson-bagent",
+      "disposition": "annotated",
+      "subject": "Tyson Bagent \u00b7 CHI",
+      "reason": "NFL.com reports the protocol placement on Tuesday and, in the same article, that Bagent was swept down on the final play of Sunday's game. No source states the sack caused the concussion, so the row records the in-game contact and the protocol report separately and claims no diagnosis or return date.",
+      "links": [
+        "https://www.nfl.com/news/nfl-network-bears-qb-tyson-bagent-in-concussion-protocol-case-keenum-could-start-week-3",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23",
+        "https://www.nfl.com/players/tyson-bagent/"
+      ]
+    },
+    {
       "id": "2026-09-20-dal-cobie-durant-wording",
       "subject": "Cobie Durant \u00b7 DAL",
       "reason": "Two official reports of the same Week 2 exit use wording the strict matcher cannot ground: NFL.com's roundup says \"did not to return\" (a source typo) while the Cowboys' recap says he \"missed the remainder of the game with a hamstring injury.\" Meaning is equivalent, but the verified list only publishes exact-wording-grounded outcomes, so the entry is held.",
@@ -157,7 +225,7 @@
     {
       "id": "2026-09-20-gb-zach-bako-bewele-link",
       "subject": "Zach Bako-Bewele \u00b7 GB",
-      "reason": "NFL.com's roundup displays this name but the linked player URL is /players/zach-tom/. Player identity cannot be resolved from that link; excluded from automated matching.",
+      "reason": "NFL.com's Sept. 22 roundup now supplies an explicit in-game anchor - a torn patellar tendon suffered during Sunday's game against the Jets, season-ending, surgery scheduled - but the roundup's display name still resolves to /players/zach-tom/. Identity is not auto-resolved, so the incident stays out of the verified list until the name/slug conflict is checked by a human.",
       "links": [
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
         "https://www.nfl.com/players/zach-tom/"
@@ -191,13 +259,25 @@
     {
       "id": "2026-09-20-nyj-kiko-mauigoa-link",
       "incidentId": "2026-09-20-nyj-kiko-mauigoa",
-      "disposition": "held",
+      "disposition": "annotated",
       "subject": "Kiko Mauigoa \u00b7 NYJ",
-      "reason": "The Week 2 roundup displays 'Kiko Mauigoa' but links to /players/francisco-mauigoa/, and Thursday's report lists 'Francis Mauigoa' (shoulder) under the Giants. Player identity cannot be resolved from these links, so the quad report is withheld from the verified list.",
+      "reason": "Promoted from the Jets' own game recap, which displays 'Kiko Mauigoa' as a linebacker who exited the Packers game and did not return and links the name to the club roster slug francisco-mauigoa. The league player link and a Thursday report listing 'Francis Mauigoa' (shoulder) under the Giants are unreconciled, so no cross-source identity merge is claimed.",
       "links": [
+        "https://www.newyorkjets.com/news/jets-packers-game-recap-week-2-09-20-2026",
         "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games",
         "https://www.nfl.com/players/francisco-mauigoa/",
         "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-17"
+      ]
+    },
+    {
+      "id": "2026-09-20-nyj-mason-taylor-anchor",
+      "incidentId": "2026-09-20-nyj-mason-taylor",
+      "disposition": "annotated",
+      "subject": "Mason Taylor \u00b7 NYJ",
+      "reason": "The Jets' recap only says the thumb injury was 'sustained late' in the game; no in-game status was announced for him, and the week-to-week and Week 3 stories are reporter notes, so the outcome is unconfirmed and the severity is not rated.",
+      "links": [
+        "https://www.newyorkjets.com/news/jets-packers-game-recap-week-2-09-20-2026",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
       ]
     },
     {
@@ -225,6 +305,18 @@
       "disposition": "annotated"
     },
     {
+      "id": "2026-09-20-sf-romello-height-anchor",
+      "incidentId": "2026-09-20-sf-romello-height",
+      "disposition": "annotated",
+      "subject": "Romello Height \u00b7 SF",
+      "reason": "The 49ers' postgame list is headed as injuries the team came out of Sunday's game with, but it does not say when during the game the hand was hurt or whether he left and returned. The row therefore records an in-game injury with no return designation and reports the surgery as scheduled, not completed.",
+      "links": [
+        "https://www.49ers.com/news/shanahan-on-49ers-win-over-dolphins-provides-new-injury-updates",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23",
+        "https://www.nfl.com/players/romello-height/"
+      ]
+    },
+    {
       "id": "2026-09-20-was-nick-cross-anchor",
       "subject": "Nick Cross \u00b7 WAS",
       "reason": "NFL.com says Nick Cross suffered an internal injury and was hospitalized overnight in Dallas after Week 2's game, and will not play the next game. The sentence does not say he left that game or was injured during play, so it is held rather than published as an in-game event.",
@@ -234,6 +326,17 @@
       ],
       "incidentId": "2026-09-20-was-nick-cross",
       "disposition": "annotated"
+    },
+    {
+      "id": "2026-09-21-lar-puka-nacua-withdrawn",
+      "incidentId": "2026-09-21-lar-puka-nacua",
+      "disposition": "held",
+      "subject": "Puka Nacua \u00b7 LAR (withdrawn in Pass 5)",
+      "reason": "Published in Pass 4 as a Week 2 in-game incident with an \"Injured during game\" observation, but no official report places an in-game injury in the Sept. 21 win over the Giants: the cited roundup sentence says he sat out with a hip injury, and club reporting describes week-of soreness. Sitting out while hurt is outside this archive's scope, so the row is withdrawn rather than reworded.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+      ]
     },
     {
       "id": "2026-09-21-nyg-jaxson-dart-revision",
