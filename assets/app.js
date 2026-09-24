@@ -56,6 +56,11 @@ function trustedLink(url, label, type = 'news') {
       'www.chargers.com', 'www.rams.com', 'www.raiders.com', 'www.dolphins.com',
       'www.vikings.com', 'www.patriots.com', 'www.saints.com', 'www.giants.com',
       'www.nyjets.com', 'www.newyorkjets.com', 'www.jets.com', 'www.eagles.com', 'www.philadelphiaeagles.com', 'www.steelers.com',
+      // Real hosts for clubs whose newsroom domain differs from the short form; these three
+      // were missing from this list even after the schema was fixed, which broke the link to
+      // the Saints recap that grounds Martin Emerson Jr. tests/test_pipeline.py now checks
+      // that this allowlist covers every host the schema trusts.
+      'www.neworleanssaints.com', 'www.miamidolphins.com', 'www.tennesseetitans.com',
       'www.49ers.com', 'www.seahawks.com', 'www.buccaneers.com', 'www.titans.com',
       'www.commanders.com', 'www.azcardinals.com', 'www.cardinals.com',
     ];
@@ -94,6 +99,8 @@ const NEW_IDS = new Set([
   '2026-09-13-atl-a-j-terrell', '2026-09-13-cle-zion-johnson', '2026-09-13-phi-cooper-dejean',
   '2026-09-13-phi-jalen-carter', '2026-09-20-chi-tyson-bagent', '2026-09-20-nyj-kiko-mauigoa',
   '2026-09-20-nyj-mason-taylor', '2026-09-20-sf-romello-height',
+  // Pass 6: both rows came from club pages rather than league roundups.
+  '2026-09-20-no-martin-emerson-jr', '2026-09-20-min-brett-thorson',
 ]);
 
 function reportCard(row) {
@@ -608,6 +615,7 @@ function renderLeads() {
     const meta = el('div', 'lead-meta');
     meta.append(el('span', '', `${lead.source.name} · captured ${day(lead.capturedOn)}`), tierLink(lead.source.url, 'Read the outlet ↗', lead.source.tier));
     card.append(meta, el('p', 'microcopy', `To promote: ${lead.verifyNext}`), el('p', 'microcopy', lead.notes));
+    if (lead.duplicateOf) card.append(el('p', 'microcopy', `Already in the verified list as ${lead.duplicateOf} — kept here only as a re-check lead.`));
     return card;
   });
   if (!cards.length) box.replaceChildren(notice('No unofficial leads captured.'));

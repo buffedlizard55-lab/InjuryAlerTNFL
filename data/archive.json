@@ -1,7 +1,7 @@
 {
  "version": 1,
  "verifiedOn": "2026-09-24",
- "scope": "One hundred one individually checked 2026 in-game incidents across Weeks 1-2 (Pass 5 adds 8 new verified incidents from club recaps, club reports and league roundups plus 14 new dated claims on 14 existing incidents, and withdraws one fourth-pass row that reported a week-of absence as an in-game injury)",
+ "scope": "103 individually checked 2026 in-game incidents across Weeks 1-2 (270 dated claims from 52 distinct league or club URLs). Pass 6 adds two club-grounded rows (Martin Emerson Jr., NewOrleansSaints.com game-day recap; Brett Thorson, Vikings.com roster-move story) and 53 dated claims on existing rows, and every claim must sit on an allowed league/club host and be re-read before publication; candidates whose official text never places the injury inside a game stay in data/leads.json instead.",
  "incidents": [
   {
    "id": "2026-09-09-ne-a-j-brown",

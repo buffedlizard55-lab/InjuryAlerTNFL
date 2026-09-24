@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import os
 import sys
 import tempfile
@@ -34,6 +35,8 @@ class SourceLedgerTests(unittest.TestCase):
     def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
         self.assertEqual(103, len(self.archive["incidents"]))
+        self.assertIn(str(len(self.archive["incidents"])), self.archive["scope"],
+                      "scope should describe the row count it ships with")
         self.assertEqual(103, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-24", self.archive["verifiedOn"])
         claims = [claim for row in self.archive["incidents"] for claim in row["claims"]]
@@ -65,6 +68,21 @@ class SourceLedgerTests(unittest.TestCase):
                 raise OSError("source down")
             return reader(url)
         self.assertTrue(any("unavailable" in issue for issue in verify(self.archive, unavailable)))
+
+    def test_every_official_host_the_schema_trusts_is_clickable_in_the_ui(self):
+        """The UI keeps its own allowlist; if it drifts, archived links silently stop linking.
+
+        This is the bug that hid the Saints recap that grounds Martin Emerson Jr.: the
+        schema accepted neworleanssaints.com before assets/app.js did.
+        """
+        schema_src = (ROOT / "scripts" / "schema.py").read_text()
+        block = schema_src.split("allowed_news_hosts = {", 1)[1].split("}", 1)[0]
+        schema_hosts = set(re.findall(r'"([a-z0-9.-]+)"', block))
+        app_src = (ROOT / "assets" / "app.js").read_text()
+        trusted = app_src.split("function trustedLink", 1)[1].split("];", 1)[0]
+        app_hosts = set(re.findall(r"'([a-z0-9.-]+)'", trusted))
+        self.assertTrue(schema_hosts, "schema allowlist should be parsed, not empty")
+        self.assertEqual(set(), schema_hosts - app_hosts, "app.js trustedLink is missing official hosts")
 
     def test_line_by_line_outcomes_checked_against_sourced_master_list(self):
         expected = {

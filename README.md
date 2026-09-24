@@ -1,6 +1,6 @@
 # Sideline Signal — source-backed NFL in-game injury reporting
 
-**Website:** [buffedlizard55-lab.github.io/InjuryAlerTNFL/](https://buffedlizard55-lab.github.io/InjuryAlerTNFL/) · [source audit](docs/source-audit.md) · [lane + latency design](docs/live-latency.md)
+**Website:** [buffedlizard55-lab.github.io/InjuryAlerTNFL/](https://buffedlizard55-lab.github.io/InjuryAlerTNFL/) · [source audit](docs/source-audit.md) · [lane + latency design](docs/live-latency.md) · [next steps and limits](docs/next-steps.md)
 
 An independent, mobile-friendly NFL scoreboard and **in-game injury alert** prototype. It separates **what was observed**, **what happened in that game**, and **later reported availability** — and it labels every lane it reads as **official**, **partner**, or **unofficial** so a reader never mistakes a social post for a club statement.
 
@@ -42,9 +42,10 @@ Hard rules encoded in `scripts/schema.py` and `assets/domain.mjs`: a non-officia
 Python 3.11+ and Node 20+; **no runtime packages**.
 
 ```sh
-python -m unittest discover -s tests -v      # 20 tests
+python -m unittest discover -s tests -v      # 21 tests
 node --test tests/ui.test.mjs                # 12 tests
 python scripts/build.py --output _site
+python scripts/selfcheck.py                   # one-command audit of the shipped artefacts
 python3 -m http.server 8000 --bind 0.0.0.0 --directory _site
 ```
 
@@ -60,7 +61,7 @@ python scripts/verify_sources.py --strict   # re-fetch and compare every stored 
 - `index.html`, `assets/` — accessible static site, no user report form.
 - `data/archive.json` — 103 verified incidents. `data/review.json` — 35 flags. `data/sources.json` — the 46-lane registry. `data/leads.json` — 15 unofficial leads. Tracked `data/live.json` / `data/scoreboard.json` are honest *not yet checked* fallbacks.
 - `assets/domain.mjs` — pure presentation rules: source-tier labels, the in-game vocabulary classifier, signal ranking, latency maths, the pre-kickoff watch window, the one-click social search links and the partner-alert gate.
-- `scripts/` — `refresh.py` (collector + ESPN score adapter), `schema.py` (fail-closed validators for archive, review, sources and leads), `build.py` (Pages artifact + auto-only RSS), `verify_sources.py`, `diagnose_audit.py`, `unblock_deployments.py`, `wait_for_legacy_pages.py`.
+- `scripts/` — `refresh.py` (collector + ESPN score adapter), `schema.py` (fail-closed validators for archive, review, sources and leads), `build.py` (Pages artifact + auto-only RSS), `selfcheck.py` (one command that checks the published artefacts against the rules this file states), `verify_sources.py`, `diagnose_audit.py`, `unblock_deployments.py`, `wait_for_legacy_pages.py`.
 - `.github/workflows/test.yml` runs the suites on PRs (with a continue-on-error online excerpt re-check that annotates drift); `publish.yml` refreshes and deploys on cron/push.
 
 ## Verification and language rules
@@ -78,7 +79,7 @@ python scripts/verify_sources.py --strict   # re-fetch and compare every stored 
 - **Sources (new):** the registry now carries **44** lanes; the 23 newest were added only after their content was retrieved and read — including Seattle's and Green Bay's per-game in-game pages, club game-day recaps and game reports, practice notebooks and injury news items, and on the unofficial side the CBS live tracker, DraftKings Network, NBC/Rotoworld player news, CBS player news, Heavy, Chargers Wire, the Las Vegas Review-Journal, the Colorado Springs Gazette and Sports Betting Dime. Lanes that refuse a free read (NFL game-centre JSON `401`, Reddit `403`, Bluesky search `403`, api.nfl.com) are listed as **blocked** rather than quietly dropped, and X/Instagram/Facebook/TikTok are **link-out-only** because no keyless read tier exists.
 - **Latency (new):** a browser-side in-game lane (20 s header / 45 s news) that starts 30 minutes before kickoff and reports lane failures instead of going quiet; the in-game vocabulary classifier; latency chips showing how long after the provider's timestamp the wording was seen; and the measured CI cadence above.
 - **Master list:** two incidents could be grounded this pass, and both came from club pages rather than league roundups: **Martin Emerson Jr.** (Saints game-day recap, shoulder, first half of the Week 2 win) and **Brett Thorson** (vikings.com roster-move story: "Thorson suffered a hamstring injury Sunday at Chicago"). **53 new dated claims** were added across existing rows from the Sept 21, 22 and 23 league roundups plus club pages (Onwenu IR and Vrabel's confirmation, Banks Jr. surgery, Goedert MCL, Dowdle day-to-day, Reed's overnight stay and Thursday ruling, Dart's meniscus/MCL/PCL damage, Coleman's sprained ankle, Kolar's and Njoku's IR confirmation from the club itself, Holani cleared to return, and more). Every other candidate researched this pass — Awosika, Tomlinson, Stukes, Dobbins, Bradford, Cole Strange, Ingram-Dawkins' club label — has **official text that never places the injury inside a game**, so each is in the leads lane with the exact next check rather than in the archive.
-- **Code:** club `/game-day/` recap paths are now allowed as official evidence; three club domains were corrected to their real hosts (`neworleanssaints.com`, `miamidolphins.com`, `tennesseetitans.com`); `build.py` validates and ships the registry and leads; 8 new tests cover the registry, the leads discipline and the live-watch rules (Python 18 → 20, browser 6 → 12).
+- **Code:** club `/game-day/` recap paths are now allowed as official evidence; three club domains were corrected to their real hosts (`neworleanssaints.com`, `miamidolphins.com`, `tennesseetitans.com`); `build.py` validates and ships the registry and leads; 9 new tests cover the registry, the leads discipline, the live-watch rules and the schema/UI link allowlist (Python 18 → 21, browser 6 → 12).
 
 ## Important limitations / next session priorities
 
