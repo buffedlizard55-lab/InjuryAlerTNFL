@@ -1,7 +1,7 @@
 {
   "version": 1,
   "verifiedOn": "2026-09-24",
-  "scope": "One hundred two individually checked 2026 in-game incidents across Weeks 1-2 (Pass 5 adds 8 new verified incidents from club recaps, club reports and league roundups, plus 14 new dated claims on 14 existing incidents)",
+  "scope": "One hundred one individually checked 2026 in-game incidents across Weeks 1-2 (Pass 5 adds 8 new verified incidents from club recaps, club reports and league roundups plus 14 new dated claims on 14 existing incidents, and withdraws one fourth-pass row that reported a week-of absence as an in-game injury)",
   "incidents": [
     {
       "id": "2026-09-09-ne-a-j-brown",
@@ -166,13 +166,6 @@
           "date": "2026-09-10",
           "kind": "game",
           "text": "NFL.com's Thursday roundup says Jake Tonges left that night's game with a knee injury that did not look good, per the coach. No return designation is stated.",
-          "quote": "Jake Tonges (knee) left Thursday's game and his injury does not look \"good,\" Shanahan said.",
-          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10"
-        },
-        {
-          "date": "2026-09-10",
-          "kind": "game",
-          "text": "Left Thursday's Rams game with a knee injury; coach said injury does not look good.",
           "quote": "Jake Tonges (knee) left Thursday's game and his injury does not look \"good,\" Shanahan said.",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10"
         },
@@ -455,23 +448,9 @@
         },
         {
           "date": "2026-09-14",
-          "kind": "game",
-          "text": "Rolled ankle during Sunday's loss to Bears; seen in walking boot Monday, does not expect to miss time.",
-          "quote": "Coker said that he \"rolled my ankle\" during Sunday's loss to the Bears and that he does not expect to miss time.",
-          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14"
-        },
-        {
-          "date": "2026-09-14",
           "kind": "observation",
           "text": "The same Monday report says Jalen Coker was seen in a walking boot on his left foot.",
           "quote": "Jalen Coker was seen in a walking boot on his left foot on Monday",
-          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14"
-        },
-        {
-          "date": "2026-09-14",
-          "kind": "observation",
-          "text": "Seen in walking boot on left foot Monday per ESPN.",
-          "quote": "was seen in a walking boot on his left foot on Monday, per ESPN",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14"
         }
       ]
@@ -2350,13 +2329,6 @@
           "date": "2026-09-23",
           "kind": "followup",
           "text": "Placed on injured reserve, per Wednesday's roundup; the earlier open-ended 'out indefinitely' note is now a completed roster move as reported.",
-          "quote": "LT Kelvin Banks Jr. was placed on injured reserve.",
-          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
-        },
-        {
-          "date": "2026-09-23",
-          "kind": "followup",
-          "text": "The Saints placed the left tackle on injured reserve Wednesday, after Monday's report of a severe high ankle sprain and surgery.",
           "quote": "LT Kelvin Banks Jr. was placed on injured reserve.",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
         }

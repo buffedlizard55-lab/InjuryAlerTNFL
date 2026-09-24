@@ -35,6 +35,13 @@ class SourceLedgerTests(unittest.TestCase):
         self.assertEqual(101, len(self.archive["incidents"]))
         self.assertEqual(101, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-24", self.archive["verifiedOn"])
+        claims = [claim for row in self.archive["incidents"] for claim in row["claims"]]
+        self.assertEqual(217, len(claims))
+        self.assertEqual(49, len({claim["url"] for claim in claims}))
+        self.assertEqual(
+            len(claims),
+            len({(row["id"], claim["url"], claim["quote"]) for row in self.archive["incidents"] for claim in row["claims"]}),
+        )
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
                 self.assertTrue(any(claim["kind"] == "game" for claim in row["claims"]))
@@ -213,6 +220,11 @@ class SourceLedgerTests(unittest.TestCase):
     def test_duplicate_and_future_rows_are_rejected(self):
         tampered = json.loads(json.dumps(self.archive))
         tampered["incidents"].append(tampered["incidents"][0])
+        with self.assertRaises(InvalidData):
+            validate_archive(tampered)
+        tampered = json.loads(json.dumps(self.archive))
+        row = tampered["incidents"][0]
+        row["claims"].append(dict(row["claims"][0]))
         with self.assertRaises(InvalidData):
             validate_archive(tampered)
         tampered = json.loads(json.dumps(self.archive))
