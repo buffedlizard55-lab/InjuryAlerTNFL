@@ -32,8 +32,8 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(102, len(self.archive["incidents"]))
-        self.assertEqual(102, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(101, len(self.archive["incidents"]))
+        self.assertEqual(101, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-24", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
@@ -140,7 +140,6 @@ class SourceLedgerTests(unittest.TestCase):
             "nick-scott": "out",
             "omar-cooper-jr": "out",
             "p-j-locke": "did_not_return",
-            "puka-nacua": "unconfirmed",
             "rico-dowdle": "returned",
             "robert-beal-jr": "did_not_return",
             "ronnie-rivers": "out",
@@ -182,8 +181,8 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(29, len(self.review["flags"]))
-        self.assertEqual(2, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(30, len(self.review["flags"]))
+        self.assertEqual(3, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -294,9 +293,10 @@ class FeedTests(unittest.TestCase):
         held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
         # Pass 5 promoted Kiko Mauigoa (the Jets' own recap grounds the exit and the
         # club links the name to its roster page), so two identity-mismatch cases stay
-        # held: Kam Curl and Zach Bako-Bewele.
+        # held: Kam Curl, Zach Bako-Bewele, and the withdrawn Puka Nacua row.
         self.assertIn("2026-09-10-lar-kam-curl", held)
         self.assertIn("2026-09-20-gb-zach-bako-bewele", held)
+        self.assertIn("2026-09-21-lar-puka-nacua", held)
         self.assertNotIn("2026-09-20-nyj-kiko-mauigoa", held)
         annotated = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "annotated"}
         self.assertIn("2026-09-20-nyj-kiko-mauigoa", annotated)
@@ -363,7 +363,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(102, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(101, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":

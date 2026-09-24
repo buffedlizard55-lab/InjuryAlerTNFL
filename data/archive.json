@@ -173,7 +173,7 @@
           "date": "2026-09-10",
           "kind": "game",
           "text": "Left Thursday's Rams game with a knee injury; coach said injury does not look good.",
-          "quote": "left Thursday's game and his injury does not look 'good,' Shanahan said",
+          "quote": "Jake Tonges (knee) left Thursday's game and his injury does not look \"good,\" Shanahan said.",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10"
         },
         {
@@ -457,7 +457,7 @@
           "date": "2026-09-14",
           "kind": "game",
           "text": "Rolled ankle during Sunday's loss to Bears; seen in walking boot Monday, does not expect to miss time.",
-          "quote": "'rolled my ankle' during Sunday's loss to the Bears",
+          "quote": "Coker said that he \"rolled my ankle\" during Sunday's loss to the Bears and that he does not expect to miss time.",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-14"
         },
         {
@@ -1236,7 +1236,7 @@
           "date": "2026-09-16",
           "kind": "followup",
           "text": "Full participant Wednesday, pretty good chance to play Week 2 vs Colts per coach.",
-          "quote": "has a 'pretty good chance' to play in Week 2's game against the Colts",
+          "quote": "has a \"pretty good chance\" to play in Week 2's game against the Colts",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
         }
       ]
@@ -1788,7 +1788,7 @@
           "date": "2026-09-23",
           "kind": "game",
           "text": "Reported sprained ankle suffered in Broncos Week 2 win over Jaguars per Schefter; no return designation in this source.",
-          "quote": "is dealing with a sprained ankle he suffered in the Broncos Week 2 win over the Jaguars, ESPN's Adam Schefter reported",
+          "quote": "is dealing with a sprained ankle he suffered in the Broncos' Week 2 win over the Jaguars, ESPN's Adam Schefter reported",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
         },
         {
@@ -2081,7 +2081,7 @@
           "date": "2026-09-21",
           "kind": "game",
           "text": "Chargers.com says Charlie Kolar and David Njoku each suffered injuries in Sunday's game against the Raiders and were going on injured reserve. Njoku's fibula label is not applied to Kolar.",
-          "quote": "Charlie Kolar and David Njoku are both going on Injured Reserve after each suffered injuries in Sunday's game against the Raiders.",
+          "quote": "are both going on Injured Reserve after each suffered injuries in Sunday's game against the Raiders",
           "url": "https://www.chargers.com/news/charlie-kolar-david-njoku-injured-reserve-fantasy"
         },
         {
@@ -2685,7 +2685,7 @@
           "date": "2026-09-21",
           "kind": "followup",
           "text": "Monday's coach report says shoulder injury, nothing serious, initially diagnosed as chest.",
-          "quote": "is dealing with a shoulder injury after Sunday's win over Arizona, but it's 'nothing serious, doesn't seem like,' coach Mike Macdonald said Monday",
+          "quote": "is dealing with a shoulder injury after Sunday's win over Arizona, but it's \"nothing serious, doesn't seem like,\" coach Mike Macdonald said Monday",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
         }
       ]
@@ -2909,30 +2909,8 @@
           "date": "2026-09-23",
           "kind": "game",
           "text": "Suffered internal injury and was hospitalized overnight in Dallas after Week 2's game; no explicit in-game event in this source.",
-          "quote": "suffered an 'internal' injury and was hospitalized overnight in Dallas after Week 2's game, head coach Dan Quinn said",
+          "quote": "suffered an \"internal\" injury and was hospitalized overnight in Dallas after Week 2's game, head coach Dan Quinn said",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
-        }
-      ]
-    },
-    {
-      "id": "2026-09-21-lar-puka-nacua",
-      "player": "Puka Nacua",
-      "position": "WR",
-      "team": "LAR",
-      "opponent": "NYG",
-      "gameDate": "2026-09-21",
-      "injury": "Hip",
-      "outcome": "unconfirmed",
-      "observations": [
-        "Injured during game"
-      ],
-      "claims": [
-        {
-          "date": "2026-09-21",
-          "kind": "game",
-          "text": "Sat out Monday's win over Giants due to hip injury; hopeful to play Sunday in Denver per coach.",
-          "quote": "sat out Monday's win over the Giants due to a hip injury",
-          "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
         }
       ]
     },
@@ -3025,7 +3003,7 @@
           "date": "2026-09-23",
           "kind": "followup",
           "text": "Reported expected to miss some time without needing surgery; expectations, not designations or a return date.",
-          "quote": "LB Brian Burns (ankle) is expected to miss some time but is not expected to need surgery, per Schefter.",
+          "quote": "LB Brian Burns (ankle; DNP) is expected to miss some time but is not expected to need surgery, per Schefter.",
           "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
         }
       ]

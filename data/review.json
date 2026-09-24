@@ -328,6 +328,17 @@
       "disposition": "annotated"
     },
     {
+      "id": "2026-09-21-lar-puka-nacua-withdrawn",
+      "incidentId": "2026-09-21-lar-puka-nacua",
+      "disposition": "held",
+      "subject": "Puka Nacua \u00b7 LAR (withdrawn in Pass 5)",
+      "reason": "Published in Pass 4 as a Week 2 in-game incident with an \"Injured during game\" observation, but no official report places an in-game injury in the Sept. 21 win over the Giants: the cited roundup sentence says he sat out with a hip injury, and club reporting describes week-of soreness. Sitting out while hurt is outside this archive's scope, so the row is withdrawn rather than reworded.",
+      "links": [
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22",
+        "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
+      ]
+    },
+    {
       "id": "2026-09-21-nyg-jaxson-dart-revision",
       "incidentId": "2026-09-21-nyg-jaxson-dart",
       "disposition": "annotated",

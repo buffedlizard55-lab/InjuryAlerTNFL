@@ -52,6 +52,39 @@ def normalize(text: str) -> str:
     return " ".join(text.split()).casefold()
 
 
+def nearest_live_text(text: str, quote: str, limit: int = 300) -> str:
+    """Return the sentence on the page that holds the longest run of the excerpt.
+
+    Newsroom roundups are edited after publication, so a missing excerpt is usually
+    a reword rather than a fabrication. Printing the live sentence next to the
+    stored one lets a reviewer tell those two apart without opening the page, and
+    keeps the CI report actionable when it cannot be reproduced locally.
+    """
+    needle = normalize(quote)
+    best_length, best_pos = 0, -1
+    for start in range(len(needle)):
+        low, high = best_length + 1, len(needle) - start
+        while low <= high:
+            middle = (low + high) // 2
+            position = text.find(needle[start:start + middle])
+            if position == -1:
+                high = middle - 1
+            else:
+                if middle > best_length:
+                    best_length, best_pos = middle, position
+                low = middle + 1
+        if best_length >= len(needle):
+            break
+    if best_pos == -1:
+        return ""
+    left = text.rfind(". ", 0, best_pos)
+    left = 0 if left == -1 else left + 2
+    right = text.find(". ", best_pos + best_length)
+    right = len(text) if right == -1 else right + 1
+    snippet = text[left:right]
+    return snippet[: limit - 1] + "…" if len(snippet) > limit else snippet
+
+
 def source_text(url: str) -> str:
     if not official_url(url):
         raise ValueError("URL not an approved official newsroom")
@@ -82,7 +115,11 @@ def verify(data: dict, reader=source_text) -> list[str]:
                     cache[url] = ""
                     issues.append(f"{row['id']} claim {index}: unavailable {url} ({type(exc).__name__})")
             if cache[url] and normalize(claim["quote"]) not in cache[url]:
-                issues.append(f"{row['id']} claim {index}: excerpt not found at {url}")
+                hint = nearest_live_text(cache[url], claim["quote"])
+                # Keep the URL as the last field diagnose_audit.py greps for; the
+                # live-sentence hint goes after it so a reviewer sees both sides.
+                detail = f" — nearest live text: {hint!r}" if hint else ""
+                issues.append(f"{row['id']} claim {index}: excerpt not found at {url}{detail}")
     print(f"Checked {sum(len(row['claims']) for row in data['incidents'])} claims across {len(cache)} official article URLs; {len(issues)} issue(s)", flush=True)
     return issues
 
