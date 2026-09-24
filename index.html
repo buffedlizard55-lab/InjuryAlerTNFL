@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102538">
   <meta name="description" content="Source-linked NFL in-game injury reports, a game-day scoreboard, and a transparent review queue. Game outcomes are not medical prognoses.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <title>Sideline Signal — NFL injury reporting with receipts</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23102538'/%3E%3Cpath d='M6 25h9l5-10 7 18 5-8h10' fill='none' stroke='%234adbc3' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="alternate" type="application/rss+xml" title="Source-backed in-game alerts" href="./feed.xml">
@@ -21,8 +21,11 @@
         <span>SIDELINE<span class="brand-accent">SIGNAL</span><small>NFL IN-GAME REPORTING</small></span>
       </a>
       <nav class="top-nav" aria-label="Main navigation">
+        <a href="#live-watch">Live watch</a>
         <a href="#scores-section">Scores</a>
         <a href="#reports">Reports</a>
+        <a href="#sources">Sources</a>
+        <a href="#leads">Leads</a>
         <a href="#review">Review queue</a>
         <a href="#method">Method</a>
       </nav>
@@ -36,7 +39,7 @@
         <div class="hero-copy">
           <div class="eyebrow"><span class="eyebrow-line"></span> THE GAME-DAY INJURY DESK <span id="today-label" class="eyebrow-date"></span></div>
           <h1>What happened.<br><em>What we know.</em></h1>
-          <p>On-field events, return-to-game outcomes, and later updates — kept separate and linked back to the reporting. No guessed diagnoses. No false “all clear.”</p>
+          <p>In-game injuries first. On-field events, return-to-game outcomes, and later updates are kept separate, labelled by source tier, and linked back to the reporting. No guessed diagnoses. No false “all clear.”</p>
           <div class="hero-actions">
             <a class="primary-action" href="#reports">Explore verified reports <span aria-hidden="true">↗</span></a>
             <a class="ghost-action" href="#method">How verification works <span aria-hidden="true">→</span></a>
@@ -53,6 +56,14 @@
         <div class="metric"><span class="metric-icon blue" aria-hidden="true">↩</span><div><span id="count-returned" class="metric-value">—</span><span class="metric-label">Returned to that game</span></div></div>
         <div class="metric"><span class="metric-icon amber" aria-hidden="true">!</span><div><span id="count-flags" class="metric-value">—</span><span class="metric-label">Source issues flagged</span></div></div>
         <div class="metric metric-health"><span id="feed-indicator" class="metric-icon pale" aria-hidden="true">◌</span><div><span id="feed-state" class="metric-value metric-value-small">Checking…</span><span id="last-check" class="metric-label">Collector status</span></div></div>
+      </section>
+
+      <section id="live-watch" class="live-section" aria-labelledby="live-heading">
+        <div class="section-header">
+          <div><span class="section-kicker">00 / PRIORITY LANE</span><h2 id="live-heading">Live in-game watch <span class="heading-mark" aria-hidden="true">◉</span></h2><p id="live-watch-status" class="section-subtitle">Starting the live lanes…</p></div>
+          <p class="lane-note">Highest priority: a game being played right now. Partner-feed wording only, never presented as a club or league statement.</p>
+        </div>
+        <div id="live-watch-feed" class="live-watch" aria-live="polite"><p class="notice">Checking whether any game is in progress…</p></div>
       </section>
 
       <section id="scores-section" class="score-section" aria-labelledby="scores-heading">
@@ -90,7 +101,11 @@
 
       <section id="review" class="review-section" aria-labelledby="review-heading"><div class="section-header"><div><span class="section-kicker">02 / TRANSPARENCY</span><h2 id="review-heading">Review queue <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Conflicting labels and identity mismatches are not quietly merged into the verified feed.</p></div></div><div id="review-list" class="review-grid"><div class="notice">Loading source flags…</div></div></section>
 
-      <section id="method" class="method-section" aria-labelledby="method-heading"><div class="method-intro"><span class="section-kicker">03 / THE STANDARD</span><h2 id="method-heading">A clear trail from<br><em>source to signal.</em></h2><p>We begin with league-published reporting, match a player and club to an actual game, and quote the precise line behind every claim. Ambiguous identity, conflicting wording, missing metadata, or a missing source means “hold,” not “guess.”</p><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener noreferrer" class="method-link">Official pregame injury report ↗</a></div><div class="method-rules"><div><span>01</span><strong>Discover</strong><p>Scheduled checks look for NFL.com in-game news; the ESPN feed supplies scores only.</p></div><div><span>02</span><strong>Cross-check</strong><p>Player link, team, game date, and explicit status language must align. Otherwise it goes to review.</p></div><div><span>03</span><strong>Publish with context</strong><p>Source links and dated excerpts remain attached. This is reporting, not medical advice or an official game-status designation.</p></div></div></section>
+      <section id="sources" class="sources-section" aria-labelledby="sources-heading"><div class="section-header"><div><span class="section-kicker">03 / PROVENANCE</span><h2 id="sources-heading">Sources, tier by tier <span class="heading-mark" aria-hidden="true">⌗</span></h2><p class="section-subtitle">Every lane the project reads, what it can actually prove, when it was last checked, and what it can never prove. Official lanes may ground a verified row; partner and unofficial lanes never can.</p></div></div><div id="sources-board" class="sources-board"><p class="notice">Loading the source registry…</p></div></section>
+
+      <section id="leads" class="leads-section" aria-labelledby="leads-heading"><div class="section-header"><div><span class="section-kicker">04 / UNOFFICIAL LEADS</span><h2 id="leads-heading">Reported elsewhere, not verified here <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Items seen on unofficial outlets and social feeds, each with its outlet, capture date and the exact next check needed. Nothing on this list is a confirmed injury and none of it is in the verified list.</p></div><span id="count-leads" class="result-total" aria-live="polite"></span></div><div id="leads-list" class="leads-list"><p class="notice">Loading unofficial leads…</p></div></section>
+
+      <section id="method" class="method-section" aria-labelledby="method-heading"><div class="method-intro"><span class="section-kicker">03 / THE STANDARD</span><h2 id="method-heading">A clear trail from<br><em>source to signal.</em></h2><p>We begin with league-published reporting, match a player and club to an actual game, and quote the precise line behind every claim. Ambiguous identity, conflicting wording, missing metadata, or a missing source means “hold,” not “guess.”</p><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener noreferrer" class="method-link">Official pregame injury report ↗</a></div><div class="method-rules"><div><span>01</span><strong>In-game first</strong><p>While a game is live the page polls a partner header and news lane every 20–45 seconds and shows only wording that explicitly says a player will not return, is questionable, was carted off, or went to the tent. It is labelled UNVERIFIED and carries the provider's own timestamp.</p></div><div><span>02</span><strong>Cross-check</strong><p>For the verified list, a player link, club, game date and an explicit league-or-club status sentence must all align. Otherwise it goes to the review queue, not the feed.</p></div><div><span>03</span><strong>Publish with context and tier</strong><p>Every lane is labelled official, partner or unofficial, and the archive only keeps official grounding. A lane that cannot be reached says so instead of going quiet.</p></div></div></section>
     </div>
   </main>
   <footer class="footer"><div class="shell footer-inner"><div><strong>SIDELINE<span> SIGNAL</span></strong><p>Less noise. More context. Always check the source.</p></div><div class="footer-links"><a href="#reports">Reports</a><a href="#review">Source issues</a><a href="https://github.com/buffedlizard55-lab/InjuryAlerTNFL" target="_blank" rel="noopener noreferrer">Repository ↗</a></div><p class="footer-disclaimer">Unofficial project. Not affiliated with the NFL, its clubs, or ESPN. Source publication dates are not injury times. A feed outage is not an all-clear.</p></div></footer>

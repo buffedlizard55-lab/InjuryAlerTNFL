@@ -1,0 +1,281 @@
+{
+ "version": 1,
+ "capturedOn": "2026-09-24",
+ "label": "UNOFFICIAL LEADS \u2014 reported by third parties, NOT verified. Nothing here has been confirmed against a league or club source, and nothing here may be promoted into data/archive.json without re-checking the original page and finding an official grounding sentence.",
+ "leads": [
+  {
+   "id": "lead-2026-09-20-mia-caleb-douglas",
+   "subject": "Caleb Douglas",
+   "team": "MIA",
+   "opponent": "SF",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "questionable to return (ankle)",
+   "text": "Dolphins wide receiver Caleb Douglas is questionable to return with an ankle injury.",
+   "source": {
+    "name": "CBS Sports live injury tracker",
+    "tier": "unofficial",
+    "url": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "The Dolphins' own Sept 21 transcript asks Hafley about \"Caleb Douglas's ankle\" and he says it is too early to tell, so the club confirms the injury but never states it happened in the game. Next check: a club sentence naming the moment.",
+   "notes": "Not in the verified archive. Miami is one of the clubs with no club-sourced in-game row for Week 2."
+  },
+  {
+   "id": "lead-2026-09-20-lv-dareke-young",
+   "subject": "Dareke Young",
+   "team": "LV",
+   "opponent": "LAC",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "questionable to return (hamstring)",
+   "text": "Raiders wide receiver Dareke Young is questionable to return with a hamstring injury. He had one reception for 27 yards before going down with the injury.",
+   "source": {
+    "name": "CBS Sports live injury tracker",
+    "tier": "unofficial",
+    "url": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Check Raiders.com game recap/press conference for an official sentence about Young in the Week 2 game.",
+   "notes": "Las Vegas has no rows at all in the verified archive for Week 2."
+  },
+  {
+   "id": "lead-2026-09-20-min-aaron-jones-sr",
+   "subject": "Aaron Jones Sr.",
+   "team": "MIN",
+   "opponent": "CHI",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "questionable to return (knee)",
+   "text": "Vikings running back Aaron Jones Sr. (knee) is questionable to return.",
+   "source": {
+    "name": "CBS Sports live injury tracker",
+    "tier": "unofficial",
+    "url": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Look for a Vikings.com or NFL.com sentence about Jones in the Week 2 win over Chicago.",
+   "notes": "Distinct player from Kyler Murray / Tyrion Ingram-Dawkins, the two Minnesota rows already verified."
+  },
+  {
+   "id": "lead-2026-09-20-chi-tyrique-stevenson",
+   "subject": "Tyrique Stevenson",
+   "team": "CHI",
+   "opponent": "MIN",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "doubtful to return (hamstring)",
+   "text": "Bears defensive back Tyrique Stevenson is doubtful to return with a hamstring injury.",
+   "source": {
+    "name": "CBS Sports live injury tracker",
+    "tier": "unofficial",
+    "url": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "The archive holds Stevenson's Week 1 shoulder row; a Week 2 hamstring event would be a separate row. Needs a club or NFL.com sentence for Sept. 20.",
+   "notes": "Two potential incidents for the same player in consecutive weeks are exactly the case the archive requires to stay separate."
+  },
+  {
+   "id": "lead-2026-09-23-espn-dart-followup",
+   "subject": "Jaxson Dart",
+   "team": "NYG",
+   "opponent": "LAR",
+   "gameDate": "2026-09-21",
+   "reportedStatus": "out for the season (knee surgery)",
+   "text": "NFL injury report, Week 3: 'Jaxson Dart out for season, updates on Puka Nacua, Zay Flowers, Travis Etienne'.",
+   "source": {
+    "name": "Google News RSS search result (NBC Sports headline, listed Wed, 23 Sep 2026 20:03:26 GMT in the feed query)",
+    "tier": "unofficial",
+    "url": "https://news.google.com/rss/search?q=NFL+injury+when:1d&hl=en-US&gl=US&ceid=US:en",
+    "role": "news-lead"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "The archive already carries the Dart game row and the NFL.com season-ending-surgery follow-up; this lead is a check that no newer dated claim is missing.",
+   "notes": "Recorded because the same query is what the collector will run; the item is a headline, not a claim about a player's current status.",
+   "duplicateOf": "2026-09-21-nyg-jaxson-dart"
+  },
+  {
+   "id": "lead-2026-09-24-social-dart-card",
+   "subject": "Jaxson Dart",
+   "team": "NYG",
+   "opponent": "LAR",
+   "gameDate": "2026-09-21",
+   "reportedStatus": "season-ending knee injury (unattributed card text)",
+   "text": "Giants QB Jaxson Dart is set to miss the rest of the season after suffering a serious knee injury in Week 2.",
+   "source": {
+    "name": "Mastodon #nfl public timeline (link-preview card pointing at NFLTradeRumors.co)",
+    "tier": "unofficial",
+    "url": "https://mastodon.social/api/v1/timelines/tag/nfl?limit=3",
+    "role": "social-lead"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Card text is copied from a secondary aggregator; never cite it as evidence. Used here only to show what the social lane surfaces.",
+   "notes": "Status captured at 2026-09-24T17:25:15Z.",
+   "duplicateOf": "2026-09-21-nyg-jaxson-dart"
+  },
+  {
+   "id": "lead-2026-09-24-espn-melton-context",
+   "subject": "Max Melton",
+   "team": "ARI",
+   "opponent": "SEA",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "day-to-day (toe) \u2014 partner-feed context for an already verified row",
+   "text": "Melton suffered a toe injury during the team's 31-7 loss to Seattle in Week 2, and he is considered day-to-day.",
+   "source": {
+    "name": "ESPN injuries feed",
+    "tier": "partner",
+    "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries",
+    "role": "status-context"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Not needed for the archive (NFL.com already grounds the row); this entry documents what the partner feed adds \u2014 a minute-precision date (2026-09-24T02:12Z) and game anchoring.",
+   "notes": "Included as the worked example of the partner tier. Silent if the feed is unavailable."
+  },
+  {
+   "id": "lead-2026-09-20-lac-kayode-awosika",
+   "subject": "Kayode Awosika",
+   "team": "LAC",
+   "opponent": "LV",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "missed time (fibula), left the game in the fourth quarter",
+   "text": "Awosika left the game in the fourth quarter after suffering the injury. Trevor Penning replaced him and finished the game.",
+   "source": {
+    "name": "Chargers Wire (USA Today)",
+    "tier": "unofficial",
+    "url": "https://chargerswire.usatoday.com/story/sports/nfl/chargers/2026/09/21/chargers-injury-news-update-david-njoku-charlie-kolar/91880138007/",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "A club sentence that places the fibula inside the Week 2 game is still missing: chargers.com confirms Harbaugh said he will \"miss some time\" (5 Takeaways, Sept 21) but does not say when it happened. Third-party coverage says he left in the fourth quarter.",
+   "notes": "The league roundup already carries Harbaugh's official line that Awosika will miss time; the official text does not say when the injury happened, so no row exists yet."
+  },
+  {
+   "id": "lead-2026-09-20-lac-dalvin-tomlinson",
+   "subject": "Dalvin Tomlinson",
+   "team": "LAC",
+   "opponent": "LV",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "missed time (hamstring), exited in the second half and did not return",
+   "text": "As for Tomlinson, he exited the game in the second half and did not return.",
+   "source": {
+    "name": "Chargers Wire (USA Today)",
+    "tier": "unofficial",
+    "url": "https://chargerswire.usatoday.com/story/sports/nfl/chargers/2026/09/21/chargers-injury-news-update-david-njoku-charlie-kolar/91880138007/",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Find a chargers.com sentence tying the hamstring injury to the Week 2 game. Check the pregame report first: he was already listed with a hamstring issue before kickoff, which may make this an aggravation rather than a new in-game injury.",
+   "notes": "Pregame-versus-in-game ambiguity is exactly the case the review queue exists for."
+  },
+  {
+   "id": "lead-2026-09-20-lv-treydan-stukes",
+   "subject": "Treydan Stukes",
+   "team": "LV",
+   "opponent": "LAC",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "concussion protocol",
+   "text": "The most notable injury to come from the Los Angeles Chargers game was safety Treydan Stukes. The rookie second-round pick had to be placed in the concussion protocol.",
+   "source": {
+    "name": "Las Vegas Review-Journal",
+    "tier": "unofficial",
+    "url": "https://www.reviewjournal.com/sports/raiders/brock-bowers-limited-aidan-oconnell-treydan-stukes-miss-raiders-practice-3890420/",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "raiders.com carries only a Week 2 press-conference video and the Week 2 injury report (no in-game sentence). Next check: a raiders.com article or Week 3 report that ties the protocol entry to the Chargers game.",
+   "notes": "Official text exists for the protocol status (NFL.com roundups, Sept 21 and Sept 23). Only the in-game origin is third-party."
+  },
+  {
+   "id": "lead-2026-09-20-min-brett-thorson",
+   "subject": "Brett Thorson",
+   "team": "MIN",
+   "opponent": "CHI",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "expected to miss time (right hamstring)",
+   "text": "He came out of the game with a little hamstring. He is being evaluated now.",
+   "source": {
+    "name": "NBC Sports / Rotoworld player news",
+    "tier": "unofficial",
+    "url": "https://www.nbcsports.com/fantasy/football/player-news/2026-09-23/dobbins-harvey-limited-coleman-sits-out-wed",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Re-read the vikings.com roster-move story and the Week 3 injury report; confirm the right-hamstring listing and any practice return before treating this as current.",
+   "notes": "PROMOTED Sept 24: vikings.com now anchors the origin (\"Thorson suffered a hamstring injury Sunday at Chicago\"). Kept here as a re-check lead because the earlier reports disagreed about whether he woke up sore or left the game.",
+   "duplicateOf": "2026-09-20-min-brett-thorson"
+  },
+  {
+   "id": "lead-2026-09-20-den-j-k-dobbins",
+   "subject": "J.K. Dobbins",
+   "team": "DEN",
+   "opponent": "JAX",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "hamstring / cramps, did not return (labels conflict)",
+   "text": "Dobbins exited the game with a hamstring injury. He was labeled questionable and did not return.",
+   "source": {
+    "name": "The Gazette (Colorado Springs)",
+    "tier": "unofficial",
+    "url": "https://gazette.com/2026/09/23/broncos-injury-report-rams-dobbins-harvey-coleman",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "denverbroncos.com now gives the club label for the same week (J.K. Dobbins (hip), limited participant, Sept 23) while local coverage says hamstring and then cramps. Next check: a club sentence naming the moment of the exit so the conflict can be recorded against a grounded event.",
+   "notes": "Two other Broncos in the same game are already archived from official text (Jonah Coleman ankle, RJ Harvey inactive)."
+  },
+  {
+   "id": "lead-2026-09-20-sea-anthony-bradford",
+   "subject": "Anthony Bradford",
+   "team": "SEA",
+   "opponent": "ARI",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "injured reserve, at least four games (knee, hip)",
+   "text": "Guard Anthony Bradford is questionable after being limited on Wednesday and Thursday before not practicing on Friday.",
+   "source": {
+    "name": "CBS Sports injury report",
+    "tier": "unofficial",
+    "url": "https://www.cbssports.com/nfl/news/nfl-week-2-injury-report-joe-burrow/",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Check whether the knee/hip injury happened in the Week 1 game or in practice; seahawks.com placed him on injured reserve on Sept 23 without naming an origin.",
+   "notes": "The club IR item is the official text available today; without an origin sentence the row would assert something the source does not say."
+  },
+  {
+   "id": "lead-2026-09-20-lac-cole-strange",
+   "subject": "Cole Strange",
+   "team": "LAC",
+   "opponent": "LV",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "evaluated in the game, returned",
+   "text": "Chargers coverage of the Week 2 loss says right guard Cole Strange was 'being evaluated' by the medical staff and later returned to the game.",
+   "source": {
+    "name": "Chargers Wire (USA Today)",
+    "tier": "unofficial",
+    "url": "https://chargerswire.usatoday.com/story/sports/nfl/chargers/2026/09/21/chargers-injury-news-update-david-njoku-charlie-kolar/91880138007/",
+    "role": "beat-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Find a chargers.com sentence naming Strange's evaluation and return, then quote it before promoting. The club's Sept 20 game recap as published does not mention it.",
+   "notes": "Not in the verified archive. If grounded, this would be a 'returned' outcome, which the league roundups rarely record."
+  },
+  {
+   "id": "lead-2026-09-20-min-tyrion-ingram-dawkins",
+   "subject": "Tyrion Ingram-Dawkins",
+   "team": "MIN",
+   "opponent": "CHI",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "hip (in-game), later listed oblique",
+   "text": "Vikings defensive lineman Tyrion Ingram-Dawkins left the Bears game early with a hip injury; the club's Week 3 injury report lists him as limited with an oblique injury.",
+   "source": {
+    "name": "Heavy (Vikings)",
+    "tier": "unofficial",
+    "url": "https://heavy.com/sports/nfl/minnesota-vikings/vikings-injury-update-after-chicago-win/",
+    "role": "aggregator"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Decide the label: ask for a vikings.com sentence naming the in-game injury area; until then the row keeps the league label and this conflict stays visible.",
+   "notes": "The archive row stands on the league roundup (hip, did not return). This lead is kept as a re-check because the club's own Week 3 report lists the injury as oblique and limited, so the label conflict is still live.",
+   "duplicateOf": "2026-09-20-min-tyrion-ingram-dawkins"
+  }
+ ]
+}

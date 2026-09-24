@@ -15,7 +15,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from build import assemble, rss  # noqa: E402
 from refresh import (collect_news, collect_scores, discover_links, extract_roundup, game_for,
                      normal_slug, parse_news, parse_scores, valid_player_link)  # noqa: E402
-from schema import InvalidData, official_url, validate_archive, validate_incidents, validate_review  # noqa: E402
+from schema import (InvalidData, official_url, validate_archive, validate_incidents,  # noqa: E402
+                    validate_leads, validate_review, validate_sources)
 from verify_sources import normalize, verify  # noqa: E402
 from wait_for_legacy_pages import legacy_run, wait_for_legacy  # noqa: E402
 
@@ -32,12 +33,12 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(101, len(self.archive["incidents"]))
-        self.assertEqual(101, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(103, len(self.archive["incidents"]))
+        self.assertEqual(103, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-24", self.archive["verifiedOn"])
         claims = [claim for row in self.archive["incidents"] for claim in row["claims"]]
-        self.assertEqual(217, len(claims))
-        self.assertEqual(49, len({claim["url"] for claim in claims}))
+        self.assertEqual(270, len(claims))
+        self.assertEqual(52, len({claim["url"] for claim in claims}))
         self.assertEqual(
             len(claims),
             len({(row["id"], claim["url"], claim["quote"]) for row in self.archive["incidents"] for claim in row["claims"]}),
@@ -169,6 +170,8 @@ class SourceLedgerTests(unittest.TestCase):
             ("zion-johnson", "unconfirmed"), ("cooper-dejean", "unconfirmed"), ("jalen-carter", "unconfirmed"),
             ("tyson-bagent", "unconfirmed"), ("kiko-mauigoa", "did_not_return"), ("mason-taylor", "unconfirmed"),
             ("romello-height", "unconfirmed"),
+            ("martin-emerson-jr", "unconfirmed"),
+            ("brett-thorson", "unconfirmed"),
         }
         self.assertEqual(pairs, {(row["id"].split("-", 4)[-1], row["outcome"]) for row in self.archive["incidents"]})
 
@@ -186,9 +189,45 @@ class SourceLedgerTests(unittest.TestCase):
             self.assertGreaterEqual(len(by_id[entry]["claims"]), min_claims, entry)
         self.assertEqual("2026-09-23", by_id["2026-09-21-nyg-andrew-thomas"]["claims"][-1]["date"])
 
+    def test_source_registry_states_what_each_lane_can_and_cannot_prove(self):
+        sources = json.loads((ROOT / "data/sources.json").read_text())
+        validate_sources(sources)
+        by_id = {entry["id"]: entry for entry in sources["sources"]}
+        # The boundary lanes a reader would ask about must always be listed with
+        # their true status, including the ones that refuse unauthenticated reads.
+        self.assertEqual("blocked", by_id["nfl-gamecenter-json"]["verification"]["status"])
+        self.assertEqual("official", by_id["nfl-gamecenter-json"]["tier"])
+        self.assertFalse(by_id["nfl-gamecenter-json"]["autoPublish"])
+        self.assertEqual("link-out-only", by_id["x-twitter"]["verification"]["status"])
+        self.assertEqual("blocked", by_id["reddit-json"]["verification"]["status"])
+        # No partner or unofficial lane may auto-publish, and every lane records a probe.
+        for entry in sources["sources"]:
+            with self.subTest(source=entry["id"]):
+                if entry["tier"] != "official":
+                    self.assertFalse(entry["autoPublish"])
+                self.assertTrue(entry["verification"]["method"])
+                self.assertIn(entry["verification"]["status"],
+                              {"verified", "verified-exists", "verified-endpoint", "blocked", "link-out-only", "pending-reprobe"})
+
+    def test_unofficial_leads_never_carry_official_evidence_or_missing_next_steps(self):
+        leads = json.loads((ROOT / "data/leads.json").read_text())
+        validate_leads(leads)
+        published = {(row["player"].lower(), row["team"], row["gameDate"]) for row in self.archive["incidents"]}
+        for lead in leads["leads"]:
+            with self.subTest(lead=lead["id"]):
+                self.assertNotEqual("official", lead["source"]["tier"])
+                self.assertGreaterEqual(len(lead["verifyNext"]), 20)
+                # An unofficial lead is a candidate, never a quiet duplicate of an
+                # archived row. Partner-tier entries are allowed to sit alongside an
+                # archived row when they exist to document what the partner feed adds.
+                if lead.get("gameDate") and lead["source"]["tier"] == "unofficial" and not lead.get("duplicateOf"):
+                    # Same player, same club, same game date would be an archived row
+                    # wearing an unofficial label: that is the one thing a lead may not be.
+                    self.assertNotIn((lead["subject"].lower(), lead["team"], lead["gameDate"]), published)
+
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(30, len(self.review["flags"]))
+        self.assertEqual(35, len(self.review["flags"]))
         self.assertEqual(3, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
@@ -375,7 +414,15 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(101, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(103, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            # Provenance must ship with the page: the source registry and the
+            # unofficial lead list are reader-facing, so a build that omits them
+            # would leave the site claiming more than it can show.
+            sources = json.loads((dest / "data/sources.json").read_text())
+            leads = json.loads((dest / "data/leads.json").read_text())
+            self.assertGreaterEqual(len(sources["sources"]), 40)
+            self.assertTrue(all(entry["tier"] in {"official", "partner", "unofficial"} for entry in sources["sources"]))
+            self.assertTrue(all(lead["source"]["tier"] != "official" for lead in leads["leads"]))
 
 
 if __name__ == "__main__":
