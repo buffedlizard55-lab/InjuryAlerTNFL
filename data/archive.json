@@ -1,7 +1,7 @@
 {
  "version": 1,
  "verifiedOn": "2026-09-24",
- "scope": "103 individually checked 2026 in-game incidents across Weeks 1-2 (270 dated claims from 52 distinct league or club URLs). Pass 6 adds two club-grounded rows (Martin Emerson Jr., NewOrleansSaints.com game-day recap; Brett Thorson, Vikings.com roster-move story) and 53 dated claims on existing rows, and every claim must sit on an allowed league/club host and be re-read before publication; candidates whose official text never places the injury inside a game stay in data/leads.json instead.",
+ "scope": "105 individually checked 2026 in-game incidents across Weeks 1-2 (279 dated claims from 53 distinct league or club URLs). Pass 7 resolves the one held identity case a club page settles - the Packers' own game file names T Zach Bako-Bewele as lost to a knee injury in the Week 2 win - and adds a club-grounded row for Jordan Mason (vikings.com roster story: thumb injury suffered in the Week 1 game), plus new dated claims on four existing rows from club pages (Packers' game recap; Cowboys' Week 2 notes). League \"notable injuries\" pages for both weeks are fully archived; every claim must sit on an allowed league/club host and be re-read before publication, and candidates whose official text never places the injury inside a game stay in data/leads.json instead.",
  "incidents": [
   {
    "id": "2026-09-09-ne-a-j-brown",
@@ -369,7 +369,7 @@
      "date": "2026-09-13",
      "kind": "game",
      "text": "Wrist fracture reported after the Colts game; the cited report does not give an in-game return designation.",
-     "quote": "Lane suffered a fractured wrist in the Ravens\u2019 41-23 win",
+     "quote": "Lane suffered a fractured wrist in the Ravens’ 41-23 win",
      "url": "https://www.nfl.com/news/ravens-rookie-wr-ja-kobi-lane-to-miss-several-weeks-with-fractured-wrist"
     },
     {
@@ -865,6 +865,35 @@
      "text": "Placed on injured reserve Wednesday after the knee injury; the move means a minimum four-game absence.",
      "quote": "S Kyle Louis (knee) placed on injured reserve",
      "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+    }
+   ]
+  },
+  {
+   "id": "2026-09-13-min-jordan-mason",
+   "player": "Jordan Mason",
+   "position": "RB",
+   "team": "MIN",
+   "opponent": "GB",
+   "gameDate": "2026-09-13",
+   "injury": "Thumb (club: suffered while running the ball in the Week 1 game)",
+   "outcome": "unconfirmed",
+   "observations": [
+    "Injured during game"
+   ],
+   "claims": [
+    {
+     "date": "2026-09-16",
+     "kind": "game",
+     "text": "The club's roster-move story says Mason led Minnesota in Week 1 and suffered a thumb injury in that game.",
+     "quote": "he suffered a thumb injury while helping Minnesota ground and pound 34 total carries for a net of 107 yards",
+     "url": "https://www.vikings.com/news/jordan-mason-injured-reserve-deejay-dallas-signing-2026"
+    },
+    {
+     "date": "2026-09-16",
+     "kind": "followup",
+     "text": "The Vikings placed him on injured reserve and signed DeeJay Dallas from the practice squad.",
+     "quote": "The Vikings placed Jordan Mason on Injured Reserve and signed fellow running back DeeJay Dallas from the practice squad.",
+     "url": "https://www.vikings.com/news/jordan-mason-injured-reserve-deejay-dallas-signing-2026"
     }
    ]
   },
@@ -1718,6 +1747,13 @@
     },
     {
      "date": "2026-09-21",
+     "kind": "game",
+     "text": "The club describes the mechanism and that he missed the remainder of the game.",
+     "quote": "CB Cobie Durant was stepped on by S Markquese Bell in the end zone after an incomplete pass and missed the remainder of the game with a hamstring injury.",
+     "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
+    },
+    {
+     "date": "2026-09-21",
      "kind": "observation",
      "text": "Stepped on by teammate Markquese Bell in the end zone after an incomplete pass.",
      "quote": "CB Cobie Durant was stepped on by S Markquese Bell in the end zone after an incomplete pass",
@@ -1780,6 +1816,13 @@
      "text": "Suffered a stinger in the Commanders game while wearing green dot in Overshown absence.",
      "quote": "suffered a stinger, according to Schottenheimer",
      "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
+    },
+    {
+     "date": "2026-09-21",
+     "kind": "observation",
+     "text": "The coach described the injury as a stinger after Barham wore the green dot in place of Overshown.",
+     "quote": "Additionally, LB Jaishawn Barham, who wore the green dot in Overshown's absence, suffered a stinger, according to Schottenheimer.",
+     "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
     }
    ]
   },
@@ -1799,6 +1842,13 @@
    "claims": [
     {
      "date": "2026-09-21",
+     "kind": "followup",
+     "text": "Coach reported a torn plantar fascia; said he could miss some time, with no IR decision yet.",
+     "quote": "P.J. Locke tore his plantar fascia in his right foot and could miss some time",
+     "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+    },
+    {
+     "date": "2026-09-21",
      "kind": "game",
      "text": "The Cowboys report he suffered a foot injury early against Washington and did not return.",
      "quote": "P.J. Locke, who was starting in place of Malik Hooker (forearm), suffered a foot injury early in the game and did not return.",
@@ -1813,10 +1863,10 @@
     },
     {
      "date": "2026-09-21",
-     "kind": "followup",
-     "text": "Coach reported a torn plantar fascia; said he could miss some time, with no IR decision yet.",
-     "quote": "P.J. Locke tore his plantar fascia in his right foot and could miss some time",
-     "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-sept-21"
+     "kind": "observation",
+     "text": "The club's Week 2 notes say Locke hurt the foot early and was in a walking boot after the game.",
+     "quote": "S P.J. Locke, who was starting in place of Malik Hooker (forearm), suffered a foot injury early in the game and did not return. He was seen in a walking boot after the game.",
+     "url": "https://www.dallascowboys.com/news/pic-6-dak-prescott-and-jake-ferguson-s-special-connection-pass-rush-notes-more"
     }
    ]
   },
@@ -2057,6 +2107,51 @@
      "text": "Packers.com's game recap says Jordan Love took a shot to his elbow, his hand went numb, and he kept playing without missing a snap. Kept playing is not recorded as the word returned.",
      "quote": "Love even was in the injury mix, taking a shot to his elbow on the play he fumbled, which he said left his hand numb for a while. But he kept playing and didn't miss any snaps.",
      "url": "https://www.packers.com/news/game-recap-5-takeaways-from-packers-overtime-victory-over-jets-week-2-2026"
+    }
+   ]
+  },
+  {
+   "id": "2026-09-20-gb-zach-bako-bewele",
+   "player": "Zach Bako-Bewele",
+   "position": "T",
+   "team": "GB",
+   "opponent": "NYJ",
+   "gameDate": "2026-09-20",
+   "injury": "Knee (torn patellar tendon stated by the player on Sept 22)",
+   "outcome": "out",
+   "observations": [
+    "Carted to locker room",
+    "Injured during game",
+    "Left game"
+   ],
+   "claims": [
+    {
+     "date": "2026-09-20",
+     "kind": "game",
+     "text": "League roundup: the Packers tackle was carted off with an air cast on the injured leg and ruled out.",
+     "quote": "Offensive tackle Zach Bako-Bewele (knee) was carted off the field with an air cast placed on his injured leg. Bako-Bewele also was ruled out.",
+     "url": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+    },
+    {
+     "date": "2026-09-20",
+     "kind": "observation",
+     "text": "The club's own in-game file names him among players lost during the game; this is the basis for the 'Carted to locker room' and 'Left game' observations.",
+     "quote": "The Packers lost WR Jayden Reed (neck), T Zach Bako-Bewele (knee), G Aaron Banks (toe) and G Donovan Jennings (hand) to injuries during the game.",
+     "url": "https://www.packers.com/news/in-game-updates-week-2-jets-2026"
+    },
+    {
+     "date": "2026-09-20",
+     "kind": "observation",
+     "text": "The club's game recap reports both first-series losses and that Bako-Bewele was carted off and replaced.",
+     "quote": "On the first series of the game, the Packers lost WR Jayden Reed to a neck injury and RT Zach Bako-Bewele to a knee injury.",
+     "url": "https://www.packers.com/news/game-recap-5-takeaways-from-packers-overtime-victory-over-jets-week-2-2026"
+    },
+    {
+     "date": "2026-09-22",
+     "kind": "followup",
+     "text": "Bako-Bewele said the tear happened in the Jets game; season-ending, surgery scheduled for Thursday.",
+     "quote": "OT Zach Bako-Bewele said Tuesday that he suffered a torn patellar tendon during Sunday's game against the Jets, per ESPN.com. Bako-Bewele will miss the rest of the season and will undergo knee surgery on Thursday.",
+     "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
     }
    ]
   },

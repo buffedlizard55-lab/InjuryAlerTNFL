@@ -21,8 +21,8 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from schema import (official_url, validate_archive, validate_leads,  # noqa: E402
-                    validate_review, validate_sources)
+from schema import (official_url, validate_alert_log, validate_archive, validate_candidates,  # noqa: E402
+                    validate_leads, validate_review, validate_sources, validate_watch)
 
 OFFICIAL_HOSTS = ("nfl.com", ".com")  # refined below by official_url itself
 
@@ -42,6 +42,9 @@ def main() -> int:
         ("review.json", review, validate_review),
         ("sources.json", sources, validate_sources),
         ("leads.json", leads, validate_leads),
+        ("alert-log.json", load("alert-log.json"), validate_alert_log),
+        ("candidates.json", load("candidates.json"), validate_candidates),
+        ("watch.json", load("watch.json"), validate_watch),
     ):
         try:
             validator(data)
@@ -88,7 +91,8 @@ def main() -> int:
     front_end = index + "\n" + "\n".join(
         path.read_text(encoding="utf-8") for path in sorted((ROOT / "assets").glob("*"))
         if path.suffix in {".js", ".mjs", ".css"})
-    for artifact in ("archive.json", "review.json", "sources.json", "leads.json"):
+    for artifact in ("archive.json", "review.json", "sources.json", "leads.json",
+                     "alert-log.json", "candidates.json", "watch.json"):
         if artifact not in front_end:
             problems.append(f"the front end never loads {artifact}")
     csp = re.search(r'Content-Security-Policy"\s+content="([^"]+)"', index)
@@ -97,7 +101,8 @@ def main() -> int:
         allowed = (connect.group(1) if connect else "").split()
         unexpected = [item for item in allowed if not item.startswith("'self'")
                       and not item.startswith("https://site.api.espn.com")
-                      and not item.startswith("https://site.web.api.espn.com")]
+                      and not item.startswith("https://site.web.api.espn.com")
+                      and not item.startswith("https://sports.core.api.espn.com")]
         if unexpected:
             problems.append(f"connect-src opens the browser to {unexpected}")
     else:
@@ -124,6 +129,10 @@ def main() -> int:
           f"{sum(1 for f in review['flags'] if f['disposition'] == 'annotated')} annotated)")
     print(f"sources: {len(lanes)} lanes ({official} official / {partner} partner / {unofficial} unofficial)")
     print(f"leads:   {len(leads['leads'])} unofficial leads")
+    log = load("alert-log.json")
+    watch = load("watch.json")
+    print(f"log:     {len(log['entries'])} entries (append-only, second-precision); "
+          f"watch: {watch['status']} / {len(watch['signals'])} signal(s)")
     if problems:
         print("\nFAIL")
         for problem in problems:

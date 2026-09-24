@@ -4,29 +4,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102538">
-  <meta name="description" content="Source-linked NFL in-game injury reports, a game-day scoreboard, and a transparent review queue. Game outcomes are not medical prognoses.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
-  <title>Sideline Signal — NFL injury reporting with receipts</title>
+  <meta name="description" content="Source-linked NFL in-game injury alerts: official club and league reporting, labelled partner and unofficial lanes, second-precision timestamps and an append-only alert log. Game outcomes are not medical prognoses.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com https://sports.core.api.espn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <title>Sideline Signal — NFL in-game injury alerts with receipts</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23102538'/%3E%3Cpath d='M6 25h9l5-10 7 18 5-8h10' fill='none' stroke='%234adbc3' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="alternate" type="application/rss+xml" title="Source-backed in-game alerts" href="./feed.xml">
   <link rel="stylesheet" href="./assets/styles.css">
   <script type="module" src="./assets/app.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#reports">Skip to reports</a>
+  <a class="skip-link" href="#live-watch">Skip to the live watch</a>
   <header class="topbar">
     <div class="shell topbar-inner">
       <a href="./" class="brand" aria-label="Sideline Signal home">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 42 42" fill="none"><path d="M3 22h8l5-9 7 17 5-8h11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span>SIDELINE<span class="brand-accent">SIGNAL</span><small>NFL IN-GAME REPORTING</small></span>
+        <span>SIDELINE<span class="brand-accent">SIGNAL</span><small>NFL IN-GAME INJURY ALERTS</small></span>
       </a>
       <nav class="top-nav" aria-label="Main navigation">
         <a href="#live-watch">Live watch</a>
-        <a href="#scores-section">Scores</a>
-        <a href="#reports">Reports</a>
+        <a href="#alerts">Alert log</a>
+        <a href="#reports">Verified</a>
+        <a href="#auto-matched">Auto-matched</a>
         <a href="#sources">Sources</a>
         <a href="#leads">Leads</a>
-        <a href="#review">Review queue</a>
         <a href="#method">Method</a>
       </nav>
       <span class="topbar-tag"><span class="signal-dot" aria-hidden="true"></span> SOURCE-FIRST</span>
@@ -39,10 +39,10 @@
         <div class="hero-copy">
           <div class="eyebrow"><span class="eyebrow-line"></span> THE GAME-DAY INJURY DESK <span id="today-label" class="eyebrow-date"></span></div>
           <h1>What happened.<br><em>What we know.</em></h1>
-          <p>In-game injuries first. On-field events, return-to-game outcomes, and later updates are kept separate, labelled by source tier, and linked back to the reporting. No guessed diagnoses. No false “all clear.”</p>
+          <p>In-game injuries first: who went down, whether they got up, whether they went to the tent or the locker room, and whether anybody has said they will return. Every lane is labelled <strong>official</strong>, <strong>partner</strong> or <strong>unofficial</strong>, every update is timestamped to the second, and every one is logged so a page refresh cannot lose it.</p>
           <div class="hero-actions">
-            <a class="primary-action" href="#reports">Explore verified reports <span aria-hidden="true">↗</span></a>
-            <a class="ghost-action" href="#method">How verification works <span aria-hidden="true">→</span></a>
+            <a class="primary-action" href="#live-watch">Open the live watch <span aria-hidden="true">↗</span></a>
+            <a class="ghost-action" href="#alerts">See the alert log <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring ring-one"></div><div class="graphic-ring ring-two"></div><div class="graphic-ring ring-three"></div><svg viewBox="0 0 360 180"><path d="M0 96h42l18-31 35 74 27-44h39l21-38 36 78 22-39h120" fill="none" stroke="#52ddc1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="graphic-caption">SIGNAL OVER SPECULATION <span>01 / 03</span></span></div>
@@ -55,15 +55,37 @@
         <div class="metric"><span class="metric-icon mint" aria-hidden="true">✳</span><div><span id="count-total" class="metric-value">—</span><span class="metric-label">Verified archive entries</span></div></div>
         <div class="metric"><span class="metric-icon blue" aria-hidden="true">↩</span><div><span id="count-returned" class="metric-value">—</span><span class="metric-label">Returned to that game</span></div></div>
         <div class="metric"><span class="metric-icon amber" aria-hidden="true">!</span><div><span id="count-flags" class="metric-value">—</span><span class="metric-label">Source issues flagged</span></div></div>
+        <div class="metric"><span class="metric-icon pale" aria-hidden="true">◔</span><div><span id="count-log" class="metric-value">—</span><span class="metric-label">Logged alerts (all time)</span></div></div>
         <div class="metric metric-health"><span id="feed-indicator" class="metric-icon pale" aria-hidden="true">◌</span><div><span id="feed-state" class="metric-value metric-value-small">Checking…</span><span id="last-check" class="metric-label">Collector status</span></div></div>
       </section>
 
       <section id="live-watch" class="live-section" aria-labelledby="live-heading">
         <div class="section-header">
           <div><span class="section-kicker">00 / PRIORITY LANE</span><h2 id="live-heading">Live in-game watch <span class="heading-mark" aria-hidden="true">◉</span></h2><p id="live-watch-status" class="section-subtitle">Starting the live lanes…</p></div>
-          <p class="lane-note">Highest priority: a game being played right now. Partner-feed wording only, never presented as a club or league statement.</p>
+          <p class="lane-note">Highest priority: a game being played right now. In-game wording from partner and unofficial lanes only, never presented as a club or league statement, and never a diagnosis.</p>
         </div>
+        <div id="lane-dashboard" class="lane-dashboard" aria-label="Live lane health"></div>
         <div id="live-watch-feed" class="live-watch" aria-live="polite"><p class="notice">Checking whether any game is in progress…</p></div>
+      </section>
+
+      <section id="alerts" class="alerts-section" aria-labelledby="alerts-heading">
+        <div class="section-header">
+          <div><span class="section-kicker">01 / THE ALERT LOG</span><h2 id="alerts-heading">Everything we saw, timestamped to the second <span class="heading-mark" aria-hidden="true">⏱</span></h2><p id="alerts-status" class="section-subtitle">Loading the server log…</p></div>
+          <div class="alert-tools">
+            <button type="button" id="notify-button" class="notify-button">Enable browser alerts <span aria-hidden="true">↗</span></button>
+            <button type="button" id="export-log" class="ghost-action small">Export log (JSON)</button>
+            <button type="button" id="clear-log" class="ghost-action small">Clear my session</button>
+          </div>
+        </div>
+        <p class="policy-note" id="log-policy"></p>
+        <div class="log-filters" role="group" aria-label="Alert log filters">
+          <button type="button" class="chip active" data-log="all" aria-pressed="true">Everything</button>
+          <button type="button" class="chip" data-log="official" aria-pressed="false">Official only</button>
+          <button type="button" class="chip" data-log="partner" aria-pressed="false">Partner</button>
+          <button type="button" class="chip" data-log="unofficial" aria-pressed="false">Unofficial</button>
+          <button type="button" class="chip" data-log="new" aria-pressed="false">New since last visit</button>
+        </div>
+        <div id="alert-log-list" class="alert-log" aria-live="polite"><p class="notice">Loading the alert log…</p></div>
       </section>
 
       <section id="scores-section" class="score-section" aria-labelledby="scores-heading">
@@ -77,7 +99,7 @@
 
       <div class="main-grid">
         <section id="reports" class="reports-section" aria-labelledby="reports-heading">
-          <div class="section-header report-heading"><div><span class="section-kicker">01 / FIELD REPORTS</span><h2 id="reports-heading">Verified reports <span class="heading-mark" aria-hidden="true">↗</span></h2><p id="coverage-copy" class="section-subtitle">Opening the source ledger…</p></div><span id="result-count" class="result-total" aria-live="polite"></span></div>
+          <div class="section-header report-heading"><div><span class="section-kicker">02 / FIELD REPORTS</span><h2 id="reports-heading">Verified reports <span class="heading-mark" aria-hidden="true">↗</span></h2><p id="coverage-copy" class="section-subtitle">Opening the source ledger…</p></div><span id="result-count" class="result-total" aria-live="polite"></span></div>
           <div class="filter-panel">
             <label class="search-field"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search player, club or injury</span><input id="search" type="search" placeholder="Search player, team, or reported area" autocomplete="off"></label>
             <label class="team-field"><span class="sr-only">Filter by team</span><select id="team-filter"><option value="all">All teams</option></select></label>
@@ -92,22 +114,37 @@
           <div id="report-list" class="report-list" aria-live="polite"><div class="notice">Loading source-backed reports…</div></div>
         </section>
 
-        <aside class="sidebar" aria-label="Alert and reporting information">
-          <section class="sidebar-card alert-card"><div class="card-label"><span class="signal-dot" aria-hidden="true"></span> ALERT CHANNEL</div><h2>Stay in the loop.<br><span>Stay grounded.</span></h2><p>Get a browser notice when this open page discovers a <strong>new, source-matched game report</strong>. Existing archive entries will not trigger alerts.</p><button id="notify-button" class="notify-button" type="button">Enable browser alerts <span aria-hidden="true">↗</span></button><p id="notification-info" class="microcopy">Notifications work only while this page is open. <a href="./feed.xml">RSS is also available ↗</a></p></section>
-          <section class="sidebar-card reading-card"><div class="card-label">HOW TO READ A REPORT</div><div class="reading-row"><span class="reading-number">01</span><div><strong>What was observed</strong><p>Cart, tent, walking off, or a return — only if the linked report actually says so.</p></div></div><div class="reading-row"><span class="reading-number">02</span><div><strong>That game's outcome</strong><p>“Out” and “returned” refer to the listed game, never automatically to next week.</p></div></div><div class="reading-row"><span class="reading-number">03</span><div><strong>Later outlook</strong><p>Updates keep the source date and wording. An expected absence is not a confirmed diagnosis or return date.</p></div></div></section>
-          <section class="sidebar-card caution-card"><span class="caution-icon" aria-hidden="true">i</span><div><strong>Severity is not a score.</strong><p>We do not infer clinical severity from a cart, a blue tent, or a scoreboard. Unconfirmed means unconfirmed.</p></div></section>
+        <aside class="sidebar" aria-label="How to read this page">
+          <section class="sidebar-card alert-card"><div class="card-label"><span class="signal-dot" aria-hidden="true"></span> HOW AN ALERT REACHES YOU</div><h2>Fast lanes,<br><span>labelled tiers.</span></h2><p>A game in progress is polled every 10–20 seconds directly from this page. Official club pages are read continuously by the repository's own scanner, and every result is written to the log with the sentence it came from.</p><p id="notification-info" class="microcopy">Notifications work only while this page is open. <a href="./feed.xml">RSS is also available ↗</a></p></section>
+          <section class="sidebar-card reading-card"><div class="card-label">HOW TO READ A REPORT</div><div class="reading-row"><span class="reading-number">01</span><div><strong>What was observed</strong><p>Cart, tent, walking off, or a return — only if the linked report actually says so.</p></div></div><div class="reading-row"><span class="reading-number">02</span><div><strong>That game's outcome</strong><p>“Out” and “returned” refer to the listed game, never automatically to next week.</p></div></div><div class="reading-row"><span class="reading-number">03</span><div><strong>Later outlook</strong><p>Updates keep the source date and wording. An expected absence is not a confirmed diagnosis or a return date.</p></div></div></section>
+          <section class="sidebar-card caution-card"><span class="caution-icon" aria-hidden="true">i</span><div><strong>Severity is not a score.</strong><p>We do not infer clinical severity from a cart, a blue tent, or a scoreboard. Unconfirmed means unconfirmed, and an empty lane is never an all-clear.</p></div></section>
         </aside>
       </div>
 
-      <section id="review" class="review-section" aria-labelledby="review-heading"><div class="section-header"><div><span class="section-kicker">02 / TRANSPARENCY</span><h2 id="review-heading">Review queue <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Conflicting labels and identity mismatches are not quietly merged into the verified feed.</p></div></div><div id="review-list" class="review-grid"><div class="notice">Loading source flags…</div></div></section>
+      <section id="auto-matched" class="candidates-section" aria-labelledby="candidates-heading">
+        <div class="section-header"><div><span class="section-kicker">03 / AUTO-MATCHED CLUB TEXT</span><h2 id="candidates-heading">Found by the scanner, not yet in the master list <span class="heading-mark amber-mark" aria-hidden="true">⚙</span></h2><p class="section-subtitle" id="candidates-status">Reading the club-scan results…</p></div><span id="count-candidates" class="result-total" aria-live="polite"></span></div>
+        <p class="policy-note" id="candidates-policy"></p>
+        <div id="candidates-list" class="candidates-list"><p class="notice">Loading the club scan…</p></div>
+      </section>
 
-      <section id="sources" class="sources-section" aria-labelledby="sources-heading"><div class="section-header"><div><span class="section-kicker">03 / PROVENANCE</span><h2 id="sources-heading">Sources, tier by tier <span class="heading-mark" aria-hidden="true">⌗</span></h2><p class="section-subtitle">Every lane the project reads, what it can actually prove, when it was last checked, and what it can never prove. Official lanes may ground a verified row; partner and unofficial lanes never can.</p></div></div><div id="sources-board" class="sources-board"><p class="notice">Loading the source registry…</p></div></section>
+      <section id="review" class="review-section" aria-labelledby="review-heading"><div class="section-header"><div><span class="section-kicker">04 / TRANSPARENCY</span><h2 id="review-heading">Review queue <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Conflicting labels and identity mismatches are not quietly merged into the verified feed.</p></div></div><div id="review-list" class="review-grid"><div class="notice">Loading source flags…</div></div></section>
 
-      <section id="leads" class="leads-section" aria-labelledby="leads-heading"><div class="section-header"><div><span class="section-kicker">04 / UNOFFICIAL LEADS</span><h2 id="leads-heading">Reported elsewhere, not verified here <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Items seen on unofficial outlets and social feeds, each with its outlet, capture date and the exact next check needed. Nothing on this list is a confirmed injury and none of it is in the verified list.</p></div><span id="count-leads" class="result-total" aria-live="polite"></span></div><div id="leads-list" class="leads-list"><p class="notice">Loading unofficial leads…</p></div></section>
+      <section id="sources" class="sources-section" aria-labelledby="sources-heading"><div class="section-header"><div><span class="section-kicker">05 / PROVENANCE</span><h2 id="sources-heading">Sources, organised by tier <span class="heading-mark" aria-hidden="true">⌗</span></h2><p class="section-subtitle">Every lane the project reads, grouped and labelled: what it can prove, the latency to expect, the timestamp precision it actually carries, how it is reached, and when it was last checked. Official lanes may ground a verified row; partner and unofficial lanes never can.</p></div></div>
+        <div class="source-filters">
+          <label class="search-field compact"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search the registry</span><input id="source-search" type="search" placeholder="Search lanes…" autocomplete="off"></label>
+          <label><span class="sr-only">Tier</span><select id="source-tier"><option value="all">All tiers</option><option value="official">Official</option><option value="partner">Partner</option><option value="unofficial">Unofficial</option></select></label>
+          <label><span class="sr-only">Category</span><select id="source-category"><option value="all">All categories</option></select></label>
+          <label><span class="sr-only">Access</span><select id="source-access"><option value="all">Any access</option><option value="keyless-json">Keyless JSON</option><option value="html">Web page</option><option value="rss">RSS</option><option value="link-out">Link-out only</option><option value="blocked">Blocked</option></select></label>
+          <span id="source-count" class="result-total" aria-live="polite"></span>
+        </div>
+        <div id="sources-board" class="sources-board"><p class="notice">Loading the source registry…</p></div>
+      </section>
 
-      <section id="method" class="method-section" aria-labelledby="method-heading"><div class="method-intro"><span class="section-kicker">03 / THE STANDARD</span><h2 id="method-heading">A clear trail from<br><em>source to signal.</em></h2><p>We begin with league-published reporting, match a player and club to an actual game, and quote the precise line behind every claim. Ambiguous identity, conflicting wording, missing metadata, or a missing source means “hold,” not “guess.”</p><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener noreferrer" class="method-link">Official pregame injury report ↗</a></div><div class="method-rules"><div><span>01</span><strong>In-game first</strong><p>While a game is live the page polls a partner header and news lane every 20–45 seconds and shows only wording that explicitly says a player will not return, is questionable, was carted off, or went to the tent. It is labelled UNVERIFIED and carries the provider's own timestamp.</p></div><div><span>02</span><strong>Cross-check</strong><p>For the verified list, a player link, club, game date and an explicit league-or-club status sentence must all align. Otherwise it goes to the review queue, not the feed.</p></div><div><span>03</span><strong>Publish with context and tier</strong><p>Every lane is labelled official, partner or unofficial, and the archive only keeps official grounding. A lane that cannot be reached says so instead of going quiet.</p></div></div></section>
+      <section id="leads" class="leads-section" aria-labelledby="leads-heading"><div class="section-header"><div><span class="section-kicker">06 / UNOFFICIAL LEADS</span><h2 id="leads-heading">Reported elsewhere, not verified here <span class="heading-mark amber-mark" aria-hidden="true">!</span></h2><p class="section-subtitle">Items seen on unofficial outlets and social feeds, each with its outlet, capture date and the exact next check needed. Nothing on this list is a confirmed injury and none of it is in the verified list.</p></div><span id="count-leads" class="result-total" aria-live="polite"></span></div><div id="leads-list" class="leads-list"><p class="notice">Loading unofficial leads…</p></div></section>
+
+      <section id="method" class="method-section" aria-labelledby="method-heading"><div class="method-intro"><span class="section-kicker">07 / THE STANDARD</span><h2 id="method-heading">A clear trail from<br><em>source to signal.</em></h2><p>We begin with league-published reporting, match a player and club to an actual game, and quote the precise line behind every claim. Ambiguous identity, conflicting wording, missing metadata, or a missing source means “hold,” not “guess.”</p><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener noreferrer" class="method-link">Official pregame injury report ↗</a></div><div class="method-rules"><div><span>01</span><strong>In-game first</strong><p>While a game is live the page polls the game lanes every 10–20 seconds and shows only wording that explicitly says a player will not return, is questionable, was carted off, or went to the tent. It is labelled with its tier and carries the provider's own timestamp.</p></div><div><span>02</span><strong>Two independent reads</strong><p>Automatic promotion from a club page needs the identical sentence read twice, in two separate scans, plus a resolvable game date and the club named in the sentence. Anything less stays in the auto-matched list with the failed gate printed.</p></div><div><span>03</span><strong>Publish with context and tier</strong><p>Every lane is labelled official, partner or unofficial — and also by category, latency class, timestamp precision and access — and the archive only keeps official grounding. A lane that cannot be reached says so instead of going quiet.</p></div></div></section>
     </div>
   </main>
-  <footer class="footer"><div class="shell footer-inner"><div><strong>SIDELINE<span> SIGNAL</span></strong><p>Less noise. More context. Always check the source.</p></div><div class="footer-links"><a href="#reports">Reports</a><a href="#review">Source issues</a><a href="https://github.com/buffedlizard55-lab/InjuryAlerTNFL" target="_blank" rel="noopener noreferrer">Repository ↗</a></div><p class="footer-disclaimer">Unofficial project. Not affiliated with the NFL, its clubs, or ESPN. Source publication dates are not injury times. A feed outage is not an all-clear.</p></div></footer>
+  <footer class="footer"><div class="shell footer-inner"><div><strong>SIDELINE<span> SIGNAL</span></strong><p>Less noise. More context. Always check the source.</p></div><div class="footer-links"><a href="#reports">Reports</a><a href="#alerts">Alert log</a><a href="#review">Source issues</a><a href="https://github.com/buffedlizard55-lab/InjuryAlerTNFL" target="_blank" rel="noopener noreferrer">Repository ↗</a></div><p class="footer-disclaimer">Unofficial project. Not affiliated with the NFL, its clubs, or ESPN. Detection timestamps are when this project saw text, never the moment of injury. A feed outage is not an all-clear.</p></div></footer>
 </body>
 </html>

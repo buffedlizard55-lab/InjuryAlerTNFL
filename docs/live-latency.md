@@ -11,25 +11,55 @@ project, and which lane is responsible for what.
 | partner | ESPN public site endpoints (scoreboard, scoreboard header, news, injuries, summary) | live game state, timestamped leads, cross-checks | no |
 | unofficial | X, Instagram, Facebook, TikTok, Reddit (link-outs), Bluesky (search blocked), Mastodon, Google News, CBS live tracker, DraftKings Network, NBC/Rotoworld, CBS player news, Heavy, beat wires | leads, discovery, context | no |
 
-The registry (`data/sources.json`) records, for every lane: what it is, what it can
-prove, its latency, its probe method and evidence, whether it is in-game capable, and
-whether it may auto-publish. `scripts/schema.py` enforces the rules; a lane that is
-neither official nor partner is forced into a lead role, and nothing outside the
-official tier is allowed to auto-publish.
+The registry (`data/sources.json`, 66 lanes) records, for every lane: what it is,
+what it can prove, its tier, its category (league, club, protocol, ESPN, other
+partner, beat, aggregator, social, video, play-by-play), its latency class and
+timestamp precision, its access mode (JSON, HTML, link-out, blocked), its probe
+method and evidence, whether it is in-game capable, and whether it may auto-publish.
+`scripts/schema.py` enforces the rules; a lane that is neither official nor partner
+is forced into a lead role, the category must match the tier prefix, a link-out lane
+must declare link-out latency, and nothing outside the official tier is allowed to
+auto-publish.
+
+### The log — why a refresh never loses history
+
+Every scan writes to `data/alert-log.json` through `scripts/alertlog.py`: append-only,
+capped at 1,200 entries, newest first, deduplicated by a stable digest id
+(`kind` + `lane` + `subject` + `text` + provider timestamp). Entries are second
+precision, carry their kind (`live-signal`, `club-candidate`, `club-promotion`,
+`roundup-match`, `lane-status`, `lane-failure`, `roster-followup`), their tier, and a
+`latencySeconds` only when a provider timestamp exists. Because the id ignores the
+detection time, polling the same sentence every 20 seconds cannot flood the log, while
+a genuinely new sentence gets a new id. The browser merges that file with a
+`localStorage` session log (`sideline-signal-session-log-v1`, first detection wins),
+so reloading the page shows what was already seen instead of starting empty, and the
+log can be exported as JSON. `feed.xml` carries up to 40 of the newest logged alerts,
+each tagged with its tier.
 
 ## Why the fastest lane is in the browser
 
 Measured on 2026-09-24, the `*/5` GitHub Actions schedule fired about once every
 4-6 hours (17:04Z, 12:03Z, 06:23Z, 01:22Z). GitHub throttles scheduled workflows, and
 a static Pages deployment has no server that can push. So the responsive path is the
-open page:
+open page, and `scripts/watch_live.py` provides the same lane as a long-running local
+worker (`--minutes 300 --interval 20`: scoreboard header → live games → summary
+injuries → play-by-play, writing `data/watch.json` and the log with a per-lane status
+so a blocked lane shows as blocked instead of silent; it exits after 45 minutes with
+no live game rather than polling an empty league forever):
 
 | Lane | Interval | Starts when | What it shows |
 | --- | --- | --- | --- |
-| ESPN scoreboard header | 20 s | 30 min before kickoff until 4 h after | which games are live, period/clock/score |
-| ESPN NFL news | 45 s | while a game is in the watch window | headlines/descriptions containing explicit in-game wording |
-| `data/live.json` + `data/scoreboard.json` | 60 s | always | the durable CI record and the tracked fallbacks |
+| ESPN scoreboard header | 10 s | 30 min before kickoff until 4 h after | which games are live, period/clock/score |
+| ESPN game lanes (news, summary, play-by-play) | 20 s | while a game is in the watch window | headlines/descriptions and play text containing explicit in-game wording, with the play's own wall-clock timestamp |
+| `data/live.json` + `data/scoreboard.json` + `data/alert-log.json` | 60 s | always | the durable CI record, the log, and the tracked fallbacks |
 | social search links | on demand (click) | always | X/Reddit/Bluesky/Mastodon/Instagram/TikTok/Facebook/Google News |
+
+The play-by-play lane reads ESPN's public core endpoint
+(`sports.core.api.espn.com/.../competitions/{id}/plays`), which returns each play with
+a `wallclock` field — the provider's own UTC time for the play. A play description is
+only surfaced when it carries one of the availability phrases above, so play chatter
+stays silent by construction; when it does match, the card's latency is measured
+against the play's wall-clock time rather than against the page load.
 
 ### In-game vocabulary (the only thing that is ever surfaced)
 
@@ -70,7 +100,9 @@ rewriting it.
 
 1. A long-running poller (or paid scheduler) reading the same free endpoints every
    15-30 s and committing only official-grounded rows — removes the "page must be
-   open" limitation.
+   open" limitation. `scripts/watch_live.py` is the prototype; it needs a host that
+   stays up (a VPS, a container, or a paid scheduler), which a static Pages
+   deployment cannot provide.
 2. A per-club discovery pass (news index → game report → in-game sentence) to fill
    the games listed in `README.md`.
 3. Optional adapter for a licensed play-by-play feed if one ever becomes available;

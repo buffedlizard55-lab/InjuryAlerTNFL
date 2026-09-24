@@ -1,0 +1,14 @@
+{
+ "version": 1,
+ "checkedAt": null,
+ "status": "not_started",
+ "season": null,
+ "week": null,
+ "lanes": {},
+ "liveGames": [],
+ "signals": [],
+ "warnings": [],
+ "policy": "Server-side game-window poll. Every signal carries the lane it came from, that lane's tier and a second-precision detection time; a lane that fails says so instead of going quiet. Nothing here is a diagnosis, a severity score, or a club statement.",
+ "startedAt": null,
+ "cycles": 0
+}

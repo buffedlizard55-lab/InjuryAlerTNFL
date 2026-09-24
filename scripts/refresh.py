@@ -16,6 +16,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
+from alertlog import (load as load_log, make as make_log_entry, merge as merge_log, write as write_log)
 from schema import TEAMS, official_url, validate_incidents, validate_review
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -402,10 +403,44 @@ def main() -> int:
     scores = collect_scores(now)
     news = collect_news(now, scores["games"], held, score_status=scores["status"])
     validate_incidents(news["incidents"], automatic=True)
+    # Everything the collector saw goes into the append-only log as well as the
+    # published files, so an update survives a page refresh and a bad lane is
+    # recorded instead of going quiet.
+    entries: list[dict] = []
+    for row in news["incidents"]:
+        claim = row["claims"][0]
+        entries.append(make_log_entry(
+            kind="roundup-match", tier="official", lane="NFL.com in-game roundup",
+            subject=f"{row['player']} ({row['team']})", text=claim["text"], url=claim["url"],
+            quote=claim["quote"], status=row["outcome"], player=row["player"], team=row["team"],
+            opponent=row["opponent"], game_date=row["gameDate"], detected_at=iso(now), id_key=row["id"],
+            note="Matched from a league in-game roundup; the quote is the sentence it came from.",
+        ))
+    for flag in news["flags"]:
+        entries.append(make_log_entry(
+            kind="lane-failure", tier="official", lane="NFL.com roundup parser", subject=flag["subject"],
+            text=flag["reason"], url=flag["url"], detected_at=iso(now), status="withheld",
+            id_key=f"flag|{flag['subject']}|{flag['reason']}", source_at=iso(now),
+            note="A source irregularity: the row was withheld from the feed, not published.",
+        ))
+    for lane, status, warnings in (("NFL.com news index / roundups", news["status"], news["warnings"]),
+                                   ("ESPN public scoreboard", scores["status"], scores["warnings"])):
+        if status in ("ok", "waiting"):
+            continue
+        entries.append(make_log_entry(
+            kind="lane-failure", tier="official" if lane.startswith("NFL") else "partner", lane=lane,
+            subject=f"{lane} degraded", text="; ".join(warnings) or f"lane status: {status}",
+            url=NFL_INDEX[0] if lane.startswith("NFL") else SCORE_URL, detected_at=iso(now),
+            status=status, source_at=iso(now), id_key=f"lane|{lane}|{status}",
+            note="A degraded lane is recorded so an empty feed is never read as an all-clear.",
+        ))
+    log_data, log_added = merge_log(load_log(), entries)
+    write_log(log_data)
     for path, data in ((args.live, news), (args.scoreboard, scores)):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"NFL.com: {news['status']}, {news['discovery']['accepted']} source-matched incidents; ESPN: {scores['status']}, {len(scores['games'])} games")
+    print(f"NFL.com: {news['status']}, {news['discovery']['accepted']} source-matched incidents; "
+          f"ESPN: {scores['status']}, {len(scores['games'])} games; alert log +{log_added} entries")
     if news["warnings"] or scores["warnings"]:
         print("Warnings: " + "; ".join(news["warnings"] + scores["warnings"]), file=sys.stderr)
     return 0  # degraded feeds are explicit, not silently published as fresh data

@@ -34,14 +34,14 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(103, len(self.archive["incidents"]))
+        self.assertEqual(105, len(self.archive["incidents"]))
         self.assertIn(str(len(self.archive["incidents"])), self.archive["scope"],
                       "scope should describe the row count it ships with")
-        self.assertEqual(103, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(105, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-24", self.archive["verifiedOn"])
         claims = [claim for row in self.archive["incidents"] for claim in row["claims"]]
-        self.assertEqual(270, len(claims))
-        self.assertEqual(52, len({claim["url"] for claim in claims}))
+        self.assertEqual(279, len(claims))
+        self.assertEqual(53, len({claim["url"] for claim in claims}))
         self.assertEqual(
             len(claims),
             len({(row["id"], claim["url"], claim["quote"]) for row in self.archive["incidents"] for claim in row["claims"]}),
@@ -81,8 +81,13 @@ class SourceLedgerTests(unittest.TestCase):
         app_src = (ROOT / "assets" / "app.js").read_text()
         trusted = app_src.split("function trustedLink", 1)[1].split("];", 1)[0]
         app_hosts = set(re.findall(r"'([a-z0-9.-]+)'", trusted))
+        from clubs import CLUBS
+        club_hosts = {club["host"] for club in CLUBS.values()}
         self.assertTrue(schema_hosts, "schema allowlist should be parsed, not empty")
         self.assertEqual(set(), schema_hosts - app_hosts, "app.js trustedLink is missing official hosts")
+        # The club table the collectors use and the host set the schema trusts are
+        # the same 32 newsrooms: a new club may not appear in one and not the other.
+        self.assertEqual(club_hosts, schema_hosts - {"www.nfl.com"})
 
     def test_line_by_line_outcomes_checked_against_sourced_master_list(self):
         expected = {
@@ -190,6 +195,11 @@ class SourceLedgerTests(unittest.TestCase):
             ("romello-height", "unconfirmed"),
             ("martin-emerson-jr", "unconfirmed"),
             ("brett-thorson", "unconfirmed"),
+            # Pass 7: the Packers' own in-game file resolves the roundup's
+            # mismatched display-name link for the carted-off tackle.
+            ("zach-bako-bewele", "out"),
+            # Pass 7: vikings.com places a Week 1 thumb injury in the game.
+            ("jordan-mason", "unconfirmed"),
         }
         self.assertEqual(pairs, {(row["id"].split("-", 4)[-1], row["outcome"]) for row in self.archive["incidents"]})
 
@@ -246,7 +256,7 @@ class SourceLedgerTests(unittest.TestCase):
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
         self.assertEqual(35, len(self.review["flags"]))
-        self.assertEqual(3, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(2, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -361,11 +371,16 @@ class FeedTests(unittest.TestCase):
         review = json.loads((ROOT / "data/review.json").read_text())
         held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
         # Pass 5 promoted Kiko Mauigoa (the Jets' own recap grounds the exit and the
-        # club links the name to its roster page), so two identity-mismatch cases stay
-        # held: Kam Curl, Zach Bako-Bewele, and the withdrawn Puka Nacua row.
+        # club links the name to its roster page); Pass 7 promoted Zach Bako-Bewele
+        # because the Packers' own in-game file names him independently of the
+        # league roundup's mismatched player link. What stays held: Kam Curl's
+        # name/URL mismatch and the withdrawn Puka Nacua row.
         self.assertIn("2026-09-10-lar-kam-curl", held)
-        self.assertIn("2026-09-20-gb-zach-bako-bewele", held)
         self.assertIn("2026-09-21-lar-puka-nacua", held)
+        self.assertNotIn("2026-09-20-gb-zach-bako-bewele", held)
+        archive = json.loads((ROOT / "data/archive.json").read_text())
+        self.assertIn("Zach Bako-Bewele", [row["player"] for row in archive["incidents"]],
+                      "the resolved identity case should now stand as a row")
         self.assertNotIn("2026-09-20-nyj-kiko-mauigoa", held)
         annotated = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "annotated"}
         self.assertIn("2026-09-20-nyj-kiko-mauigoa", annotated)
@@ -378,7 +393,9 @@ class FeedTests(unittest.TestCase):
         # The fixture's Jadarian Price should now be accepted because it is no
         # longer in the held set (promoted to annotated with both sources).
         self.assertIn("Jadarian Price", [row["player"] for row in accepted])
-        # But a truly held identity mismatch must still be blocked.
+        # The collector still refuses the roundup bullet automatically: its display
+        # name resolves to /players/zach-tom/, and that mismatch is exactly what the
+        # archived row had to be grounded *around* using the club's own page.
         self.assertNotIn("Zach Bako-Bewele", [row["player"] for row in accepted])
 
     def test_network_outage_is_explicit_and_does_not_publish_injuries(self):
@@ -392,10 +409,10 @@ class FeedTests(unittest.TestCase):
         self.assertEqual([], news["incidents"])
 
     def test_build_refuses_a_held_case_even_if_collector_regresses(self):
-        # After promotion, 2 identity-mismatch cases remain held: Kam Curl,
-        # Kiko Mauigoa, Zach Bako-Bewele. The synthetic fixture does not contain
-        # Kam Curl, but the build must still refuse any held ID, even if a
-        # collector regresses and emits it.
+        # Two cases remain held after Pass 7: Kam Curl's name/URL mismatch and the
+        # withdrawn Puka Nacua row. The synthetic fixture does not contain Kam Curl,
+        # but the build must still refuse any held ID, even if a collector regresses
+        # and emits it.
         review = json.loads((ROOT / "data/review.json").read_text())
         held_ids = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
         self.assertIn("2026-09-10-lar-kam-curl", held_ids)
@@ -432,7 +449,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(103, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(105, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
             # Provenance must ship with the page: the source registry and the
             # unofficial lead list are reader-facing, so a build that omits them
             # would leave the site claiming more than it can show.

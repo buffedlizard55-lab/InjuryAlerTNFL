@@ -1,8 +1,98 @@
 {
  "version": 1,
  "capturedOn": "2026-09-24",
- "label": "UNOFFICIAL LEADS \u2014 reported by third parties, NOT verified. Nothing here has been confirmed against a league or club source, and nothing here may be promoted into data/archive.json without re-checking the original page and finding an official grounding sentence.",
+ "label": "UNOFFICIAL LEADS — reported by third parties, NOT verified. Nothing here has been confirmed against a league or club source, and nothing here may be promoted into data/archive.json without re-checking the original page and finding an official grounding sentence.",
  "leads": [
+  {
+   "id": "lead-2026-09-20-cin-andrei-iosivas",
+   "subject": "Andrei Iosivas",
+   "team": "CIN",
+   "opponent": "HOU",
+   "gameDate": "2026-09-20",
+   "reportedStatus": "thumb (torn ligament) → injured reserve",
+   "text": "ESPN reports Bengals receiver Andrei Iosivas will miss four to six weeks and go on injured reserve after surgery to repair a torn ligament in his thumb, suffered in the Week 2 win over Houston; ESPN adds it is unclear when in the game it happened.",
+   "source": {
+    "name": "ESPN (Jeremy Fowler)",
+    "tier": "partner",
+    "url": "https://www.espn.com/nfl/story/_/id/50014294/sources-bengals-andrei-iosivas-expected-miss-4-6-weeks",
+    "role": "partner-report"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Bengals.com press-conference coverage or an NFL.com sentence naming the moment; the league's Sept 23 roundup reports only the IR move (\"torn ligament in his thumb\") and never places it in the game.",
+   "notes": "Cincinnati has no archived incident at all. ESPN's own text says his final play was in punt coverage, i.e. he was never ruled out during the game, so even a club confirmation may belong in the archive as an unconfirmed outcome rather than an out/did-not-return row."
+  },
+  {
+   "id": "lead-2026-09-13-buf-spencer-brown",
+   "subject": "Spencer Brown",
+   "team": "BUF",
+   "opponent": "HOU",
+   "gameDate": "2026-09-13",
+   "reportedStatus": "in-game injury (shoulder label)",
+   "text": "The same Syracuse.com summary says Spencer Brown (shoulder) was injured in-game, alongside Dion Dawkins.",
+   "source": {
+    "name": "Syracuse.com (Advance Local)",
+    "tier": "unofficial",
+    "url": "https://www.syracuse.com/buffalo-bills/2026/09/inactives-buffalo-bills-rule-out-ty-johnson-tj-sanders-for-week-1-opener-vs-texans.html",
+    "role": "beat-wire"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Same ambiguity as Dawkins: the paragraph mixes the opener with Ed Oliver's Sept 17 ruled-out status, so the game is not established. Next check: a club sentence naming Brown's game, or the NFL.com in-game roundup for that week.",
+   "notes": "Recorded so the third-party claim is not lost; nothing here may be promoted without an official sentence."
+  },
+  {
+   "id": "lead-2026-09-13-buf-dion-dawkins",
+   "subject": "Dion Dawkins",
+   "team": "BUF",
+   "opponent": "HOU",
+   "gameDate": "2026-09-13",
+   "reportedStatus": "in-game injury (concussion label)",
+   "text": "A Syracuse.com injury summary says Dion Dawkins (concussion) was injured in-game in the Bills' opener at Houston.",
+   "source": {
+    "name": "Syracuse.com (Advance Local)",
+    "tier": "unofficial",
+    "url": "https://www.syracuse.com/buffalo-bills/2026/09/inactives-buffalo-bills-rule-out-ty-johnson-tj-sanders-for-week-1-opener-vs-texans.html",
+    "role": "beat-wire"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Establish which game the sentence describes: the same paragraph also lists Ed Oliver, whose official ruled-out status is dated to the Sept 17 Lions game. Next check: a Bills.com or NFL.com sentence naming Dawkins' game.",
+   "notes": "Buffalo's Week 1 game has no archived rows at all; Dawkins would be a new incident if a club or league page places a concussion in that game. The label (concussion) is carried as reported, not diagnosed by this project."
+  },
+  {
+   "id": "lead-2026-09-13-hou-henry-tootoo",
+   "subject": "Henry To'oTo'o",
+   "team": "HOU",
+   "opponent": "BUF",
+   "gameDate": "2026-09-13",
+   "reportedStatus": "evaluated in medical tent",
+   "text": "Texans linebacker Henry To'oTo'o was attended to on the field by Houston trainers, walked off under his own power and went to the blue medical tent in the Week 1 loss to the Bills.",
+   "source": {
+    "name": "Buffalo Rumblings (SB Nation) in-game injury file",
+    "tier": "unofficial",
+    "url": "https://www.buffalorumblings.com/buffalo-bills-injuries/139990/week-1-buffalo-bills-vs-houston-texans-in-game-injury-updates",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "Houston's own game report for Week 1 or the NFL.com notable-injuries bullet would be the official grounding; the sheet says \"None at this time\" for Houston, so the next check is HoustonTexans.com's Week 1 recap.",
+   "notes": "Houston's only archived incident for Week 1 is Jake Hummel, so any official sentence naming To'oTo'o in that game would add a row."
+  },
+  {
+   "id": "lead-2026-09-13-buf-cole-bishop",
+   "subject": "Cole Bishop",
+   "team": "BUF",
+   "opponent": "HOU",
+   "gameDate": "2026-09-13",
+   "reportedStatus": "probable to return (left knee)",
+   "text": "Bills safety Cole Bishop went down with a left knee injury, needed trainers before he was on his feet, limped to the sideline and went to the blue medical tent; the club's PR listed him as probable to return.",
+   "source": {
+    "name": "Buffalo Rumblings (SB Nation) in-game injury file",
+    "tier": "unofficial",
+    "url": "https://www.buffalorumblings.com/buffalo-bills-injuries/139990/week-1-buffalo-bills-vs-houston-texans-in-game-injury-updates",
+    "role": "live-blog"
+   },
+   "capturedOn": "2026-09-24",
+   "verifyNext": "No league or club page retrieved so far places Bishop's Week 1 knee in the game; next check is Bills.com's Week 1 recap/injury notes or the NFL.com gamebook naming the moment.",
+   "notes": "Buffalo is one of the clubs with no club-sourced in-game row for Week 1. Read via a search-engine copy of the page; the live page was not opened this pass, so treat the wording as unconfirmed until re-read."
+  },
   {
    "id": "lead-2026-09-20-mia-caleb-douglas",
    "subject": "Caleb Douglas",
@@ -119,7 +209,7 @@
    "team": "ARI",
    "opponent": "SEA",
    "gameDate": "2026-09-20",
-   "reportedStatus": "day-to-day (toe) \u2014 partner-feed context for an already verified row",
+   "reportedStatus": "day-to-day (toe) — partner-feed context for an already verified row",
    "text": "Melton suffered a toe injury during the team's 31-7 loss to Seattle in Week 2, and he is considered day-to-day.",
    "source": {
     "name": "ESPN injuries feed",
@@ -128,7 +218,7 @@
     "role": "status-context"
    },
    "capturedOn": "2026-09-24",
-   "verifyNext": "Not needed for the archive (NFL.com already grounds the row); this entry documents what the partner feed adds \u2014 a minute-precision date (2026-09-24T02:12Z) and game anchoring.",
+   "verifyNext": "Not needed for the archive (NFL.com already grounds the row); this entry documents what the partner feed adds — a minute-precision date (2026-09-24T02:12Z) and game anchoring.",
    "notes": "Included as the worked example of the partner tier. Silent if the feed is unavailable."
   },
   {

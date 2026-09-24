@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   mergeIncidents, filterIncidents, freshness, selectScoreGames, newAutoAlerts, dataURL,
-  tierLabel, detectInGameSignals, rankSignals, humanizeSeconds, latencySeconds,
+  tierLabel, detectInGameSignals, detectAllSignals, rankSignals, humanizeSeconds, latencySeconds,
+  stampSeconds, isoSeconds, mergeAlertLog, newSince, logLine, groupSources, laneHealth,
   liveGames, shouldWatchForInGame, socialSearchLinks, eligiblePartnerAlerts,
 } from '../assets/domain.mjs';
 
@@ -52,7 +53,15 @@ test('in-game wording is only reported when a provider actually said it', () => 
   assert.equal(detectInGameSignals('Seahawks NT Brandon Pili (concussion) has been ruled out.').status, 'out');
   assert.equal(detectInGameSignals('Barkley returned to the field after halftime.').status, 'returned');
   assert.equal(detectInGameSignals('X is questionable to return with an ankle injury.').status, 'questionable');
-  assert.deepEqual(detectInGameSignals('Reed was carted off on a stretcher'), { status: 'observed', observation: 'Cart or stretcher', phrase: 'carted off' });
+  const carted = detectInGameSignals('Reed was carted off on a stretcher');
+  assert.equal(carted.status, 'observed');
+  assert.equal(carted.observation, 'Cart or stretcher');
+  assert.equal(carted.phrase, 'carted off');
+  assert.equal(carted.label, 'CART / STRETCHER wording');
+  // A sentence can carry more than one honest signal; the strongest one leads and
+  // the rest stay available rather than being silently dropped.
+  const both = detectAllSignals('Goedert was ruled out after he was carted off the field.');
+  assert.deepEqual(both.map(signal => signal.status).slice(0, 2), ['out', 'observed']);
   assert.equal(detectInGameSignals('J. Smith runs for 6 yards up the middle.'), null);
   assert.equal(detectInGameSignals('short'), null);
 });
@@ -104,4 +113,53 @@ test('a partner item becomes an alert only when its own text and a live game agr
   const alerts = eligiblePartnerAlerts(articles, live, t);
   assert.deepEqual(alerts.map(item => item.headline), ['Packers WR ruled out with a knee injury', 'Falcons injury update']);
   assert.ok(alerts.every(item => item.tier === 'partner'));
+});
+
+test('timestamps are shown to the second, and never invented', () => {
+  assert.equal(isoSeconds('2026-09-24T20:53:07.412Z'), '2026-09-24T20:53:07Z');
+  assert.equal(isoSeconds('2026-09-24T20:53:07+00:00'), '2026-09-24T20:53:07Z');
+  assert.equal(isoSeconds(''), null);
+  assert.equal(isoSeconds('sometime yesterday'), null);
+  assert.match(stampSeconds('2026-09-24T20:53:07Z'), /20:53:07 UTC$/);
+  assert.equal(stampSeconds(null), 'time unavailable');
+});
+
+test('the session log survives refreshes and keeps the first detection time', () => {
+  const server = [
+    { id: 'b', detectedAt: '2026-09-24T20:00:02Z', lane: 'x', tier: 'partner', subject: 'B' },
+    { id: 'a', detectedAt: '2026-09-24T20:00:01Z', lane: 'x', tier: 'official', subject: 'A' },
+  ];
+  const session = [
+    // The same event seen later (a refetch) must never rewrite the first sighting.
+    { id: 'a', detectedAt: '2026-09-24T21:00:00Z', lane: 'x', tier: 'official', subject: 'A' },
+    { id: 'c', detectedAt: '2026-09-24T20:30:00Z', lane: 'y', tier: 'unofficial', subject: 'C' },
+  ];
+  const merged = mergeAlertLog(server, session);
+  assert.deepEqual(merged.map(entry => entry.id), ['c', 'b', 'a']);
+  assert.equal(merged.find(entry => entry.id === 'a').detectedAt, '2026-09-24T20:00:01Z');
+  assert.deepEqual(newSince(merged, '2026-09-24T20:15:00Z').map(entry => entry.id), ['c']);
+  assert.deepEqual(newSince(merged, null), []);
+});
+
+test('an alert says what it knows about latency instead of guessing', () => {
+  const withSource = logLine({ detectedAt: '2026-09-24T20:00:30Z', sourceAt: '2026-09-24T20:00:00Z' });
+  assert.match(withSource, /provider timestamp/);
+  assert.match(withSource, /30s later/);
+  assert.match(logLine({ detectedAt: '2026-09-24T20:00:30Z' }), /not published on this lane/);
+});
+
+test('the registry groups by tier and category, and filters without inventing rows', () => {
+  const lanes = [
+    { id: 'o1', name: 'Club newsroom', tier: 'official', category: 'official-club', org: 'X', what: 'w', proves: 'p' },
+    { id: 'p1', name: 'ESPN feed', tier: 'partner', category: 'partner-espn', org: 'ESPN', what: 'w', proves: 'p' },
+    { id: 'u1', name: 'Beat writer', tier: 'unofficial', category: 'unofficial-beat', org: 'Outlet', what: 'w', proves: 'p' },
+  ];
+  const groups = groupSources(lanes);
+  assert.deepEqual(groups.map(group => group.category), ['official-club', 'partner-espn', 'unofficial-beat']);
+  assert.equal(groups[0].rows.length, 1);
+  const filtered = lanes.filter(lane => lane.tier !== 'partner');
+  assert.equal(filtered.length, 2);
+  assert.equal(laneHealth({ checkedAt: '2026-09-24T20:00:00Z', status: 'ok' }, Date.parse('2026-09-24T20:10:00Z')), 'ok');
+  assert.equal(laneHealth({ checkedAt: '2026-09-24T19:00:00Z', status: 'ok' }, Date.parse('2026-09-24T20:10:00Z')), 'stale');
+  assert.equal(laneHealth({}, Date.now()), 'unknown');
 });

@@ -16,6 +16,10 @@ OBSERVATIONS = frozenset({
     "Walked off field", "Left game", "Returned after halftime", "Injured during game", "Walking boot after game",
 })
 ID = re.compile(r"^\d{4}-\d{2}-\d{2}-[a-z]{2,3}-[a-z0-9-]+$")
+# Second-precision UTC only: this project may not print precision it does not have.
+SECONDS_UTC = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+LOG_KINDS = frozenset({"roundup-match", "club-candidate", "club-promotion", "live-signal", "lane-status", "lane-failure", "roster-followup"})
+LOG_KINDS_LANES = frozenset({"club-scan", "club-page", "browser-lane", "espn-plays", "espn-summary", "espn-header", "nfl-roundup", "roundup", "watch", "social-search"})
 
 
 class InvalidData(ValueError):
@@ -40,50 +44,40 @@ def official_url(url: str, *, player_page: bool = False) -> bool:
     # This is the allowlist for what can appear as a source link in the
     # verified archive; it is intentionally narrow and fails closed.
     allowed_news_hosts = {
-        "www.nfl.com",
-        "www.dallascowboys.com",
-        "www.denverbroncos.com",
-        "www.buffalobills.com",
-        "www.atlantafalcons.com",
-        "www.baltimoreravens.com",
-        "www.panthers.com",
-        "www.chicagobears.com",
-        "www.bengals.com",
-        "www.clevelandbrowns.com",
-        "www.detroitlions.com",
-        "www.packers.com",
-        "www.houstontexans.com",
-        "www.colts.com",
-        "www.jaguars.com",
-        "www.chiefs.com",
-        "www.chargers.com",
-        "www.rams.com",
-        "www.raiders.com",
-        # Real club hosts for clubs whose newsroom domain differs from the
-        # short form (found while grounding the Saints' Week 2 recap, which
-        # lives on neworleanssaints.com, not saints.com).
-        "www.miamidolphins.com",
-        "www.tennesseetitans.com",
-        "www.neworleanssaints.com",
-        "www.dolphins.com",
-        "www.vikings.com",
-        "www.patriots.com",
-        "www.saints.com",
-        "www.giants.com",
-        "www.nyjets.com",
-        "www.newyorkjets.com",
-        "www.jets.com",
-        "www.eagles.com",
-        "www.philadelphiaeagles.com",
-        "www.steelers.com",
-        "www.49ers.com",
-        "www.seahawks.com",
-        "www.buccaneers.com",
-        "www.titans.com",
-        "www.commanders.com",
-        "www.azcardinals.com",
-        "www.cardinals.com",
-    }
+    "www.49ers.com",
+    "www.atlantafalcons.com",
+    "www.azcardinals.com",
+    "www.baltimoreravens.com",
+    "www.bengals.com",
+    "www.buccaneers.com",
+    "www.buffalobills.com",
+    "www.chargers.com",
+    "www.chicagobears.com",
+    "www.chiefs.com",
+    "www.clevelandbrowns.com",
+    "www.colts.com",
+    "www.commanders.com",
+    "www.dallascowboys.com",
+    "www.denverbroncos.com",
+    "www.detroitlions.com",
+    "www.giants.com",
+    "www.houstontexans.com",
+    "www.jaguars.com",
+    "www.miamidolphins.com",
+    "www.neworleanssaints.com",
+    "www.newyorkjets.com",
+    "www.nfl.com",
+    "www.packers.com",
+    "www.panthers.com",
+    "www.patriots.com",
+    "www.philadelphiaeagles.com",
+    "www.raiders.com",
+    "www.rams.com",
+    "www.seahawks.com",
+    "www.steelers.com",
+    "www.tennesseetitans.com",
+    "www.vikings.com",
+}
     hostname = parsed.hostname or ""
     # Allow any sub-domain of nfl.com for future league moves, plus the
     # explicit club list above.
@@ -159,6 +153,23 @@ def validate_incidents(incidents: list, *, automatic: bool = False) -> None:
         # URL adds no evidence and inflates the claim ledger a reviewer counts on.
         require(len({(str(c.get("url")), str(c.get("quote"))) for c in claims}) == len(claims),
                 f"duplicate claim in {key}")
+        # An automatically promoted row must carry the sentence it was promoted
+        # from, its URL and both read times, so a reader can audit the machine's
+        # reasoning without trusting it. A promoted row may never be edited by
+        # hand without dropping the block.
+        promotion = row.get("promotion")
+        if promotion is not None:
+            require(isinstance(promotion, dict), f"promotion block: {key}")
+            require(isinstance(promotion.get("quote"), str) and promotion["quote"].strip(), f"promotion quote: {key}")
+            require(official_url(promotion.get("url", "")), f"promotion url: {key}")
+            require(promotion["quote"].strip() in {c["quote"].strip() for c in claims},
+                    f"promotion quote must be one of the row's claims: {key}")
+            require(promotion["url"] in {c["url"] for c in claims}, f"promotion url must be one of the row's sources: {key}")
+            require(int(promotion.get("reads", 0)) >= 2, f"promotion needs two independent reads: {key}")
+            for field in ("firstSeen", "lastSeen"):
+                require(SECONDS_UTC.fullmatch(str(promotion.get(field, ""))) is not None,
+                        f"promotion {field} needs a second-precision UTC stamp: {key}")
+            require(promotion.get("lane") in LOG_KINDS_LANES, f"promotion lane: {key}")
         if automatic:
             require(row.get("automatic") is True, f"auto marker: {key}")
             require(isinstance(row.get("capturedAt"), str) and row["capturedAt"].endswith("Z"), f"capture time: {key}")
@@ -202,7 +213,16 @@ SOURCE_ROLES = frozenset({
     "in-game-signal", "in-game-discovery", "followup-signal", "pregame-status", "official-play-by-play",
     "club-in-game-and-followup", "postgame-signal", "scores-only", "live-game-state", "news-lead",
     "status-context", "play-by-play-unverified", "game-enumeration", "social-lead",
+    "play-by-play", "club-scan-index", "injury-aggregator", "social-video-lead",
 })
+SOURCE_CATEGORIES = frozenset({
+    "official-league", "official-club", "official-club-game-page", "official-protocol",
+    "partner-espn", "partner-other",
+    "unofficial-social", "unofficial-aggregator", "unofficial-beat", "unofficial-video",
+})
+LATENCY_CLASSES = frozenset({"seconds", "minutes", "hours", "daily", "weekly", "blocked", "link-out"})
+TIMESTAMP_PRECISION = frozenset({"second", "minute", "quarter", "day", "none"})
+SOURCE_ACCESS = frozenset({"keyless-json", "html", "auth-required", "blocked", "link-out", "rss"})
 LEAD_STATUS = frozenset({"unverified"})
 
 
@@ -241,6 +261,21 @@ def validate_sources(data: dict) -> None:
         ids.add(key)
         require(entry.get("tier") in TIERS, f"source tier: {key}")
         require(entry.get("role") in SOURCE_ROLES, f"source role: {key}")
+        # Organisation, not decoration: a reader filters the registry by these,
+        # so a lane without them cannot be presented as organised.
+        require(entry.get("category") in SOURCE_CATEGORIES, f"source category: {key}")
+        require(entry.get("latencyClass") in LATENCY_CLASSES, f"source latency class: {key}")
+        require(entry.get("timestampPrecision") in TIMESTAMP_PRECISION, f"source timestamp precision: {key}")
+        require(entry.get("access") in SOURCE_ACCESS, f"source access: {key}")
+        # Tier and category may not contradict each other.
+        if entry["tier"] == "official":
+            require(entry["category"].startswith("official"), f"official lane with a non-official category: {key}")
+        elif entry["tier"] == "partner":
+            require(entry["category"].startswith("partner"), f"partner lane with a non-partner category: {key}")
+        else:
+            require(entry["category"].startswith("unofficial"), f"unofficial lane with a non-unofficial category: {key}")
+        if entry["access"] == "link-out":
+            require(entry["latencyClass"] == "link-out", f"a link-out lane cannot claim a measured latency: {key}")
         for field in ("name", "org", "what", "proves", "notes"):
             require(isinstance(entry.get(field), str) and entry[field], f"source {field}: {key}")
         require(isinstance(entry.get("latency"), str) and entry["latency"], f"source latency: {key}")
@@ -255,7 +290,12 @@ def validate_sources(data: dict) -> None:
         if entry["tier"] != "official":
             require(not entry["autoPublish"], f"non-official source cannot auto-publish: {key}")
         if entry["tier"] == "unofficial":
-            require(entry["role"] in {"social-lead", "news-lead"}, f"unofficial source must be a lead role: {key}")
+            # Unofficial material may only ever be a lead: a social post, a beat
+            # note, an aggregator row, a clip somebody watched, or an open-data
+            # play-by-play dump. None of these may ground a verified row.
+            require(entry["role"] in {"social-lead", "news-lead", "injury-aggregator", "social-video-lead",
+                                      "play-by-play-unverified"},
+                    f"unofficial source must be a lead role: {key}")
         check = entry.get("verification")
         require(isinstance(check, dict), f"source verification: {key}")
         require(check.get("status") in SOURCE_STATUS, f"source verification status: {key}")
@@ -304,3 +344,107 @@ def validate_leads(data: dict) -> None:
         if lead.get("duplicateOf") is not None:
             require(isinstance(lead["duplicateOf"], str) and ID.fullmatch(lead["duplicateOf"]) is not None,
                     f"lead duplicate marker: {key}")
+
+
+# --------------------------------------------------------------------------- #
+# Machine-written artefacts: the alert log, the club-scan candidates and the
+# server-side game-window watch. These are validated with the same fail-closed
+# rules as the hand-checked files, because the page shows them next to it.
+# --------------------------------------------------------------------------- #
+def validate_alert_log(data: dict) -> None:
+    """Append-only, second-precision, tier-labelled, always with a source URL."""
+    require(data.get("version") == 1, "alert log version")
+    require(isinstance(data.get("policy"), str) and len(data["policy"]) >= 40, "alert log policy")
+    entries = data.get("entries")
+    require(isinstance(entries, list), "alert log entries")
+    require(len(entries) <= 1200, "alert log is capped at 1200 entries")
+    ids: set[str] = set()
+    last = "9999-12-31T23:59:59Z"
+    for entry in entries:
+        require(isinstance(entry, dict), "alert log entry")
+        key = entry.get("id")
+        require(isinstance(key, str) and key.startswith("log-") and key not in ids, f"alert log id: {key}")
+        ids.add(key)
+        for field in ("at", "detectedAt"):
+            require(SECONDS_UTC.fullmatch(str(entry.get(field, ""))) is not None,
+                    f"alert log {field} must be UTC to the second: {key}")
+        require(str(entry["at"]) <= last, f"alert log must be newest-first: {key}")
+        last = str(entry["at"])
+        require(entry.get("kind") in LOG_KINDS, f"alert log kind: {key}")
+        require(entry.get("tier") in TIERS, f"alert log tier: {key}")
+        require(isinstance(entry.get("lane"), str) and entry["lane"], f"alert log lane: {key}")
+        require(isinstance(entry.get("subject"), str) and entry["subject"], f"alert log subject: {key}")
+        require(isinstance(entry.get("text"), str) and 5 <= len(entry["text"]) <= 400, f"alert log text: {key}")
+        require(https_url(entry.get("evidence", "")), f"alert log evidence url: {key}")
+        source_at = entry.get("sourceAt")
+        if source_at is not None:
+            require(SECONDS_UTC.fullmatch(str(source_at)) is not None,
+                    f"alert log sourceAt must be UTC to the second when present: {key}")
+        latency = entry.get("latencySeconds")
+        if latency is not None:
+            require(isinstance(latency, int) and latency >= 0, f"alert log latency: {key}")
+            require(source_at is not None, f"alert log latency without a provider timestamp: {key}")
+        if entry["tier"] == "unofficial":
+            require(entry["kind"] in {"live-signal", "lane-status", "club-candidate"},
+                    f"an unofficial tier may only carry leads/observations in the log: {key}")
+
+
+def validate_candidates(data: dict) -> None:
+    """Auto-matched club sentences: quoted, official, and honest about their gate."""
+    require(data.get("version") == 1, "candidates version")
+    require(isinstance(data.get("label"), str) and "NOT" in data["label"].upper(), "candidates must be labelled as not verified")
+    require(isinstance(data.get("policy"), str) and len(data["policy"]) >= 40, "candidates policy")
+    rows = data.get("candidates")
+    require(isinstance(rows, list) and len(rows) <= 400, "candidates list")
+    seen: set[str] = set()
+    for row in rows:
+        require(isinstance(row, dict), "candidate entry")
+        key = row.get("id")
+        require(isinstance(key, str) and key.startswith("cand-") and key not in seen, f"candidate id: {key}")
+        seen.add(key)
+        require(row.get("club") in TEAMS, f"candidate club: {key}")
+        require(official_url(row.get("url", "")), f"candidate must cite an official club page: {key}")
+        require(isinstance(row.get("quote"), str) and 30 <= len(row["quote"]) <= 400, f"candidate quote: {key}")
+        require(isinstance(row.get("player"), str) and row["player"], f"candidate player: {key}")
+        signal = row.get("signal")
+        require(isinstance(signal, dict) and signal.get("phrase") and signal.get("status"), f"candidate signal: {key}")
+        require(isinstance(signal.get("phrase"), str) and signal["phrase"].strip().lower() in row["quote"].lower(),
+                f"candidate phrase must appear in its own quote: {key}")
+        for field in ("firstSeen", "lastSeen"):
+            require(SECONDS_UTC.fullmatch(str(row.get(field, ""))) is not None,
+                    f"candidate {field} needs a second-precision UTC stamp: {key}")
+        require(isinstance(row.get("reads"), int) and row["reads"] >= 1, f"candidate reads: {key}")
+        promotion = row.get("promotion")
+        require(isinstance(promotion, dict) and promotion.get("state") in {"pending", "promoted", "blocked"},
+                f"candidate promotion state: {key}")
+        require(isinstance(promotion.get("gate"), str) and len(promotion["gate"]) >= 15,
+                f"candidate must name the gate it passed or failed: {key}")
+        if promotion["state"] == "promoted":
+            require(isinstance(promotion.get("rowId"), str) and ID.fullmatch(promotion["rowId"]) is not None,
+                    f"promoted candidate must name its ledger row: {key}")
+
+
+def validate_watch(data: dict) -> None:
+    """The server-side game-window watch: lane states plus timestamped signals."""
+    require(data.get("version") == 1, "watch version")
+    require(isinstance(data.get("policy"), str) and len(data["policy"]) >= 40, "watch policy")
+    require(data.get("checkedAt") is None or SECONDS_UTC.fullmatch(str(data["checkedAt"])) is not None,
+            "watch checkedAt must be UTC to the second")
+    require(isinstance(data.get("liveGames"), list), "watch live games")
+    require(isinstance(data.get("signals"), list) and len(data["signals"]) <= 200, "watch signals")
+    require(isinstance(data.get("warnings"), list), "watch warnings")
+    for name, lane in (data.get("lanes") or {}).items():
+        require(isinstance(lane, dict), f"watch lane: {name}")
+        require(lane.get("status") in {"ok", "empty", "blocked", "idle", "not_started"}, f"watch lane status: {name}")
+        if lane.get("checkedAt") is not None:
+            require(SECONDS_UTC.fullmatch(str(lane["checkedAt"])) is not None, f"watch lane stamp: {name}")
+    for signal in data["signals"]:
+        require(isinstance(signal, dict), "watch signal")
+        require(signal.get("tier") in TIERS, "watch signal tier")
+        require(isinstance(signal.get("text"), str) and signal["text"], "watch signal text")
+        for field in ("detectedAt",):
+            require(SECONDS_UTC.fullmatch(str(signal.get(field, ""))) is not None,
+                    f"watch signal {field} must be UTC to the second")
+        if signal.get("sourceAt"):
+            require(SECONDS_UTC.fullmatch(str(signal["sourceAt"])) is not None,
+                    "watch signal sourceAt must be UTC to the second when present")
