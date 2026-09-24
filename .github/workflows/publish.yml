@@ -12,7 +12,7 @@ permissions:
   id-token: write
 concurrency:
   group: pages-injury-board
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   unblock-stale-deployments:
     if: github.ref == 'refs/heads/main'
