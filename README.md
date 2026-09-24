@@ -42,7 +42,7 @@ Hard rules encoded in `scripts/schema.py` and `assets/domain.mjs`: a non-officia
 Python 3.11+ and Node 20+; **no runtime packages**.
 
 ```sh
-python -m unittest discover -s tests -v      # 20 tests
+python -m unittest discover -s tests -v      # 21 tests
 node --test tests/ui.test.mjs                # 12 tests
 python scripts/build.py --output _site
 python3 -m http.server 8000 --bind 0.0.0.0 --directory _site
@@ -78,7 +78,7 @@ python scripts/verify_sources.py --strict   # re-fetch and compare every stored 
 - **Sources (new):** the registry now carries **44** lanes; the 23 newest were added only after their content was retrieved and read — including Seattle's and Green Bay's per-game in-game pages, club game-day recaps and game reports, practice notebooks and injury news items, and on the unofficial side the CBS live tracker, DraftKings Network, NBC/Rotoworld player news, CBS player news, Heavy, Chargers Wire, the Las Vegas Review-Journal, the Colorado Springs Gazette and Sports Betting Dime. Lanes that refuse a free read (NFL game-centre JSON `401`, Reddit `403`, Bluesky search `403`, api.nfl.com) are listed as **blocked** rather than quietly dropped, and X/Instagram/Facebook/TikTok are **link-out-only** because no keyless read tier exists.
 - **Latency (new):** a browser-side in-game lane (20 s header / 45 s news) that starts 30 minutes before kickoff and reports lane failures instead of going quiet; the in-game vocabulary classifier; latency chips showing how long after the provider's timestamp the wording was seen; and the measured CI cadence above.
 - **Master list:** two incidents could be grounded this pass, and both came from club pages rather than league roundups: **Martin Emerson Jr.** (Saints game-day recap, shoulder, first half of the Week 2 win) and **Brett Thorson** (vikings.com roster-move story: "Thorson suffered a hamstring injury Sunday at Chicago"). **53 new dated claims** were added across existing rows from the Sept 21, 22 and 23 league roundups plus club pages (Onwenu IR and Vrabel's confirmation, Banks Jr. surgery, Goedert MCL, Dowdle day-to-day, Reed's overnight stay and Thursday ruling, Dart's meniscus/MCL/PCL damage, Coleman's sprained ankle, Kolar's and Njoku's IR confirmation from the club itself, Holani cleared to return, and more). Every other candidate researched this pass — Awosika, Tomlinson, Stukes, Dobbins, Bradford, Cole Strange, Ingram-Dawkins' club label — has **official text that never places the injury inside a game**, so each is in the leads lane with the exact next check rather than in the archive.
-- **Code:** club `/game-day/` recap paths are now allowed as official evidence; three club domains were corrected to their real hosts (`neworleanssaints.com`, `miamidolphins.com`, `tennesseetitans.com`); `build.py` validates and ships the registry and leads; 8 new tests cover the registry, the leads discipline and the live-watch rules (Python 18 → 20, browser 6 → 12).
+- **Code:** club `/game-day/` recap paths are now allowed as official evidence; three club domains were corrected to their real hosts (`neworleanssaints.com`, `miamidolphins.com`, `tennesseetitans.com`); `build.py` validates and ships the registry and leads; 9 new tests cover the registry, the leads discipline, the live-watch rules and the schema/UI link allowlist (Python 18 → 21, browser 6 → 12).
 
 ## Important limitations / next session priorities
 
