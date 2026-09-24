@@ -2,8 +2,11 @@ name: Verify sources and site
 on:
   pull_request:
     branches: [main]
+  # Any session branch, so a push that adds incidents is verified before a PR
+  # exists. (This used to name one previous arena branch, which meant pushes to
+  # the current one went unchecked.)
   push:
-    branches: [arena/01a0d02e-injuryalertnfl]
+    branches: ['arena/**']
 permissions:
   contents: read
 jobs:
@@ -46,5 +49,7 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$result"
+      - name: Self-audit the published artefacts against the stated rules
+        run: python scripts/selfcheck.py
       - name: Assemble Pages without remote data
         run: python scripts/build.py --output _site

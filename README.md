@@ -1,6 +1,6 @@
 # Sideline Signal — source-backed NFL in-game injury reporting
 
-**Website:** [buffedlizard55-lab.github.io/InjuryAlerTNFL/](https://buffedlizard55-lab.github.io/InjuryAlerTNFL/) · [source audit](docs/source-audit.md) · [lane + latency design](docs/live-latency.md)
+**Website:** [buffedlizard55-lab.github.io/InjuryAlerTNFL/](https://buffedlizard55-lab.github.io/InjuryAlerTNFL/) · [source audit](docs/source-audit.md) · [lane + latency design](docs/live-latency.md) · [next steps and limits](docs/next-steps.md)
 
 An independent, mobile-friendly NFL scoreboard and **in-game injury alert** prototype. It separates **what was observed**, **what happened in that game**, and **later reported availability** — and it labels every lane it reads as **official**, **partner**, or **unofficial** so a reader never mistakes a social post for a club statement.
 
@@ -45,6 +45,7 @@ Python 3.11+ and Node 20+; **no runtime packages**.
 python -m unittest discover -s tests -v      # 21 tests
 node --test tests/ui.test.mjs                # 12 tests
 python scripts/build.py --output _site
+python scripts/selfcheck.py                   # one-command audit of the shipped artefacts
 python3 -m http.server 8000 --bind 0.0.0.0 --directory _site
 ```
 
@@ -60,7 +61,7 @@ python scripts/verify_sources.py --strict   # re-fetch and compare every stored 
 - `index.html`, `assets/` — accessible static site, no user report form.
 - `data/archive.json` — 103 verified incidents. `data/review.json` — 35 flags. `data/sources.json` — the 46-lane registry. `data/leads.json` — 15 unofficial leads. Tracked `data/live.json` / `data/scoreboard.json` are honest *not yet checked* fallbacks.
 - `assets/domain.mjs` — pure presentation rules: source-tier labels, the in-game vocabulary classifier, signal ranking, latency maths, the pre-kickoff watch window, the one-click social search links and the partner-alert gate.
-- `scripts/` — `refresh.py` (collector + ESPN score adapter), `schema.py` (fail-closed validators for archive, review, sources and leads), `build.py` (Pages artifact + auto-only RSS), `verify_sources.py`, `diagnose_audit.py`, `unblock_deployments.py`, `wait_for_legacy_pages.py`.
+- `scripts/` — `refresh.py` (collector + ESPN score adapter), `schema.py` (fail-closed validators for archive, review, sources and leads), `build.py` (Pages artifact + auto-only RSS), `selfcheck.py` (one command that checks the published artefacts against the rules this file states), `verify_sources.py`, `diagnose_audit.py`, `unblock_deployments.py`, `wait_for_legacy_pages.py`.
 - `.github/workflows/test.yml` runs the suites on PRs (with a continue-on-error online excerpt re-check that annotates drift); `publish.yml` refreshes and deploys on cron/push.
 
 ## Verification and language rules
