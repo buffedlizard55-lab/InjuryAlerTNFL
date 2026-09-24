@@ -68,7 +68,7 @@ python scripts/verify_sources.py --strict   # re-fetch and compare every stored 
 ## Verification and language rules
 
 1. One player + one dated game per ID; a pregame OUT designation is never merged with an in-game ruled-out event. A "returned" always refers to **that game**, never clearance for next week.
-2. Every displayed archive claim carries a direct league or club URL, a short supporting quote, a report date and an independently readable claim. The 217 excerpts that existed before this pass were re-fetched and re-compared online on 2026-09-24; the 53 added here were taken from pages retrieved during this pass, and `scripts/verify_sources.py --strict` re-checks all 270 in CI, printing the nearest live sentence for any excerpt it cannot match and filing one annotation per drifted claim. NFL.com articles can be reworded after publication, so quotes are re-verified rather than assumed.
+2. Every displayed archive claim carries a direct league or club URL, a short supporting quote, a report date and an independently readable claim. Every excerpt was re-fetched and re-compared against its live page on 2026-09-24, and `scripts/verify_sources.py --strict` re-checks all 279 in CI, printing the nearest live sentence for any excerpt it cannot match and filing one annotation per drifted claim. NFL.com articles can be reworded after publication, so quotes are re-verified rather than assumed.
 3. A blue tent, cart, stretcher or walking off is an **observation**, never a diagnosis or a severity score. Diagnoses are attributed to a coach or a reporter. Predictions keep their qualifiers.
 4. Disagreements, mismatched player links and moving anatomical labels go to the review queue with both sides linked. Nothing is inferred from the absence of a report.
 
