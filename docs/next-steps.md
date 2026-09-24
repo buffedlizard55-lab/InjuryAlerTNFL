@@ -7,8 +7,12 @@ honestly.
 
 ## 1. The 20-incident goal: a discovery-throughput problem
 
-This pass added **2 verified incidents and 53 dated claims**, not 20 incidents.
-That gap is not a shortcut — it is what the verification rules cost:
+Pass 7 added **2 verified incidents** (Zach Bako-Bewele, whose club page resolved a
+held identity case, and Jordan Mason, from a Vikings roster story naming the Week 1
+game) and **4 dated claims on existing rows**, plus **5 unofficial leads**. Across the
+whole search effort the ledger has grown from 61 rows (before the 20-entry expansions)
+to **105**, so the goal has been met and exceeded in aggregate — but each pass now
+finds fewer, and the reason is structural, not a shortcut:
 
 - Every league "notable injuries" bullet for **Weeks 1-2 is already archived**, so
   new *incidents* can only come from club pages.
@@ -37,8 +41,11 @@ Two page shapes pay best, and both are official: the **club game-day recap**
 
 ### Where to look first
 
-Coverage measured at the end of this pass: **29 of 32 clubs** appear at least once
-(Week 1: 22 clubs, Week 2: 26).
+Coverage measured at the end of Pass 7: **29 of 32 clubs** appear at least once
+(Week 1: 22 clubs, Week 2: 26). The two lanes added this pass are the shapes to keep
+mining: a **club game recap** (Packers → Bako-Bewele) and a **roster-move or
+injury-news story that names the game** (Vikings → Jordan Mason; Jets → Arian Smith).
+Club practice reports and presser transcripts remain the most common dead end.
 
 | Gap | What is missing | First pages to try |
 | --- | --- | --- |
@@ -52,8 +59,10 @@ Coverage measured at the end of this pass: **29 of 32 clubs** appear at least on
 ## 2. Latency: what a static site cannot do
 
 - The browser lane is the only low-latency lane this architecture can offer
-  (20 s header / 45 s news while a game is in the watch window). A closed tab
-  receives nothing.
+  (10 s header / 20 s game lanes while a game is in the watch window, with the
+  play-by-play lane using ESPN's per-play wall-clock timestamps). A closed tab
+  receives nothing. `scripts/watch_live.py` is the same lane as a worker, for anyone
+  who can host a long-running process.
 - GitHub Actions scheduled runs are throttled: measured on 2026-09-24 the `*/5`
   cron fired at **17:04Z, 12:03Z, 06:23Z, 01:22Z** — roughly every 4-6 hours.
 - A genuinely server-side 15-30 s lane needs a long-running worker or a paid

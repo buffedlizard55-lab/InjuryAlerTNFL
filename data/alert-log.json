@@ -1,0 +1,6 @@
+{
+ "version": 1,
+ "updatedAt": null,
+ "policy": "Append-only, newest first. Every entry carries a second-precision UTC detection time, the lane it came from, its tier label and the URL a reader can open. A detection time is when this project saw the text, never the moment of injury; absence of an entry is not evidence that nothing happened.",
+ "entries": []
+}

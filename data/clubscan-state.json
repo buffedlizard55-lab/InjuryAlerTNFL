@@ -1,0 +1,6 @@
+{
+ "version": 1,
+ "updatedAt": null,
+ "policy": "Per-club discovery record. A club is marked ok only when its news index answered this scan; blocked clubs are recorded with the error and never silently skipped. Counts are articles read and candidates kept, not injuries confirmed.",
+ "clubs": {}
+}

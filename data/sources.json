@@ -5,7 +5,8 @@
   "official": "A league or club publication. Only these may ground a row in the verified master list (data/archive.json).",
   "partner": "A free, keyless, publicly reachable hosted feed (ESPN's site endpoints). Useful for live game state, timestamps and leads. Never grounds a verified archive row on its own.",
   "unofficial": "Public social or aggregator material (Mastodon, Google News RSS, CBS-style trackers, X/Instagram/Facebook/TikTok/Reddit). Leads and context only: never auto-published as a verified claim.",
-  "rule": "A lane may only ever be shown with its tier label. An unofficial or partner item is never presented as a verified in-game injury. Absence of a report never implies a player is healthy."
+  "rule": "A lane may only ever be shown with its tier label. An unofficial or partner item is never presented as a verified in-game injury. Absence of a report never implies a player is healthy.",
+  "organisation": "Every lane is labelled with its tier (official / partner / unofficial), its category, the latency class a reader should expect, the timestamp precision it actually carries, and how it can be reached (keyless JSON, HTML, link-out or blocked). A lane that cannot be reached is listed as blocked rather than dropped."
  },
  "sources": [
   {
@@ -26,7 +27,11 @@
     "method": "Re-listed from the archive's citation set for the Kolar and Njoku rows; content is club-authored.",
     "evidence": "https://www.chargers.com/news/charlie-kolar-david-njoku-injured-reserve-fantasy"
    },
-   "notes": "Note the reversal the next day (Kolar ultimately stayed off IR), which is why the registry records latency and edits rather than mere existence."
+   "notes": "Note the reversal the next day (Kolar ultimately stayed off IR), which is why the registry records latency and edits rather than mere existence.",
+   "category": "official-club",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-game-day-recap",
@@ -46,7 +51,11 @@
     "method": "Fetched the page this session and read the sentence above verbatim; the URL shape is /game-day/{season}/reg-week{n}/{away}-vs-{home}/recap on the shared club platform.",
     "evidence": "https://www.neworleanssaints.com/game-day/2026/reg-week2/ravens-vs-saints/recap"
    },
-   "notes": "scripts/schema.py now allowlists club /game-day/ paths so these recap URLs can ground an archive row."
+   "notes": "scripts/schema.py now allowlists club /game-day/ paths so these recap URLs can ground an archive row.",
+   "category": "official-club-game-page",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-game-report",
@@ -66,7 +75,11 @@
     "method": "Content retrieved this session; the page's 'Jaguars injury report' section is where the club lists its in-game losses.",
     "evidence": "https://www.jaguars.com/news/game-report-2026-week-2-broncos-20-jaguars-13"
    },
-   "notes": "Prized shape for coverage gaps: one fetch can fill two teams. Listed as next-session mining work."
+   "notes": "Prized shape for coverage gaps: one fetch can fill two teams. Listed as next-session mining work.",
+   "category": "official-club",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-in-game-updates",
@@ -86,7 +99,11 @@
     "method": "Content retrieved and read this session (search index of the Seattle page plus the already-published archive row that cites it); the companion postgame page https://www.seahawks.com/news/updates-on-sam-darnold-jadarian-price-other-seahawks-injuries was fetched in full ('running back Jadarian Price will be on the field after exiting Sunday's win in Arizona early due to a shoulder injury').",
     "evidence": "https://www.seahawks.com/news/updates-on-sam-darnold-jadarian-price-other-seahawks-injuries"
    },
-   "notes": "Only some clubs publish these pages. Discovery of the per-game URL is the open problem: the collector currently has no club-wide index for it. Flagged as next-session work."
+   "notes": "Only some clubs publish these pages. Discovery of the per-game URL is the open problem: the collector currently has no club-wide index for it. Flagged as next-session work.",
+   "category": "official-club-game-page",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-injury-news",
@@ -106,7 +123,11 @@
     "method": "Re-listed from the archive's citation set; multiple clubs publish this shape, e.g. azcardinals.com 'LaFleur: Will Johnson could be sidelined for season'.",
     "evidence": "https://www.azcardinals.com/news/lafleur-will-johnson-could-be-sidelined-for-season"
    },
-   "notes": "Where the archive's 'out indefinitely' and 'miss the remainder of the season' language comes from."
+   "notes": "Where the archive's 'out indefinitely' and 'miss the remainder of the season' language comes from.",
+   "category": "official-club",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-newsrooms",
@@ -126,7 +147,11 @@
     "method": "Fetched club pages this session across the platform shared by all 32 clubs (static.clubs.nfl.com assets): Seahawks, Patriots, Saints (see club-game-day-recap), plus club URLs already cited by archive rows (Packers, Cowboys, Jets, Colts, Cardinals, Chargers, Commanders, Broncos, Bills, Falcons, Browns, Eagles, Buccaneers, Jaguars, Seahawks, 49ers).",
     "evidence": "https://www.patriots.com/news/game-observations-8-takeaways-from-the-patriots-win-over-the-steelers-in-week-2"
    },
-   "notes": "Hosts allowlisted in scripts/schema.py (all 32 newsroom domains) and mirrored in assets/app.js."
+   "notes": "Hosts allowlisted in scripts/schema.py (all 32 newsroom domains) and mirrored in assets/app.js.",
+   "category": "official-club",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-postgame-recap",
@@ -146,7 +171,11 @@
     "method": "Fetched in full this session; that sentence grounded the new Martin Emerson Jr. row. URL pattern is /game-day/{season}/reg-week{n}/{away}-vs-{home}/recap.",
     "evidence": "https://www.neworleanssaints.com/game-day/2026/reg-week2/ravens-vs-saints/recap"
    },
-   "notes": "Pattern is not universal: the same shape 404s on chiefs.com and miamidolphins.com, so each URL must be fetched before it is cited."
+   "notes": "Pattern is not universal: the same shape 404s on chiefs.com and miamidolphins.com, so each URL must be fetched before it is cited.",
+   "category": "official-club-game-page",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "club-practice-notebook",
@@ -166,7 +195,11 @@
     "method": "Already cited by archive rows and re-listed here; content is club-authored and the URL shape is stable per club.",
     "evidence": "https://www.colts.com/news/practice-notebook-alec-pierce-heading-to-ir-charvarius-ward-sr-a-nonparticipant-in-wednesday-s-practice"
    },
-   "notes": "The most efficient official follow-up source per club; titles are searchable."
+   "notes": "The most efficient official follow-up source per club; titles are searchable.",
+   "category": "official-club",
+   "latencyClass": "daily",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "nfl-daily-roundup",
@@ -183,10 +216,14 @@
    "verification": {
     "status": "verified",
     "checkedOn": "2026-09-24",
-    "method": "Fetched the Sept 16, Sept 18 and Sept 22, 2026 editions this session. Sept 16 carries practice statuses (e.g. 'Kitan Crawford suffered a mid-ankle sprain in Arizona's Week 1 win'); Sept 22 carries 'Jayden Reed (neck) is back in Green Bay after he stayed overnight in New Jersey after he exited Sunday's win over the Jets on a stretcher.'",
-    "evidence": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-tuesday-sept-22"
+    "method": "The Sept 23 and Sept 24 editions were fetched and read line by line this pass; both are practice/status roundups, so they ground follow-up claims, not in-game moments.",
+    "evidence": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
    },
-   "notes": "Most bullets are practice/roster status, NOT in-game events. The collector will only promote a bullet that carries an explicit in-game anchor."
+   "notes": "Most bullets are practice/roster status, NOT in-game events. The collector will only promote a bullet that carries an explicit in-game anchor.",
+   "category": "official-league",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "nfl-gamecenter-json",
@@ -206,7 +243,11 @@
     "method": "Direct probe returned 'HTTP 401 Unauthorized / Error 54113 / Varnish cache server'.",
     "evidence": "https://api.nfl.com/experience/v1/gamecenter/injuries"
    },
-   "notes": "This is why the project cannot claim an official NFL play-by-play feed. NFL.com player-facing pages are JavaScript-driven and expose no verified public play-by-play JSON. Do not describe any lane as 'official NFL play-by-play' until this returns data."
+   "notes": "This is why the project cannot claim an official NFL play-by-play feed. NFL.com player-facing pages are JavaScript-driven and expose no verified public play-by-play JSON. Do not describe any lane as 'official NFL play-by-play' until this returns data.",
+   "category": "official-league",
+   "latencyClass": "blocked",
+   "timestampPrecision": "none",
+   "access": "blocked"
   },
   {
    "id": "nfl-injury-report",
@@ -226,7 +267,11 @@
     "method": "Not re-probed in this session. The prior session's ledger recorded HTTP 200 with a Week 1 2026 title (probed 2026-09-10 from a GitHub Actions runner).",
     "evidence": "https://www.nfl.com/injuries/"
    },
-   "notes": "Deliberately excluded from in-game logic: it is a pregame report and conflating it with in-game status is the failure mode this project exists to avoid. A re-probe is scheduled for the next pass."
+   "notes": "Deliberately excluded from in-game logic: it is a pregame report and conflating it with in-game status is the failure mode this project exists to avoid. A re-probe is scheduled for the next pass.",
+   "category": "official-league",
+   "latencyClass": "weekly",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "nfl-notable-injuries",
@@ -243,10 +288,14 @@
    "verification": {
     "status": "verified",
     "checkedOn": "2026-09-24",
-    "method": "Fetched the Week 2 and Week 1 editions this session and read every club bullet, e.g. 'Dallas Cowboys cornerback Cobie Durant (hamstring) and safety P.J. Locke (foot) did not to return to Sunday's game against the Commanders.'",
-    "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+    "method": "Fetched and read line by line this pass; every club bullet names a player, an area and an in-game outcome, which is why this lane may ground archive rows.",
+    "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
    },
-   "notes": "This is league editorial coverage, not a club-issued game-status notice. The archive labels it accordingly."
+   "notes": "This is league editorial coverage, not a club-issued game-status notice. The archive labels it accordingly.",
+   "category": "official-league",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "nfl-notable-injuries-w1",
@@ -266,7 +315,11 @@
     "method": "Fetched this session and read club by club; every archived Week 1 league bullet was re-checked against this page's live text.",
     "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
    },
-   "notes": "Second discovery day for refresh.py. The page can be reworded after publication, so a stored excerpt is re-checked before reuse."
+   "notes": "Second discovery day for refresh.py. The page can be reworded after publication, so a stored excerpt is re-checked before reuse.",
+   "category": "official-league",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "nfl-roundup-index",
@@ -283,10 +336,14 @@
    "verification": {
     "status": "verified",
     "checkedOn": "2026-09-24",
-    "method": "Fetched the index this session; the page returned the Sept 23, 22, 21, 20, 19, 18, 17, 16, 15 and 14 2026 roundups with SEPTEMBER date labels.",
+    "method": "Index fetched and read this pass; it lists the daily league roundups from Sept 14 to Sept 24, 2026 with their headlines.",
     "evidence": "https://www.nfl.com/news/series/nfl-news-roundup"
    },
-   "notes": "Consumed by scripts/refresh.py as the discovery index."
+   "notes": "Consumed by scripts/refresh.py as the discovery index.",
+   "category": "official-league",
+   "latencyClass": "daily",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "nfl-transactions",
@@ -306,7 +363,11 @@
     "method": "Link verified as the destination the league's own roundup copy points readers to ('Visit NFL.com's transaction hub for a daily breakdown'); not scraped.",
     "evidence": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-23"
    },
-   "notes": "Used to corroborate the IR placements that archive rows cite from roundup text."
+   "notes": "Used to corroborate the IR placements that archive rows cite from roundup text.",
+   "category": "official-league",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "nfl-weekly-injury-report",
@@ -323,10 +384,14 @@
    "verification": {
     "status": "verified-exists",
     "checkedOn": "2026-09-24",
-    "method": "Surfaced with full table content this session (Seahawks OUT: QB Sam Darnold (glute), G Anthony Bradford (knee, hip), S Ty Okada (hamstring)); tables were not scraped.",
-    "evidence": "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games"
+    "method": "Located this pass from the Sept 23 roundup; the Week 3 edition covers player statuses for all 16 games. Practice statuses only, so it never grounds an in-game row.",
+    "evidence": "https://www.nfl.com/news/nfl-week-3-injury-report-player-statuses-for-all-16-games"
    },
-   "notes": "Listed so a reader can separate pregame designations from in-game events in one click. Not an in-game lane."
+   "notes": "Listed so a reader can separate pregame designations from in-game events in one click. Not an in-game lane.",
+   "category": "official-league",
+   "latencyClass": "weekly",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "packers-in-game-updates",
@@ -346,7 +411,11 @@
     "method": "Fetched in full this session; the cart wording and the club's own four-player loss list were read directly from the page.",
     "evidence": "https://www.packers.com/news/in-game-updates-week-2-jets-2026"
    },
-   "notes": "Second club confirmed to publish an in-game page, which is why the registry documents the pattern rather than a one-off."
+   "notes": "Second club confirmed to publish an in-game page, which is why the registry documents the pattern rather than a one-off.",
+   "category": "official-club-game-page",
+   "latencyClass": "minutes",
+   "timestampPrecision": "quarter",
+   "access": "html"
   },
   {
    "id": "seahawks-in-game-updates",
@@ -366,7 +435,11 @@
     "method": "Fetched in full this session, including the embedded Seahawks PR posts and the reporter's 'walking to the locker room with a bit of a limp' line.",
     "evidence": "https://www.seahawks.com/news/2026-week-1-seahawks-vs-patriots-injury-updates"
    },
-   "notes": "The template this project wants every club to publish. Existence is per-club; there is no league-wide index yet."
+   "notes": "The template this project wants every club to publish. Existence is per-club; there is no league-wide index yet.",
+   "category": "official-club-game-page",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "seahawks-injury-followup",
@@ -386,7 +459,11 @@
     "method": "Fetched in full this session and quoted for the Price, Pili and Holani updates now stored in the archive.",
     "evidence": "https://www.seahawks.com/news/seahawks-injury-updates-from-mike-macdonald-following-sunday-s-week-2-win-at-arizona"
    },
-   "notes": "Best available official source for 'left briefly and returned', the outcome league roundups usually omit."
+   "notes": "Best available official source for 'left briefly and returned', the outcome league roundups usually omit.",
+   "category": "official-club",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "espn-core-events",
@@ -401,12 +478,16 @@
    "autoPublish": false,
    "latency": "Seconds.",
    "verification": {
-    "status": "verified",
+    "status": "verified-endpoint",
     "checkedOn": "2026-09-24",
-    "method": "Fetched this session: count 14, pageCount 1, items 401872933 through 401872946.",
+    "method": "Fetched this pass; the week-2 query returned 16 event refs (401872932-401872947).",
     "evidence": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events?dates=20260920&limit=16"
    },
-   "notes": "Refs only; it carries no player or injury data."
+   "notes": "Refs only; it carries no player or injury data.",
+   "category": "partner-espn",
+   "latencyClass": "seconds",
+   "timestampPrecision": "minute",
+   "access": "keyless-json"
   },
   {
    "id": "espn-injuries",
@@ -421,12 +502,16 @@
    "autoPublish": false,
    "latency": "Minutes; the feed dates rows to the minute but is not a live play feed.",
    "verification": {
-    "status": "verified",
+    "status": "verified-endpoint",
     "checkedOn": "2026-09-24",
-    "method": "Fetched this session: top-level timestamp 2026-09-24T17:26:36Z, status 'success', season 2026 Regular Season, and per-team rows whose longComment names the game the injury happened in (Max Melton, Arizona Cardinals, dated 2026-09-24T02:12Z).",
+    "method": "Endpoint fetched this pass: league-wide feed with a 2026-09-24T20:53Z timestamp and per-player comments dated to the minute (sample read: Max Melton, toe).",
     "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries"
    },
-   "notes": "The payload is ~9 MB; the collector must bound and cache it. It is a reporting feed, not a club or league statement, so it can never ground a verified row."
+   "notes": "The payload is ~9 MB; the collector must bound and cache it. It is a reporting feed, not a club or league statement, so it can never ground a verified row.",
+   "category": "partner-espn",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "keyless-json"
   },
   {
    "id": "espn-injuries-page",
@@ -446,7 +531,11 @@
     "method": "Content retrieved this session with dated comments and sourcing (Schefter, team-site reporters); it backs the same data as the JSON feed with editorial context.",
     "evidence": "https://www.espn.com/nfl/injuries"
    },
-   "notes": "Best partner-tier lead generator for finding players who left a game. A secondary outlet: it can never ground a verified row, only point at one."
+   "notes": "Best partner-tier lead generator for finding players who left a game. A secondary outlet: it can never ground a verified row, only point at one.",
+   "category": "partner-espn",
+   "latencyClass": "minutes",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "espn-news",
@@ -466,7 +555,11 @@
     "method": "Fetched limit=5 this session: articles carried ISO timestamps (e.g. published 2026-09-24T17:14:31Z) plus headline, description and web link.",
     "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=5"
    },
-   "notes": "Shown on the site only inside the clearly-labelled partner/lead panel."
+   "notes": "Shown on the site only inside the clearly-labelled partner/lead panel.",
+   "category": "partner-espn",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "keyless-json"
   },
   {
    "id": "espn-scoreboard",
@@ -481,12 +574,16 @@
    "autoPublish": false,
    "latency": "Seconds behind the game.",
    "verification": {
-    "status": "verified",
+    "status": "verified-endpoint",
     "checkedOn": "2026-09-24",
-    "method": "Fetched this session: returned the 2026 season calendar and Week 3 with event 401872948 (Atlanta Falcons at Green Bay Packers, 2026-09-25T00:15Z, playByPlayAvailable false before kickoff).",
+    "method": "Fetched this pass; returned the 2026 season, week 3, with the next event ATL@GB on 2026-09-25T00:15Z. Scores only: it never creates an injury claim.",
     "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
    },
-   "notes": "Keyless and undocumented. Used for game context only; the site says so next to the scores."
+   "notes": "Keyless and undocumented. Used for game context only; the site says so next to the scores.",
+   "category": "partner-espn",
+   "latencyClass": "seconds",
+   "timestampPrecision": "minute",
+   "access": "keyless-json"
   },
   {
    "id": "espn-scoreboard-header",
@@ -506,7 +603,11 @@
     "method": "Fetched this session with dates=20260920: returned event 401872933 (Carolina Panthers at Atlanta Falcons) with fullStatus {state: 'post', displayPeriod: '4th'}, competitors and playByPlayAvailable true.",
     "evidence": "https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=football&league=nfl&dates=20260920"
    },
-   "notes": "This is the lane the browser uses to decide whether to enter in-game watch mode. It carries no injury text."
+   "notes": "This is the lane the browser uses to decide whether to enter in-game watch mode. It carries no injury text.",
+   "category": "partner-espn",
+   "latencyClass": "seconds",
+   "timestampPrecision": "second",
+   "access": "keyless-json"
   },
   {
    "id": "espn-summary-plays",
@@ -526,7 +627,11 @@
     "method": "Fetched ?event=401872933 (HTTP 200, boxscore and player sections present) and cdn.espn.com/core/nfl/playbyplay?xhr=1&gameId=401872932 (HTTP 200, 75 chunks, news objects interleaved).",
     "evidence": "https://cdn.espn.com/core/nfl/playbyplay?xhr=1&gameId=401872932"
    },
-   "notes": "Deliberately NOT used to claim injuries. The site states plainly that play-by-play injury detection is unproven here, and the vocabulary test is listed as next-session work. No code may describe this lane as 'official NFL play-by-play'."
+   "notes": "Deliberately NOT used to claim injuries. The site states plainly that play-by-play injury detection is unproven here, and the vocabulary test is listed as next-session work. No code may describe this lane as 'official NFL play-by-play'.",
+   "category": "partner-espn",
+   "latencyClass": "seconds",
+   "timestampPrecision": "second",
+   "access": "keyless-json"
   },
   {
    "id": "bluesky-search",
@@ -543,10 +648,14 @@
    "verification": {
     "status": "blocked",
     "checkedOn": "2026-09-24",
-    "method": "Fetched this session: 'HTTP 403 Forbidden'. Individual posts remain reachable by direct link (e.g. bsky.app/profile/tompelissero.bsky.social/post/...).",
+    "method": "Re-probed this pass through an anonymous fetch; the public searchPosts endpoint answered 403 Forbidden, so no keyless read tier exists. Listed as blocked rather than dropped.",
     "evidence": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=nfl%20injury&limit=3"
    },
-   "notes": "Insider accounts on Bluesky are followed by link-out only."
+   "notes": "Insider accounts on Bluesky are followed by link-out only.",
+   "category": "unofficial-social",
+   "latencyClass": "blocked",
+   "timestampPrecision": "none",
+   "access": "blocked"
   },
   {
    "id": "cbs-injury-tracker",
@@ -566,7 +675,11 @@
     "method": "Page content retrieved this session through the search index (headline and dated entries, Sept 20, 2026). Not scraped automatically: the page is editorial HTML with no public API.",
     "evidence": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/"
    },
-   "notes": "Listed as a source a human can check in one click; the leads it produced are in data/leads.json."
+   "notes": "Listed as a source a human can check in one click; the leads it produced are in data/leads.json.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "cbs-live-tracker",
@@ -586,7 +699,11 @@
     "method": "Content retrieved this session (dated Sept 20, 2026 entries). Editorial HTML with no public API, so it is a human-clickable lane and lead source, never auto-published.",
     "evidence": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/"
    },
-   "notes": "The best unofficial discovery lane for in-game injuries. Leads it produced are in data/leads.json awaiting official grounding."
+   "notes": "The best unofficial discovery lane for in-game injuries. Leads it produced are in data/leads.json awaiting official grounding.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "cbs-player-news",
@@ -606,7 +723,11 @@
     "method": "Content retrieved this session with the timestamp and the tent detail quoted above.",
     "evidence": "https://www.cbssports.com/fantasy/football/news/broncos-j-k-dobbins-suffers-hamstring-injury/"
    },
-   "notes": "The sideline-tent detail is the kind of observation the archive tracks; the claim itself still needs an official source."
+   "notes": "The sideline-tent detail is the kind of observation the archive tracks; the claim itself still needs an official source.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "hours",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "chargers-wire",
@@ -626,7 +747,11 @@
     "method": "Content retrieved this session with the quoted exit detail.",
     "evidence": "https://chargerswire.usatoday.com/story/sports/nfl/chargers/2026/09/21/chargers-injury-news-update-david-njoku-charlie-kolar/91880138007/"
    },
-   "notes": "Read alongside the official roundup quote, which supplies the injury label and the club's own words."
+   "notes": "Read alongside the official roundup quote, which supplies the injury label and the club's own words.",
+   "category": "unofficial-beat",
+   "latencyClass": "hours",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "dk-network-game-reports",
@@ -646,7 +771,11 @@
     "method": "Content retrieved this session showing the in-game column and per-player explanations.",
     "evidence": "https://dknetwork.draftkings.com/2026/09/20/week-2-nfl-injury-report-for-sunday-9-20-26/"
    },
-   "notes": "Useful for the 'who replaced him' detail that indicates a real, game-ending injury rather than a knock."
+   "notes": "Useful for the 'who replaced him' detail that indicates a real, game-ending injury rather than a knock.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "hours",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "gazette-broncos",
@@ -666,7 +795,11 @@
     "method": "Content retrieved this session; it also shows the label conflict the archive flags (hip in the league roundup, hamstring locally).",
     "evidence": "https://gazette.com/2026/09/23/broncos-injury-report-rams-dobbins-harvey-coleman"
    },
-   "notes": "Cited in the review queue as the second half of the Dobbins label conflict, never as proof of the injury itself."
+   "notes": "Cited in the review queue as the second half of the Dobbins label conflict, never as proof of the injury itself.",
+   "category": "unofficial-beat",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "google-news-rss",
@@ -683,10 +816,14 @@
    "verification": {
     "status": "verified",
     "checkedOn": "2026-09-24",
-    "method": "Fetched this session: HTTP 200 with dated items, e.g. 'NFL Injury Report, Week 3: Latest news, updates for Caleb Williams, Jaxson Dart, more' \u2014 Yahoo Sports, Thu, 24 Sep 2026 15:44:05 GMT.",
+    "method": "Fetched this session: HTTP 200 with dated items, e.g. 'NFL Injury Report, Week 3: Latest news, updates for Caleb Williams, Jaxson Dart, more' — Yahoo Sports, Thu, 24 Sep 2026 15:44:05 GMT.",
     "evidence": "https://news.google.com/rss/search?q=NFL+injury+when:1d&hl=en-US&gl=US&ceid=US:en"
    },
-   "notes": "Google's own banner restricts this feed to personal feed-reader use and prohibits other use, so the collector queries it at low frequency, links out, and attributes the outlet. It is never scraped or republished in full."
+   "notes": "Google's own banner restricts this feed to personal feed-reader use and prohibits other use, so the collector queries it at low frequency, links out, and attributes the outlet. It is never scraped or republished in full.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "rss"
   },
   {
    "id": "google-news-search",
@@ -706,7 +843,11 @@
     "method": "Search surfaces retrieved this session returned dated article listings that were then opened individually.",
     "evidence": "https://news.google.com/rss/search?q=NFL+injury+when:1d&hl=en-US&gl=US&ceid=US:en"
    },
-   "notes": "Companion to the RSS lane already in the registry; the site links out to search, it does not scrape it."
+   "notes": "Companion to the RSS lane already in the registry; the site links out to search, it does not scrape it.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "minutes",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "heavy-com",
@@ -726,7 +867,11 @@
     "method": "Content retrieved this session for Chargers and Vikings injury roundups; the phrasing above is from the same story as syndicated.",
     "evidence": "https://heavy.com/sports/nfl/los-angeles-chargers/place-david-njoku-charlie-kolar-ir/"
    },
-   "notes": "Aggregator of aggregators: used only to find which reporter to read and which official page to fetch."
+   "notes": "Aggregator of aggregators: used only to find which reporter to read and which official page to fetch.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "hours",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "instagram-facebook-tiktok",
@@ -746,7 +891,11 @@
     "method": "No public read API attempted. Listed as link-out destinations only, with that limitation stated in the UI.",
     "evidence": "https://www.instagram.com/explore/tags/nflinjury/"
    },
-   "notes": "Included in the registry precisely so the boundary is explicit rather than implied."
+   "notes": "Included in the registry precisely so the boundary is explicit rather than implied.",
+   "category": "unofficial-social",
+   "latencyClass": "link-out",
+   "timestampPrecision": "minute",
+   "access": "link-out"
   },
   {
    "id": "las-vegas-review-journal",
@@ -766,7 +915,11 @@
     "method": "Content retrieved this session for the Stukes concussion item; the official league roundup carries the club's own words, this page carries the game link.",
     "evidence": "https://www.reviewjournal.com/sports/raiders/brock-bowers-limited-aidan-oconnell-treydan-stukes-miss-raiders-practice-3890420/"
    },
-   "notes": "Exactly the split the project documents: official text for the injury, third-party text for the in-game origin, never merged silently."
+   "notes": "Exactly the split the project documents: official text for the injury, third-party text for the in-game origin, never merged silently.",
+   "category": "unofficial-beat",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "mastodon-nfl-tag",
@@ -786,7 +939,11 @@
     "method": "Fetched limit=3 this session: HTTP 200 with statuses created 2026-09-24T17:25:15Z, 17:01:11Z and 17:00:34Z, including link cards (e.g. a card describing 'Giants QB Jaxson Dart is set to miss the rest of the season after suffering a serious knee injury in Week 2').",
     "evidence": "https://mastodon.social/api/v1/timelines/tag/nfl?limit=3"
    },
-   "notes": "Contains bot mirrors of X accounts, so its reliability is the reliability of whatever it mirrors. Displayed only in the unverified social panel."
+   "notes": "Contains bot mirrors of X accounts, so its reliability is the reliability of whatever it mirrors. Displayed only in the unverified social panel.",
+   "category": "unofficial-social",
+   "latencyClass": "seconds",
+   "timestampPrecision": "minute",
+   "access": "keyless-json"
   },
   {
    "id": "nbcsports-player-news",
@@ -806,7 +963,11 @@
     "method": "Multiple player-news pages retrieved this session (Dobbins, Thorson, Coleman) with dated entries and attribution.",
     "evidence": "https://www.nbcsports.com/fantasy/football/player-news/2026-09-20/dobbins-goes-down-with-hamstring-injury"
    },
-   "notes": "Often the fastest place a reporter's wording appears; still a secondary outlet and therefore a lead."
+   "notes": "Often the fastest place a reporter's wording appears; still a secondary outlet and therefore a lead.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html"
   },
   {
    "id": "reddit-json",
@@ -826,7 +987,11 @@
     "method": "Fetched this session: HTTP 403. (The prior session's ledger recorded the same 403 on 2026-09-10.)",
     "evidence": "https://www.reddit.com/r/nfl/new.json?limit=2"
    },
-   "notes": "Reddit is link-out only: a search link is offered in the UI, nothing is scraped."
+   "notes": "Reddit is link-out only: a search link is offered in the UI, nothing is scraped.",
+   "category": "unofficial-social",
+   "latencyClass": "blocked",
+   "timestampPrecision": "none",
+   "access": "blocked"
   },
   {
    "id": "sports-betting-dime",
@@ -846,7 +1011,11 @@
     "method": "Content retrieved this session in the Week 2 report search results.",
     "evidence": "https://www.sportsbettingdime.com/news/nfl/week-2-nfl-injury-report-status-updates-tagovailoa-burrow-kittle-more/"
    },
-   "notes": "Lowest tier of the unofficial lanes: aggregation only, for pregame baselines."
+   "notes": "Lowest tier of the unofficial lanes: aggregation only, for pregame baselines.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "x-insider-accounts",
@@ -866,7 +1035,11 @@
     "method": "Post URLs verified as they appear inside fetched league articles (the Onwenu initial-X-ray item links to x.com/AdamSchefter/status/2101800569065099359). No keyless read tier exists, so nothing is scraped: the site links out to a live search.",
     "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
    },
-   "notes": "This is the honest boundary: X is where several in-game reports first appear, and no automated free read exists."
+   "notes": "This is the honest boundary: X is where several in-game reports first appear, and no automated free read exists.",
+   "category": "unofficial-social",
+   "latencyClass": "link-out",
+   "timestampPrecision": "second",
+   "access": "link-out"
   },
   {
    "id": "x-twitter",
@@ -886,7 +1059,11 @@
     "method": "No keyless read endpoint exists for search; this session used X-post URLs only as they were cited inside league articles (e.g. nfl.com cites x.com/RapSheet/status/...). Not probed with credentials.",
     "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
    },
-   "notes": "The site links out to live X search per game. It never claims to read X."
+   "notes": "The site links out to live X search per game. It never claims to read X.",
+   "category": "unofficial-social",
+   "latencyClass": "link-out",
+   "timestampPrecision": "second",
+   "access": "link-out"
   },
   {
    "id": "club-practice-injury-report",
@@ -906,7 +1083,11 @@
     "method": "Pulled up in full this session while checking whether the Week 3 reports ground any in-game origin; they do not.",
     "evidence": "https://www.denverbroncos.com/news/injury-report-wr-marvin-mims-jr-returns-to-practice-ahead-of-broncos-week-3-game-vs-rams"
    },
-   "notes": "Deliberately not an evidence lane for archive rows: a practice listing never says when or how a player was hurt. Used for status context and conflict records only."
+   "notes": "Deliberately not an evidence lane for archive rows: a practice listing never says when or how a player was hurt. Used for status context and conflict records only.",
+   "category": "official-club",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html"
   },
   {
    "id": "club-presser-transcript",
@@ -926,7 +1107,491 @@
     "method": "Fetched in full this session and read line by line while testing the Dolphins' Week 2 candidates.",
     "evidence": "https://www.miamidolphins.com/news/transcript-hc-jeff-hafley-press-conference-september-21"
    },
-   "notes": "Often confirms that an injury exists without saying it happened in the game, so it is a follow-up lane, not an in-game lane. Douglas therefore stays a lead, not a row."
+   "notes": "Often confirms that an injury exists without saying it happened in the game, so it is a follow-up lane, not an in-game lane. Douglas therefore stays a lead, not a row.",
+   "category": "official-club",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html"
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "nfl-player-health-safety",
+   "name": "NFL Player Health & Safety (league medical hub)",
+   "org": "NFL",
+   "tier": "official",
+   "role": "status-context",
+   "category": "official-protocol",
+   "url": "https://www.nfl.com/playerhealthandsafety/",
+   "what": "The league's own health-and-safety hub: concussion data, medical-officer briefings, equipment and emergency-care programmes.",
+   "proves": "What the league itself says about concussion protocol, emergency action plans and season-long injury data.",
+   "latency": "Season-level; published in reports and features.",
+   "latencyClass": "weekly",
+   "timestampPrecision": "day",
+   "access": "html",
+   "verification": {
+    "status": "verified",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched and read this pass; the page is the league's medical hub (player care, equipment, resources).",
+    "evidence": "https://www.nfl.com/playerhealthandsafety/"
+   },
+   "notes": "Context only. It documents the protocol a blue tent or a concussion evaluation refers to; it never reports a specific in-game event."
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "nfl-scores-official",
+   "name": "NFL.com scoreboard",
+   "org": "NFL",
+   "tier": "official",
+   "role": "live-game-state",
+   "category": "official-league",
+   "url": "https://www.nfl.com/scores/",
+   "what": "The league's own scoreboard page: which games are live, the clock and the score.",
+   "proves": "Game state and kickoff times, from the league itself.",
+   "latency": "Seconds on the page; not a machine feed.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched NFL.com/scores: it listed Thursday Night Football Falcons at Packers for Sep 24, 8:15 PM ET, and the full Week 3 slate with 2026 records.",
+    "evidence": "https://www.nfl.com/scores/"
+   },
+   "notes": "Reader-facing fallback when the partner header lane is blocked. A scoreboard never proves an injury."
+  },
+  {
+   "inGame": true,
+   "autoPublish": true,
+   "id": "club-scan-index",
+   "name": "Club newsroom index (all 32 clubs, machine-read)",
+   "org": "NFL clubs",
+   "tier": "official",
+   "role": "club-scan-index",
+   "category": "official-club",
+   "url": "https://www.packers.com/news/",
+   "what": "Each club's own news index, read automatically by scripts/clubscan.py so in-game sentences can be found without a human opening 32 sites.",
+   "proves": "Which club articles exist, when they were published and what they say verbatim — including in-game sentences.",
+   "latency": "Minutes to hours after the article is posted.",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "The index pattern is read for all 32 clubs by the discovery scan; the host list is checked against the ledger's official allowlist by a test, and each club's probe result is stored in data/clubscan-state.json (blocked clubs are recorded, never skipped).",
+    "evidence": "https://www.packers.com/news/"
+   },
+   "notes": "Two-read stability promotion: a sentence may only enter the ledger after the identical text is read twice, the sentence names the club, and the article's date resolves to a real game."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "espn-plays-core",
+   "name": "ESPN core play-by-play (plays with wall-clock times)",
+   "org": "ESPN",
+   "tier": "partner",
+   "role": "play-by-play",
+   "category": "partner-espn",
+   "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401872934/competitions/401872934/plays?limit=4",
+   "what": "Every play of a game as JSON, each with its down, distance, clock and — the part that matters here — a wall-clock timestamp to the second.",
+   "proves": "When a play happened in real time, to the second, and what the play said. It does not prove an injury unless the play text itself says so.",
+   "latency": "Seconds after the play; the feed is a partner API, not a league statement.",
+   "latencyClass": "seconds",
+   "timestampPrecision": "second",
+   "access": "keyless-json",
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched this pass: the CIN@HOU game returned 207 plays with per-play wallclock stamps (kickoff 2026-09-20T17:02:38Z) and per-play participant references.",
+    "evidence": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401872934/competitions/401872934/plays?limit=4"
+   },
+   "notes": "The closest a free feed gets to 'when did this happen'. scripts/watch_live.py polls it during games and logs any play whose own text carries an availability phrase."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "espn-summary-injuries",
+   "name": "ESPN game summary injuries section",
+   "org": "ESPN",
+   "tier": "partner",
+   "role": "status-context",
+   "category": "partner-espn",
+   "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872934",
+   "what": "The per-game summary payload, which can carry an injuries section with a player, a status and a provider note.",
+   "proves": "A partner feed's own status line for a player in that game, dated to the minute.",
+   "latency": "Minutes; updated during and after a game.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "keyless-json",
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Endpoint confirmed reachable and CSP-allowed; the reader walks the JSON for any injuries array and drops records without an athlete or status, so an unknown shape yields nothing rather than a guess.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872934"
+   },
+   "notes": "Partner tier: shown as PARTNER FEED · UNVERIFIED and never allowed to ground a verified row."
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "thesportsdb-events",
+   "name": "TheSportsDB NFL events (free, keyless)",
+   "org": "TheSportsDB",
+   "tier": "partner",
+   "role": "game-enumeration",
+   "category": "partner-other",
+   "url": "https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=2026-09-20&s=American_Football",
+   "what": "A free keyless schedule/results API used to enumerate a day's NFL games and their venues.",
+   "proves": "Which games were played on a date, the venue and the final score. Never an injury.",
+   "latency": "Updated after games.",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "keyless-json",
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched this pass for 2026-09-20: three games returned with timestamps, venues, scores and a YouTube highlight link each (e.g. ATL 3-34 CAR).",
+    "evidence": "https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=2026-09-20&s=American_Football"
+   },
+   "notes": "Second independent schedule lane: if ESPN game enumeration fails, this one can still date a club sentence."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "profootballtalk",
+   "name": "Pro Football Talk (NBC Sports) injury news",
+   "org": "NBC Sports",
+   "tier": "unofficial",
+   "role": "news-lead",
+   "category": "unofficial-beat",
+   "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/jaxson-dart-questionable-to-return-with-knee-injury",
+   "what": "A reporter-staffed newsroom that posts in-game developments within minutes, with a published clock time.",
+   "proves": "What reporters say happened, attributed to insiders, with a publication timestamp.",
+   "latency": "Minutes after the play; often the first public wording for a cart or a tent.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified",
+    "checkedOn": "2026-09-24",
+    "method": "Article text read this pass: 'Jaxson Dart questionable to return with knee injury', published Sept 21, 2026 08:39 PM, describing the medical tent and the locker room visit.",
+    "evidence": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/jaxson-dart-questionable-to-return-with-knee-injury"
+   },
+   "notes": "Leads only: it can never ground a verified row, and anything it reports stays labelled UNOFFICIAL."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "rotowire-player-news",
+   "name": "RotoWire NFL player news",
+   "org": "RotoWire",
+   "tier": "unofficial",
+   "role": "injury-aggregator",
+   "category": "unofficial-aggregator",
+   "url": "https://www.rotowire.com/football/news.php",
+   "what": "A live player-news wire that cites reporters and timestamps every note.",
+   "proves": "What another outlet reported, with its own attribution chain.",
+   "latency": "Minutes.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Listed in this pass with dated notes (e.g. Brooks surgery Sept 23; Dowdle day-to-day Sept 22).",
+    "evidence": "https://www.rotowire.com/football/news.php"
+   },
+   "notes": "Aggregator: useful for noticing a report early, never evidence."
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "rotowire-injury-report",
+   "name": "RotoWire NFL injury report",
+   "org": "RotoWire",
+   "tier": "unofficial",
+   "role": "injury-aggregator",
+   "category": "unofficial-aggregator",
+   "url": "https://www.rotowire.com/football/injury-report.php",
+   "what": "A weekly injury-report page that mirrors designations and adds reporter sourcing.",
+   "proves": "Designations as another outlet read them; a cross-check on the league's own report.",
+   "latency": "Daily through the practice week.",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Listed this pass; the Week 2 edition was found during the Bengals@Texans grounding search.",
+    "evidence": "https://www.rotowire.com/football/injury-report.php"
+   },
+   "notes": "Practice designations only. Never grounds an in-game row."
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "fantasypros-injury-news",
+   "name": "FantasyPros NFL injury news",
+   "org": "FantasyPros",
+   "tier": "unofficial",
+   "role": "injury-aggregator",
+   "category": "unofficial-aggregator",
+   "url": "https://www.fantasypros.com/nfl/injury-news.php",
+   "what": "A player-news aggregator with timestamps and original-outlet attribution.",
+   "proves": "Where a report first appeared, and how several outlets worded it.",
+   "latency": "Minutes.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Lane listed this pass from the project's own aggregator set; the page was not opened line by line, so it is recorded as existence-only.",
+    "evidence": "https://www.fantasypros.com/nfl/injury-news.php"
+   },
+   "notes": "Only ever a discovery hint. Nothing from an aggregator enters the ledger."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "cincinnati-enquirer-live",
+   "name": "Cincinnati Enquirer live game blog",
+   "org": "Cincinnati Enquirer (Gannett)",
+   "tier": "unofficial",
+   "role": "news-lead",
+   "category": "unofficial-beat",
+   "url": "https://www.cincinnati.com/story/sports/nfl/bengals/2026/09/20/bengals-texans-week-2-live-score-updates-highlights--live/91860470007/",
+   "what": "A newspaper's live game blog, updated during play with clock-stamped entries.",
+   "proves": "What a beat writer saw during the game, to the minute.",
+   "latency": "Seconds to minutes while a reporter types.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Read this pass in search results: entries carry times like '2:03 pm ET September 20, 2026'.",
+    "evidence": "https://www.cincinnati.com/story/sports/nfl/bengals/2026/09/20/bengals-texans-week-2-live-score-updates-highlights--live/91860470007/"
+   },
+   "notes": "A human reader can watch a club's beat blog while the page is open. Automated reading is not attempted."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "saintswire-live-blog",
+   "name": "Saints Wire live blog (USA TODAY network)",
+   "org": "USA TODAY Sports",
+   "tier": "unofficial",
+   "role": "news-lead",
+   "category": "unofficial-beat",
+   "url": "https://saintswire.usatoday.com/story/sports/nfl/saints/2026/09/13/saints-lions-live-updates-score-highlights--live/91745334007/",
+   "what": "A team-site live blog with clock-stamped entries, including in-game injury observations.",
+   "proves": "What its reporter saw (e.g. Christian Mahogany leaving with a non-contact injury) with a timestamp.",
+   "latency": "Minutes.",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Read this pass: the Week 1 entry describes Mahogany's non-contact exit and Ben Bartch replacing him.",
+    "evidence": "https://saintswire.usatoday.com/story/sports/nfl/saints/2026/09/13/saints-lions-live-updates-score-highlights--live/91745334007/"
+   },
+   "notes": "Its Mahogany note is the lead for the one-row Detroit-New Orleans game, and it is not evidence: a club sentence is still required."
+  },
+  {
+   "inGame": false,
+   "autoPublish": false,
+   "id": "si-team-pages",
+   "name": "Sports Illustrated team pages",
+   "org": "Sports Illustrated",
+   "tier": "unofficial",
+   "role": "news-lead",
+   "category": "unofficial-aggregator",
+   "url": "https://www.si.com/nfl/texans/onsi/all",
+   "what": "Team-scoped news indexes that republish club injury-report tables and reporter notes.",
+   "proves": "A second reading of a club's own injury-report table, plus beat commentary.",
+   "latency": "Hours.",
+   "latencyClass": "hours",
+   "timestampPrecision": "day",
+   "access": "html",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Index read this pass ('Texans Injury Report Lists Nico Collins Among 4 Players Out vs. Bengals').",
+    "evidence": "https://www.si.com/nfl/texans/onsi/all"
+   },
+   "notes": "Discovery lane for finding which club page to read; the club page itself is the source of record."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "youtube-nfl",
+   "name": "NFL on YouTube (official league channel)",
+   "org": "NFL",
+   "tier": "unofficial",
+   "role": "social-video-lead",
+   "category": "unofficial-video",
+   "url": "https://www.youtube.com/@NFL",
+   "what": "The league's own video channel: highlights and sideline clips that can show an event after the fact.",
+   "proves": "What a clip shows — a cart, a tent, a player walking off — when a human watches it.",
+   "latency": "Minutes to hours after the play.",
+   "latencyClass": "link-out",
+   "timestampPrecision": "minute",
+   "access": "link-out",
+   "verification": {
+    "status": "link-out-only",
+    "checkedOn": "2026-09-24",
+    "method": "Listed as a human-followed link. No keyless read tier exists for video, so nothing is scraped.",
+    "evidence": "https://www.youtube.com/@NFL"
+   },
+   "notes": "Treated as unofficial here: a clip is an observation a person makes, not a league statement the page can quote."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "reddit-search-live",
+   "name": "Reddit NFL search (link-out)",
+   "org": "Reddit",
+   "tier": "unofficial",
+   "role": "social-lead",
+   "category": "unofficial-social",
+   "url": "https://www.reddit.com/r/nfl/search/?q=injury&restrict_sr=1&sort=new",
+   "what": "A human-readable search over r/nfl, where fans post sideline observations within seconds.",
+   "proves": "What fans say they saw, at best. Frequently wrong about which player it was.",
+   "latency": "Seconds for a human; the JSON tier is blocked (403) for automation.",
+   "latencyClass": "link-out",
+   "timestampPrecision": "minute",
+   "access": "link-out",
+   "verification": {
+    "status": "link-out-only",
+    "checkedOn": "2026-09-24",
+    "method": "The JSON tier was re-probed and refused (403), so the lane is offered only as a link a reader can open.",
+    "evidence": "https://www.reddit.com/r/nfl/search/?q=injury&restrict_sr=1&sort=new"
+   },
+   "notes": "The one-click links on the live rail use this lane. Fan posts never enter the ledger or the log as evidence."
+  },
+  {
+   "inGame": true,
+   "autoPublish": false,
+   "id": "tiktok-search",
+   "name": "TikTok search (link-out)",
+   "org": "TikTok",
+   "tier": "unofficial",
+   "role": "social-lead",
+   "category": "unofficial-social",
+   "url": "https://www.tiktok.com/search?q=nfl%20injury",
+   "what": "Short-form video search: sideline clips sometimes surface here before a newsroom writes anything.",
+   "proves": "Only what a person watching the clip decides it shows.",
+   "latency": "Seconds for a human reading it.",
+   "latencyClass": "link-out",
+   "timestampPrecision": "minute",
+   "access": "link-out",
+   "verification": {
+    "status": "link-out-only",
+    "checkedOn": "2026-09-24",
+    "method": "Link-out lane: no keyless read tier, so it is never fetched by the page or by CI.",
+    "evidence": "https://www.tiktok.com/search?q=nfl%20injury"
+   },
+   "notes": "Grouped with Instagram and Facebook, which the page already offers as one-click searches."
+  },
+  {
+   "id": "nfl-game-pages",
+   "tier": "official",
+   "role": "game-enumeration",
+   "category": "official-league",
+   "name": "NFL.com game pages (Game Center)",
+   "org": "NFL.com (league)",
+   "url": "https://www.nfl.com/games/falcons-at-packers-2026-reg-3",
+   "what": "One page per game: kickoff time and venue, the week's injury status table for both clubs, team stats and highlights.",
+   "proves": "Game context and the league's own published status table. It is not a live injury feed and cannot ground an in-game row.",
+   "latency": "status table refreshed with each official injury report; otherwise as fast as the game clock",
+   "latencyClass": "minutes",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "inGame": false,
+   "autoPublish": false,
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Opened the Week 3 Falcons at Packers game page: it shows the 8:15 PM kickoff at Lambeau Field and the injury tables naming Ebukam (hamstring, out), Bako-Bewele (knee, out), Banks (toe, out) and Reed (neck, out).",
+    "evidence": "https://www.nfl.com/games/falcons-at-packers-2026-reg-3"
+   },
+   "notes": "Useful when a reader wants the league's own page for a game rather than a provider's. Statuses on it are pregame declarations, so they belong in context and follow-ups, never in an in-game row."
+  },
+  {
+   "id": "nfl-report-videos",
+   "tier": "official",
+   "role": "postgame-signal",
+   "category": "official-league",
+   "name": "'The NFL Report' injury segments",
+   "org": "NFL.com / NFL Network",
+   "url": "https://www.nfl.com/videos/notable-injuries-from-week-2-the-nfl-report",
+   "what": "Short post-game video segments, each titled with the player and the reported injury (for example, a season-ending patellar tendon tear, or a quarterback in concussion protocol).",
+   "proves": "A league-published summary of an injury after the game, and sometimes the later outlook. The page's own text is only a sentence, so quote exactly that.",
+   "latency": "minutes to hours after the game; not an in-game feed",
+   "latencyClass": "hours",
+   "timestampPrecision": "minute",
+   "access": "html",
+   "inGame": false,
+   "autoPublish": false,
+   "verification": {
+    "status": "verified-endpoint",
+    "checkedOn": "2026-09-24",
+    "method": "Opened the Week 2 notable-injuries segment and its sibling clips: each clip names the player and the injury in the page title and description.",
+    "evidence": "https://www.nfl.com/videos/notable-injuries-from-week-2-the-nfl-report"
+   },
+   "notes": "Good for a dated follow-up claim on an existing row. A video title is not a second source: if only a clip says something, label it as league-published commentary, not club confirmation."
+  },
+  {
+   "id": "nflverse-data",
+   "tier": "unofficial",
+   "role": "play-by-play-unverified",
+   "category": "unofficial-aggregator",
+   "name": "nflverse open data",
+   "org": "nflverse (independent open-source project)",
+   "url": "https://github.com/nflverse/nflverse-data",
+   "what": "Community-run release archive of play-by-play, rosters and box scores for past and current seasons, downloadable as CSV/parquet.",
+   "proves": "A second, independent, free record of what happened play by play after the fact. It carries quarter and game clock, not wall-clock timestamps, and it is not an official source.",
+   "latency": "hours to a day after games; not usable for in-game alerts",
+   "latencyClass": "daily",
+   "timestampPrecision": "quarter",
+   "access": "html",
+   "inGame": false,
+   "autoPublish": false,
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Opened the repository: an active public project (141 commits, release workflow updated within the last week) publishing automated NFL data.",
+    "evidence": "https://github.com/nflverse/nflverse-data"
+   },
+   "notes": "Kept as the clearest free play-by-play alternative to the ESPN core API, for verification and season-long context. Unofficial tier: it can never ground a verified row."
+  },
+  {
+   "id": "pro-football-reference",
+   "tier": "unofficial",
+   "role": "play-by-play-unverified",
+   "category": "unofficial-aggregator",
+   "name": "Pro-Football-Reference",
+   "org": "Sports Reference LLC",
+   "url": "https://www.pro-football-reference.com/",
+   "what": "Independent statistics reference: per-player game logs, box scores, snap counts and season history.",
+   "proves": "Whether a player appears in a game log and what the box score recorded. It is a reference, not a reporting outlet, and it is not official.",
+   "latency": "updated after games; often not until the following day",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html",
+   "inGame": false,
+   "autoPublish": false,
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched the site home page; it served the current 2026 player index. Individual player and game pages were not opened line by line this session, so the lane is recorded as a reference only.",
+    "evidence": "https://www.pro-football-reference.com/"
+   },
+   "notes": "Use it to sanity-check that a player was actually in a game before a claim is published, never as the evidence for one. Scraping is rate-limited by the site's own robots policy: prefer one-off manual checks."
   }
  ]
 }

@@ -1,0 +1,7 @@
+{
+ "version": 1,
+ "updatedAt": null,
+ "label": "AUTO-MATCHED CLUB TEXT — official pages, sentence level, not yet in the verified master list. Each row is a verbatim sentence from a club newsroom with the URL a reader can open.",
+ "policy": "Candidates are found by phrase, not by a model: the sentence must carry one of the closed in-game phrases, must not be practice or injury-report language, and must name somebody. Promotion into data/archive.json needs two independent reads of the same sentence plus a resolvable game; everything else stays here with the failed gate named.",
+ "candidates": []
+}

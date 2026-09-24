@@ -1,4 +1,10 @@
 // Pure presentation rules. No scores are used to infer injury status.
+// The in-game vocabulary is imported from the generated module so the browser
+// and the collectors cannot disagree about what a phrase means.
+import { IN_GAME_RULES, CONTEXTS } from './vocabulary.mjs';
+
+export { IN_GAME_RULES, CONTEXTS };
+
 export function dataURL(path, base, now = Date.now()) {
   const url = new URL(path, base);
   // Pages edge caches sometimes retain an older artifact at the same path.
@@ -85,28 +91,33 @@ export function tierLabel(tier) {
 }
 
 // ---------------------------------------------------------------------------
-// In-game vocabulary. This is deliberately a closed list of phrases a provider
-// actually has to write before anything is shown. It classifies text; it never
-// invents a diagnosis, a severity, or a cause. Returns null when the text says
-// nothing about availability, so play-by-play chatter stays silent.
+// In-game vocabulary. The closed list lives in data/vocabulary.json and reaches
+// this file through assets/vocabulary.mjs, so the browser, the club scanner and
+// the game-window watcher all read the same phrases. A matched phrase is an
+// observation or an availability phrase somebody else wrote; it is never a
+// diagnosis, a severity or a cause.
 // ---------------------------------------------------------------------------
-const IN_GAME_RULES = [
-  { status: 'out', match: /\b(?:will not return|did not return|does not return|ruled out|is out for the (?:game|remainder)|out for the remainder of the game)\b/i },
-  { status: 'returned', match: /\b(?:returned to the game|has returned|returned to the field|back on the field)\b/i },
-  { status: 'questionable', match: /\b(?:questionable to return|return is questionable|doubtful to return)\b/i },
-  { status: 'observed', observation: 'Cart or stretcher', match: /\b(?:cart(?:ed)? off|on a stretcher|immobilized)\b/i },
-  { status: 'observed', observation: 'Medical tent', match: /\b(?:blue (?:medical )?tent|medical tent)\b/i },
-  { status: 'evaluated', observation: 'Concussion evaluation', match: /\b(?:concussion protocol|evaluated for a concussion)\b/i },
-  { status: 'observed', observation: 'Injury mentioned', match: /\b(?:injured|injury|hurt|limped|went down)\b/i },
-];
+export function detectAllSignals(text) {
+  const value = String(text ?? '');
+  if (value.length < 12 || value.length > 600) return [];
+  const found = [];
+  for (const rule of IN_GAME_RULES) {
+    for (const pattern of rule.patterns) {
+      const match = pattern.exec(value);
+      if (match) {
+        found.push(Object.freeze({
+          status: rule.status, observation: rule.observation || '', label: rule.label,
+          weight: rule.weight, phrase: match[0], matchedAt: match.index,
+        }));
+        break;
+      }
+    }
+  }
+  return found.sort((left, right) => right.weight - left.weight || left.matchedAt - right.matchedAt);
+}
 
 export function detectInGameSignals(text) {
-  const value = String(text ?? '');
-  if (value.length < 12 || value.length > 600) return null;
-  for (const rule of IN_GAME_RULES) {
-    if (rule.match.test(value)) return Object.freeze({ status: rule.status, observation: rule.observation || '', phrase: rule.match.exec(value)[0] });
-  }
-  return null;
+  return detectAllSignals(text)[0] ?? null;
 }
 
 // Availability bands the UI sorts and colours by. Highest wins.
@@ -190,4 +201,134 @@ export function eligiblePartnerAlerts(articles = [], games = [], now = Date.now(
     if (!teams.length) return [];
     return [{ ...article, signal, teams, tier: 'partner' }];
   });
+}
+
+// ---------------------------------------------------------------------------
+// Time. Every timestamp this project shows is the moment it was *seen*, and it
+// is shown to the second. Provider timestamps keep whatever precision the lane
+// actually publishes: the browser never invents sub-second or clock-time
+// precision a feed did not give it.
+// ---------------------------------------------------------------------------
+export function isoSeconds(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const text = String(value).trim().replace('Z', '+00:00');
+  const parsed = new Date(text);
+  if (!Number.isFinite(parsed.getTime())) return null;
+  return parsed.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
+export function stampSeconds(value, { zone = undefined } = {}) {
+  const iso = isoSeconds(value);
+  if (!iso) return 'time unavailable';
+  const date = new Date(iso);
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: zone, year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  }).formatToParts(date).reduce((acc, part) => ({ ...acc, [part.type]: part.value }), {});
+  return `${parts.month} ${parts.day}, ${parts.year} ${parts.hour}:${parts.minute}:${parts.second}${zone ? ` ${zone}` : ' UTC'}`;
+}
+
+export function secondsBetween(laterIso, earlierIso) {
+  const later = Date.parse(isoSeconds(laterIso) ?? '');
+  const earlier = Date.parse(isoSeconds(earlierIso) ?? '');
+  if (!Number.isFinite(later) || !Number.isFinite(earlier)) return null;
+  return Math.max(0, Math.round((later - earlier) / 1000));
+}
+
+// ---------------------------------------------------------------------------
+// The alert log. The server keeps a durable file (data/alert-log.json); the
+// browser keeps the entries it saw itself in localStorage so a refresh cannot
+// lose them, and shows exactly which of them were new since the last visit.
+// ---------------------------------------------------------------------------
+export function mergeAlertLog(serverEntries = [], sessionEntries = [], cap = 300) {
+  const seen = new Map();
+  for (const entry of [...(sessionEntries || []), ...(serverEntries || [])]) {
+    if (!entry || typeof entry !== 'object') continue;
+    const key = String(entry.id ?? `${entry.detectedAt}|${entry.lane}|${entry.subject}`);
+    const existing = seen.get(key);
+    // The first sighting wins: a detection time is never rewritten by a later poll.
+    if (!existing || String(entry.detectedAt) < String(existing.detectedAt)) seen.set(key, entry);
+  }
+  return [...seen.values()]
+    .sort((left, right) => String(right.detectedAt).localeCompare(String(left.detectedAt)))
+    .slice(0, cap);
+}
+
+export function newSince(entries = [], sinceIso = null) {
+  if (!sinceIso) return [];
+  const since = Date.parse(isoSeconds(sinceIso) ?? '');
+  if (!Number.isFinite(since)) return [];
+  return entries.filter(entry => {
+    const at = Date.parse(isoSeconds(entry?.detectedAt) ?? '');
+    return Number.isFinite(at) && at > since;
+  });
+}
+
+export function logLine(entry) {
+  const parts = [];
+  if (entry?.sourceAt) {
+    const latency = secondsBetween(entry.detectedAt, entry.sourceAt);
+    parts.push(`provider timestamp ${stampSeconds(entry.sourceAt)}${latency === null ? '' : ` · seen ${humanizeSeconds(latency)} later`}`);
+  } else {
+    parts.push('provider timestamp not published on this lane');
+  }
+  return parts.join(' · ');
+}
+
+// ---------------------------------------------------------------------------
+// Source registry views. The registry is organised, not sorted: tier first,
+// then category, then the lanes themselves, with counts a reader can check.
+// ---------------------------------------------------------------------------
+export const SOURCE_CATEGORY_LABEL = Object.freeze({
+  'official-league': 'Official · league',
+  'official-club': 'Official · club newsroom',
+  'official-club-game-page': 'Official · club game page',
+  'official-protocol': 'Official · protocol & medical',
+  'partner-espn': 'Partner · ESPN public feeds',
+  'partner-other': 'Partner · other free feeds',
+  'unofficial-social': 'Unofficial · social',
+  'unofficial-aggregator': 'Unofficial · aggregators & wires',
+  'unofficial-beat': 'Unofficial · beat reporters',
+  'unofficial-video': 'Unofficial · video',
+});
+
+export const LATENCY_LABEL = Object.freeze({
+  seconds: 'seconds', minutes: 'minutes', hours: 'hours', daily: 'same day',
+  weekly: 'weekly', blocked: 'blocked', 'link-out': 'link only',
+});
+
+export function groupSources(sources = []) {
+  const order = ['official-league', 'official-club', 'official-club-game-page', 'official-protocol',
+    'partner-espn', 'partner-other', 'unofficial-beat', 'unofficial-aggregator', 'unofficial-social', 'unofficial-video'];
+  const byCategory = new Map();
+  for (const lane of sources) {
+    const key = lane?.category ?? 'unknown';
+    if (!byCategory.has(key)) byCategory.set(key, []);
+    byCategory.get(key).push(lane);
+  }
+  return order
+    .filter(category => byCategory.has(category))
+    .map(category => ({
+      category,
+      label: SOURCE_CATEGORY_LABEL[category] ?? category,
+      rows: byCategory.get(category).sort((left, right) =>
+        String(left.name).localeCompare(String(right.name))),
+    }));
+}
+
+export function filterSources(sources = [], { query = '', tier = 'all', category = 'all', access = 'all' } = {}) {
+  const needle = query.trim().toLocaleLowerCase();
+  return sources.filter(lane => (tier === 'all' || lane.tier === tier)
+    && (category === 'all' || lane.category === category)
+    && (access === 'all' || lane.access === access)
+    && (!needle || [lane.name, lane.org, lane.what, lane.proves, lane.id]
+      .some(field => String(field ?? '').toLocaleLowerCase().includes(needle))));
+}
+
+export function laneHealth(lane, now = Date.now(), maxAgeMinutes = 30) {
+  if (!lane?.checkedAt) return 'unknown';
+  const checked = Date.parse(isoSeconds(lane.checkedAt) ?? '');
+  if (!Number.isFinite(checked)) return 'unknown';
+  if (now - checked > maxAgeMinutes * 60_000) return 'stale';
+  return lane.status === 'ok' ? 'ok' : lane.status === 'blocked' ? 'blocked' : 'idle';
 }
