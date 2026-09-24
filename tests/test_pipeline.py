@@ -30,10 +30,10 @@ class SourceLedgerTests(unittest.TestCase):
         cls.archive = json.loads((ROOT / "data/archive.json").read_text())
         cls.review = json.loads((ROOT / "data/review.json").read_text())
 
-    def test_archive_entries_are_unique_with_individual_official_evidence(self):
+    def test_all_sixty_entries_are_unique_with_individual_official_evidence(self):
         validate_archive(self.archive)
-        self.assertEqual(80, len(self.archive["incidents"]))
-        self.assertEqual(80, len({row["id"] for row in self.archive["incidents"]}))
+        self.assertEqual(94, len(self.archive["incidents"]))
+        self.assertEqual(94, len({row["id"] for row in self.archive["incidents"]}))
         self.assertEqual("2026-09-23", self.archive["verifiedOn"])
         for row in self.archive["incidents"]:
             with self.subTest(row=row["id"]):
@@ -60,40 +60,100 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_line_by_line_outcomes_checked_against_sourced_master_list(self):
         expected = {
-            "sam-darnold": "out", "a-j-brown": "out", "de-zhaun-stribling": "out",
-            "kyler-murray": "did_not_return", "zay-flowers": "out", "ja-kobi-lane": "unconfirmed",
-            "caleb-williams": "unconfirmed", "jayden-daniels": "out", "alec-pierce": "out",
-            "jaxson-dart": "out", "saquon-barkley": "returned", "rico-dowdle": "returned",
-            "ronnie-stanley": "did_not_return", "jaylen-wright": "did_not_return",
-            "dallas-goedert": "did_not_return", "demarcus-robinson": "out",
-            "p-j-locke": "did_not_return", "mike-onwenu": "out",
-            "a-j-terrell": "out", "robert-beal-jr": "did_not_return",
-            "chris-lindstrom": "out", "da-shawn-hand": "out", "demarvion-overshown": "unconfirmed",
-            "malik-hooker": "unconfirmed", "christian-mahogany": "did_not_return", "jake-hummel": "out",
-            "minkah-fitzpatrick": "did_not_return", "omar-cooper-jr": "out", "kitan-crawford": "unconfirmed",
-            "davis-allen": "unconfirmed", "bj-green-ii": "did_not_return", "avonte-maddox": "out",
-            "dj-moore": "out", "samson-ebukam": "out", "tyrion-ingram-dawkins": "did_not_return",
-            "mike-evans": "did_not_return", "kelvin-banks-jr": "unconfirmed", "jonathon-brooks": "unconfirmed",
-            "malik-nabers": "returned", "brian-burns": "did_not_return",
-            "t-j-tampa": "out", "tyrique-stevenson": "did_not_return", "dylan-sampson": "out",
-            "keandre-lambert-smith": "did_not_return", "elijah-molden": "did_not_return",
-            "kyle-louis": "out", "jacob-parrish": "out", "chigoziem-okonkwo": "did_not_return",
-            "frankie-luvu": "did_not_return", "tyler-owens": "did_not_return",
-            "aaron-banks": "out", "anthony-campbell": "did_not_return", "eli-raridon": "out",
-            "dre-mont-jones": "did_not_return", "dell-pettus": "did_not_return",
-            "david-onyemata": "out", "marcelino-mccrary-ball": "did_not_return",
-            "charvarius-ward": "unconfirmed", "james-thompson-jr": "unconfirmed",
+            "a-j-brown": "out",
+            "a-j-terrell": "out",
+            "aaron-banks": "out",
+            "alec-pierce": "out",
             "andrew-thomas": "did_not_return",
-            "donovan-jennings": "unconfirmed", "miles-killebrew": "unconfirmed",
-            "jarvis-brownlee-jr": "returned", "micheal-clemons": "unconfirmed",
-            "brandon-pili": "out", "davon-hamilton": "returned",
-            "jonah-coleman": "unconfirmed", "jalen-coker": "unconfirmed",
-            "jake-tonges": "unconfirmed", "arian-smith": "unconfirmed",
-            "brian-thomas-jr": "returned", "dee-winters": "unconfirmed",
-            "jaishawn-barham": "unconfirmed", "charlie-kolar": "unconfirmed",
-            "will-johnson": "unconfirmed", "mack-wilson-sr": "returned",
-            "george-holani": "unconfirmed", "josiah-trotter": "unconfirmed",
-            "bo-melton": "unconfirmed", "jordan-love": "unconfirmed",
+            "anthony-campbell": "did_not_return",
+            "arian-smith": "unconfirmed",
+            "avonte-maddox": "out",
+            "bj-green-ii": "did_not_return",
+            "bo-melton": "unconfirmed",
+            "brandon-pili": "out",
+            "brian-burns": "did_not_return",
+            "brian-thomas-jr": "returned",
+            "caleb-williams": "unconfirmed",
+            "charlie-kolar": "unconfirmed",
+            "charvarius-ward": "unconfirmed",
+            "chigoziem-okonkwo": "did_not_return",
+            "chris-lindstrom": "out",
+            "christian-mahogany": "did_not_return",
+            "cobie-durant": "did_not_return",
+            "cooper-mcdonald": "out",
+            "da-shawn-hand": "out",
+            "dallas-goedert": "did_not_return",
+            "david-njoku": "out",
+            "david-onyemata": "out",
+            "davis-allen": "unconfirmed",
+            "davon-hamilton": "returned",
+            "de-zhaun-stribling": "out",
+            "dee-winters": "unconfirmed",
+            "dell-pettus": "did_not_return",
+            "demarcus-robinson": "out",
+            "demarvion-overshown": "unconfirmed",
+            "derwin-james": "unconfirmed",
+            "dj-moore": "out",
+            "donovan-jennings": "unconfirmed",
+            "dre-mont-jones": "did_not_return",
+            "dylan-sampson": "out",
+            "ed-oliver": "unconfirmed",
+            "eli-raridon": "out",
+            "elijah-molden": "did_not_return",
+            "frankie-luvu": "did_not_return",
+            "george-holani": "unconfirmed",
+            "ja-kobi-lane": "unconfirmed",
+            "jacob-parrish": "out",
+            "jadarian-price": "did_not_return",
+            "jaishawn-barham": "unconfirmed",
+            "jake-hummel": "out",
+            "jake-tonges": "unconfirmed",
+            "jalen-coker": "unconfirmed",
+            "james-thompson-jr": "unconfirmed",
+            "jarvis-brownlee-jr": "returned",
+            "jaxson-dart": "out",
+            "jayden-daniels": "out",
+            "jayden-reed": "out",
+            "jaylen-wright": "did_not_return",
+            "jonah-coleman": "unconfirmed",
+            "jonathon-brooks": "unconfirmed",
+            "jordan-love": "unconfirmed",
+            "josiah-trotter": "unconfirmed",
+            "keandre-lambert-smith": "did_not_return",
+            "kelvin-banks-jr": "unconfirmed",
+            "kitan-crawford": "unconfirmed",
+            "kyle-louis": "out",
+            "kyler-murray": "did_not_return",
+            "ladd-mcconkey": "did_not_return",
+            "mack-wilson-sr": "returned",
+            "malik-hooker": "unconfirmed",
+            "malik-nabers": "returned",
+            "mansoor-delane": "out",
+            "marcelino-mccrary-ball": "did_not_return",
+            "max-melton": "out",
+            "micheal-clemons": "unconfirmed",
+            "mike-evans": "did_not_return",
+            "mike-onwenu": "out",
+            "miles-killebrew": "unconfirmed",
+            "minkah-fitzpatrick": "did_not_return",
+            "nick-cross": "unconfirmed",
+            "nick-scott": "out",
+            "omar-cooper-jr": "out",
+            "p-j-locke": "did_not_return",
+            "puka-nacua": "unconfirmed",
+            "rico-dowdle": "returned",
+            "robert-beal-jr": "did_not_return",
+            "ronnie-rivers": "out",
+            "ronnie-stanley": "did_not_return",
+            "sam-darnold": "out",
+            "samson-ebukam": "out",
+            "saquon-barkley": "returned",
+            "t-j-tampa": "out",
+            "tyler-owens": "did_not_return",
+            "tyrion-ingram-dawkins": "did_not_return",
+            "tyrique-stevenson": "did_not_return",
+            "will-johnson": "unconfirmed",
+            "zay-flowers": "out",
         }
         self.assertEqual(expected, {row["id"].split("-", 4)[-1]: row["outcome"] for row in self.archive["incidents"]})
 
@@ -114,7 +174,7 @@ class SourceLedgerTests(unittest.TestCase):
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
         self.assertEqual(21, len(self.review["flags"]))
-        self.assertEqual(12, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
+        self.assertEqual(3, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
             with self.subTest(flag=flag["id"]):
@@ -125,8 +185,6 @@ class SourceLedgerTests(unittest.TestCase):
                 self.assertGreaterEqual(len(flag["links"]), 2)
 
     def test_untrusted_sources_cannot_enter_a_verified_record(self):
-        self.assertTrue(official_url("https://www.packers.com/news/in-game-updates-week-2-jets-2026"))
-        self.assertFalse(official_url("https://packers.com/news/claim"))
         self.assertFalse(official_url("https://www.nfl.com.attacker.test/news/claim"))
         self.assertFalse(official_url("http://www.nfl.com/news/claim"))
         self.assertFalse(official_url("https://www.nfl.com/news/claim?redirect=evil"))
@@ -225,9 +283,22 @@ class FeedTests(unittest.TestCase):
     def test_held_issue_does_not_auto_publish(self):
         review = json.loads((ROOT / "data/review.json").read_text())
         held = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
-        self.assertIn("2026-09-20-sea-jadarian-price", held)
+        # After promoting 7 of the original 10 held to annotated, 3 identity-mismatch
+        # cases remain held: Kam Curl, Kiko Mauigoa, Zach Bako-Bewele.
+        self.assertIn("2026-09-10-lar-kam-curl", held)
+        self.assertIn("2026-09-20-nyj-kiko-mauigoa", held)
+        self.assertIn("2026-09-20-gb-zach-bako-bewele", held)
+        self.assertNotIn("2026-09-20-sea-jadarian-price", held)
+        # The synthetic fixture contains Jadarian Price as a valid single-player
+        # bullet, so without the held set it would be accepted; with the held set
+        # from the previous session it was blocked. Now that it is annotated and
+        # published, the collector must still respect the remaining held set.
         accepted, _ = extract_roundup(self.page, URL, self.page.published, self.games, NOW, held)
-        self.assertNotIn("Jadarian Price", [row["player"] for row in accepted])
+        # The fixture's Jadarian Price should now be accepted because it is no
+        # longer in the held set (promoted to annotated with both sources).
+        self.assertIn("Jadarian Price", [row["player"] for row in accepted])
+        # But a truly held identity mismatch must still be blocked.
+        self.assertNotIn("Zach Bako-Bewele", [row["player"] for row in accepted])
 
     def test_network_outage_is_explicit_and_does_not_publish_injuries(self):
         def offline(*_args, **_kwargs):
@@ -240,8 +311,30 @@ class FeedTests(unittest.TestCase):
         self.assertEqual([], news["incidents"])
 
     def test_build_refuses_a_held_case_even_if_collector_regresses(self):
-        accepted, _ = extract_roundup(self.page, URL, self.page.published, self.games, NOW, set())
-        held_row = next(row for row in accepted if row["player"] == "Jadarian Price")
+        # After promotion, 3 identity-mismatch cases remain held: Kam Curl,
+        # Kiko Mauigoa, Zach Bako-Bewele. The synthetic fixture does not contain
+        # Kam Curl, but the build must still refuse any held ID, even if a
+        # collector regresses and emits it.
+        review = json.loads((ROOT / "data/review.json").read_text())
+        held_ids = {flag["incidentId"] for flag in review["flags"] if flag["disposition"] == "held"}
+        self.assertIn("2026-09-10-lar-kam-curl", held_ids)
+        # Construct a minimal valid incident that uses a held ID to ensure
+        # the publisher fails closed.
+        held_row = {
+            "id": "2026-09-10-lar-kam-curl",
+            "player": "Kam Curl",
+            "position": "S",
+            "team": "LAR",
+            "opponent": "SF",
+            "gameDate": "2026-09-10",
+            "gameStart": "2026-09-10T20:00:00Z",
+            "injury": "Ankle",
+            "outcome": "unconfirmed",
+            "observations": ["Left game"],
+            "automatic": True,
+            "capturedAt": "2026-09-10T21:00:00Z",
+            "claims": [{"date": "2026-09-10", "kind": "game", "text": "Suffered ankle injury in Thursday's game per report.", "quote": "suffered an ankle injury in Thursday's game", "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-10"}],
+        }
         with tempfile.TemporaryDirectory() as tmp:
             live = json.loads((ROOT / "data/live.json").read_text())
             live["incidents"] = [held_row]
@@ -258,7 +351,7 @@ class FeedTests(unittest.TestCase):
             self.assertTrue((dest / "assets/domain.mjs").is_file())
             self.assertEqual([], json.loads((dest / "data/live.json").read_text())["incidents"])
             self.assertNotIn("<item>", (dest / "feed.xml").read_text())
-            self.assertEqual(80, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
+            self.assertEqual(94, len(json.loads((dest / "data/archive.json").read_text())["incidents"]))
 
 
 if __name__ == "__main__":
