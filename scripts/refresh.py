@@ -434,6 +434,18 @@ def main() -> int:
             status=status, source_at=iso(now), id_key=f"lane|{lane}|{status}",
             note="A degraded lane is recorded so an empty feed is never read as an all-clear.",
         ))
+    # A heartbeat per scheduled run. The log then proves, to the second, when the
+    # site was refreshed and what each lane answered, so an empty incident list can
+    # never be mistaken for evidence that nothing happened.
+    entries.append(make_log_entry(
+        kind="lane-status", tier="official", lane="scheduled refresh",
+        subject="Scheduled scan",
+        text=(f"NFL.com roundups: {news['status']} ({news['discovery']['accepted']} matched); "
+              f"ESPN scoreboard: {scores['status']} ({len(scores['games'])} games)."),
+        url=NFL_INDEX[0], detected_at=iso(now), status=news["status"],
+        id_key=f"refresh|{iso(now)}", source_at=iso(now),
+        note="Heartbeat: an empty incident list is never an all-clear; this line proves the scan ran.",
+    ))
     log_data, log_added = merge_log(load_log(), entries)
     write_log(log_data)
     for path, data in ((args.live, news), (args.scoreboard, scores)):
