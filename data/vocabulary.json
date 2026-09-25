@@ -29,7 +29,9 @@
         "\\breturn is questionable\\b",
         "\\bdoubtful to return\\b",
         "\\buncertain to return\\b",
-        "\\breturn (?:is|remains) uncertain\\b"
+        "\\breturn (?:is|remains) uncertain\\b",
+        "\\bmay not return\\b",
+        "\\bmay return\\b"
       ]
     },
     {
@@ -80,7 +82,11 @@
         "\\bback on the field\\b",
         "\\bhas returned\\b",
         "\\breturned after (?:halftime|the break)\\b",
-        "\\bcleared to return\\b"
+        "\\bcleared to return\\b",
+        "\\bre-entered the game\\b",
+        "\\bback in the game\\b",
+        "\\breturned to the huddle\\b",
+        "\\bevaluated and returned\\b"
       ]
     },
     {
@@ -107,6 +113,29 @@
         "\\bdown on the (?:field|turf)\\b",
         "\\blimped\\b",
         "\\bwas hurt\\b"
+      ]
+    },
+    {
+      "status": "evaluated",
+      "observation": "On-field medical evaluation",
+      "label": "FIELD EVALUATION wording",
+      "weight": 3,
+      "patterns": [
+        "\\bunder evaluation\\b",
+        "\\bbeing evaluated\\b",
+        "\\bevaluated on the field\\b",
+        "\\bfield evaluation\\b"
+      ]
+    },
+    {
+      "status": "observed",
+      "observation": "Got up and back on feet",
+      "label": "GOT UP / BACK ON FEET wording",
+      "weight": 1,
+      "patterns": [
+        "\\bgot up and walked\\b",
+        "\\bback on (?:his|her) feet\\b",
+        "\\breturned to (?:his|her) feet\\b"
       ]
     }
   ],
@@ -135,7 +164,15 @@
       "in the fourth quarter",
       "before halftime",
       "after halftime",
-      "at halftime"
+      "at halftime",
+      "under evaluation",
+      "being evaluated",
+      "field evaluation",
+      "re-entered the game",
+      "back in the game",
+      "returned to the huddle",
+      "got up and walked",
+      "back on his feet"
     ],
     "practiceExclusion": [
       "practice",

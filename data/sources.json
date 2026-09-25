@@ -6,7 +6,7 @@
   "partner": "A free, keyless, publicly reachable hosted feed (ESPN's site endpoints). Useful for live game state, timestamps and leads. Never grounds a verified archive row on its own.",
   "unofficial": "Public social or aggregator material (Mastodon, Google News RSS, CBS-style trackers, X/Instagram/Facebook/TikTok/Reddit). Leads and context only: never auto-published as a verified claim.",
   "rule": "A lane may only ever be shown with its tier label. An unofficial or partner item is never presented as a verified in-game injury. Absence of a report never implies a player is healthy.",
-  "organisation": "Every lane is labelled with its tier (official / partner / unofficial), its category, the latency class a reader should expect, the timestamp precision it actually carries, and how it can be reached (keyless JSON, HTML, link-out or blocked). A lane that cannot be reached is listed as blocked rather than dropped."
+  "organisation": "Every lane is labelled with its tier (official / partner / unofficial), its category, the latency class a reader should expect, the timestamp precision it actually carries, how it can be reached (keyless JSON, HTML, link-out or blocked), and its browserProbe: whether the page's own browser is known to reach it (allowed), refused a measured read (blocked), never fetched by design (not-applicable) or not measured (not-tested). A lane that cannot be reached is listed as blocked rather than dropped."
  },
  "sources": [
   {
@@ -31,7 +31,12 @@
    "category": "official-club",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.chargers.com/news/charlie-kolar-david-njoku-injured-reserve-fantasy"
+   }
   },
   {
    "id": "club-game-day-recap",
@@ -55,7 +60,12 @@
    "category": "official-club-game-page",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.neworleanssaints.com/game-day/2026/reg-week2/ravens-vs-saints/recap"
+   }
   },
   {
    "id": "club-game-report",
@@ -79,7 +89,12 @@
    "category": "official-club",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.jaguars.com/news/game-report-2026-week-2-broncos-20-jaguars-13"
+   }
   },
   {
    "id": "club-in-game-updates",
@@ -103,7 +118,12 @@
    "category": "official-club-game-page",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.seahawks.com/news/2026-week-2-seahawks-at-cardinals-in-game-injury-updates"
+   }
   },
   {
    "id": "club-injury-news",
@@ -127,7 +147,12 @@
    "category": "official-club",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.newyorkjets.com/news/jets-injury-news-arian-smith-to-miss-season-after-acl-surgery-david-onyemata-sidelined-09-23-2026"
+   }
   },
   {
    "id": "club-newsrooms",
@@ -151,7 +176,12 @@
    "category": "official-club",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.seahawks.com/news/"
+   }
   },
   {
    "id": "club-postgame-recap",
@@ -175,7 +205,12 @@
    "category": "official-club-game-page",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.neworleanssaints.com/game-day/2026/reg-week2/ravens-vs-saints/recap"
+   }
   },
   {
    "id": "club-practice-notebook",
@@ -199,7 +234,12 @@
    "category": "official-club",
    "latencyClass": "daily",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.colts.com/news/practice-notebook-alec-pierce-heading-to-ir-charvarius-ward-sr-a-nonparticipant-in-wednesday-s-practice"
+   }
   },
   {
    "id": "nfl-daily-roundup",
@@ -223,7 +263,12 @@
    "category": "official-league",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-16"
+   }
   },
   {
    "id": "nfl-gamecenter-json",
@@ -247,7 +292,12 @@
    "category": "official-league",
    "latencyClass": "blocked",
    "timestampPrecision": "none",
-   "access": "blocked"
+   "access": "blocked",
+   "browserProbe": {
+    "status": "blocked",
+    "method": "league game-centre JSON answered 401 for the anonymous read when probed 2026-09-24; the official play-by-play lane therefore stays blocked rather than assumed",
+    "evidence": "https://api.nfl.com/experience/v1/gamecenter/injuries"
+   }
   },
   {
    "id": "nfl-injury-report",
@@ -262,16 +312,21 @@
    "autoPublish": false,
    "latency": "Weekly, published on the league's reporting schedule.",
    "verification": {
-    "status": "pending-reprobe",
-    "checkedOn": null,
-    "method": "Not re-probed in this session. The prior session's ledger recorded HTTP 200 with a Week 1 2026 title (probed 2026-09-10 from a GitHub Actions runner).",
+    "status": "verified",
+    "checkedOn": "2026-09-24",
+    "method": "Re-fetched this pass (the lane sat as pending-reprobe): read the Week 3 page verbatim — 'Injuries - WEEK 3', Thursday, September 24, ATL vs GB tables with 'Jayden Reed ... Neck ... Did Not Participate In Practice ... Out' and 'Zach Bako-Bewele ... Knee ... Out', plus the Sunday, September 27 game tables.",
     "evidence": "https://www.nfl.com/injuries/"
    },
-   "notes": "Deliberately excluded from in-game logic: it is a pregame report and conflating it with in-game status is the failure mode this project exists to avoid. A re-probe is scheduled for the next pass.",
+   "notes": "Pregame Game Status Report: it proves a current designation, never when an injury happened, so it can never ground an in-game row. Irregularity flagged this pass: the league's own page displays 'Zach Bako-Bewele' (GB) but its hyperlink points to /players/zach-tom/ — the same mismatch as the Sept. 22 roundup bullet; the Bako-Bewele row stands on the Packers' own pages and the league link is not followed for identity. See the review queue.",
    "category": "official-league",
    "latencyClass": "weekly",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/injuries/"
+   }
   },
   {
    "id": "nfl-notable-injuries",
@@ -295,7 +350,12 @@
    "category": "official-league",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-2-games"
+   }
   },
   {
    "id": "nfl-notable-injuries-w1",
@@ -319,7 +379,12 @@
    "category": "official-league",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/news/notable-injuries-news-from-sunday-s-week-1-games-2026"
+   }
   },
   {
    "id": "nfl-roundup-index",
@@ -343,7 +408,12 @@
    "category": "official-league",
    "latencyClass": "daily",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/news/series/nfl-news-roundup"
+   }
   },
   {
    "id": "nfl-transactions",
@@ -367,7 +437,12 @@
    "category": "official-league",
    "latencyClass": "daily",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/transactions/"
+   }
   },
   {
    "id": "nfl-weekly-injury-report",
@@ -391,7 +466,12 @@
    "category": "official-league",
    "latencyClass": "weekly",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/news/nfl-week-2-injury-report-player-statuses-for-all-16-games"
+   }
   },
   {
    "id": "packers-in-game-updates",
@@ -415,7 +495,12 @@
    "category": "official-club-game-page",
    "latencyClass": "minutes",
    "timestampPrecision": "quarter",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.packers.com/news/in-game-updates-week-2-jets-2026"
+   }
   },
   {
    "id": "seahawks-in-game-updates",
@@ -439,7 +524,12 @@
    "category": "official-club-game-page",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.seahawks.com/news/2026-week-1-seahawks-vs-patriots-injury-updates"
+   }
   },
   {
    "id": "seahawks-injury-followup",
@@ -463,7 +553,12 @@
    "category": "official-club",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.seahawks.com/news/seahawks-injury-updates-from-mike-macdonald-following-sunday-s-week-2-win-at-arizona"
+   }
   },
   {
    "id": "espn-core-events",
@@ -487,7 +582,12 @@
    "category": "partner-espn",
    "latencyClass": "seconds",
    "timestampPrecision": "minute",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host sports.core.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events?dates=20260920&limit=16"
+   }
   },
   {
    "id": "espn-injuries",
@@ -511,7 +611,12 @@
    "category": "partner-espn",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries"
+   }
   },
   {
    "id": "espn-injuries-page",
@@ -535,7 +640,12 @@
    "category": "partner-espn",
    "latencyClass": "minutes",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.espn.com/nfl/injuries"
+   }
   },
   {
    "id": "espn-news",
@@ -559,7 +669,12 @@
    "category": "partner-espn",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50"
+   }
   },
   {
    "id": "espn-scoreboard",
@@ -583,7 +698,12 @@
    "category": "partner-espn",
    "latencyClass": "seconds",
    "timestampPrecision": "minute",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+   }
   },
   {
    "id": "espn-scoreboard-header",
@@ -607,7 +727,12 @@
    "category": "partner-espn",
    "latencyClass": "seconds",
    "timestampPrecision": "second",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.web.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=football&league=nfl"
+   }
   },
   {
    "id": "espn-summary-plays",
@@ -631,7 +756,12 @@
    "category": "partner-espn",
    "latencyClass": "seconds",
    "timestampPrecision": "second",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872933"
+   }
   },
   {
    "id": "bluesky-search",
@@ -655,7 +785,12 @@
    "category": "unofficial-social",
    "latencyClass": "blocked",
    "timestampPrecision": "none",
-   "access": "blocked"
+   "access": "blocked",
+   "browserProbe": {
+    "status": "blocked",
+    "method": "search endpoint refused the anonymous read (403) when probed 2026-09-24; re-probing a third-party search API is out of scope this pass, so the block stands as recorded",
+    "evidence": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=nfl%20injury&limit=3"
+   }
   },
   {
    "id": "cbs-injury-tracker",
@@ -679,7 +814,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/"
+   }
   },
   {
    "id": "cbs-live-tracker",
@@ -703,7 +843,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.cbssports.com/nfl/news/nfl-week-2-inactives-injury-tracker-all-the-latest-player-updates/live/"
+   }
   },
   {
    "id": "cbs-player-news",
@@ -727,7 +872,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "hours",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.cbssports.com/fantasy/football/news/broncos-j-k-dobbins-suffers-hamstring-injury/"
+   }
   },
   {
    "id": "chargers-wire",
@@ -751,7 +901,12 @@
    "category": "unofficial-beat",
    "latencyClass": "hours",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://chargerswire.usatoday.com/story/sports/nfl/chargers/2026/09/21/chargers-injury-news-update-david-njoku-charlie-kolar/91880138007/"
+   }
   },
   {
    "id": "dk-network-game-reports",
@@ -775,7 +930,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "hours",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://dknetwork.draftkings.com/2026/09/20/week-2-nfl-injury-report-for-sunday-9-20-26/"
+   }
   },
   {
    "id": "gazette-broncos",
@@ -799,7 +959,12 @@
    "category": "unofficial-beat",
    "latencyClass": "daily",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://gazette.com/2026/09/23/broncos-injury-report-rams-dobbins-harvey-coleman"
+   }
   },
   {
    "id": "google-news-rss",
@@ -823,7 +988,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "rss"
+   "access": "rss",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://news.google.com/rss/search?q=NFL+injury+when:1d&hl=en-US&gl=US&ceid=US:en"
+   }
   },
   {
    "id": "google-news-search",
@@ -847,7 +1017,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "minutes",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://news.google.com/search?q=NFL%20injury"
+   }
   },
   {
    "id": "heavy-com",
@@ -871,7 +1046,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "hours",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://heavy.com/sports/nfl/los-angeles-chargers/place-david-njoku-charlie-kolar-ir/"
+   }
   },
   {
    "id": "instagram-facebook-tiktok",
@@ -895,7 +1075,12 @@
    "category": "unofficial-social",
    "latencyClass": "link-out",
    "timestampPrecision": "minute",
-   "access": "link-out"
+   "access": "link-out",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://www.instagram.com/explore/tags/nflinjury/"
+   }
   },
   {
    "id": "las-vegas-review-journal",
@@ -919,7 +1104,12 @@
    "category": "unofficial-beat",
    "latencyClass": "daily",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.reviewjournal.com/sports/raiders/brock-bowers-limited-aidan-oconnell-treydan-stukes-miss-raiders-practice-3890420/"
+   }
   },
   {
    "id": "mastodon-nfl-tag",
@@ -943,7 +1133,12 @@
    "category": "unofficial-social",
    "latencyClass": "seconds",
    "timestampPrecision": "minute",
-   "access": "keyless-json"
+   "access": "keyless-json",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://mastodon.social/api/v1/timelines/tag/nfl"
+   }
   },
   {
    "id": "nbcsports-player-news",
@@ -967,7 +1162,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "minutes",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nbcsports.com/fantasy/football/player-news/2026-09-20/dobbins-goes-down-with-hamstring-injury"
+   }
   },
   {
    "id": "reddit-json",
@@ -991,7 +1191,12 @@
    "category": "unofficial-social",
    "latencyClass": "blocked",
    "timestampPrecision": "none",
-   "access": "blocked"
+   "access": "blocked",
+   "browserProbe": {
+    "status": "blocked",
+    "method": "re-probed this pass: the JSON endpoint answered HTTP 403 to an anonymous read, the same refusal recorded 2026-09-24",
+    "evidence": "https://www.reddit.com/r/nfl/new.json?limit=2"
+   }
   },
   {
    "id": "sports-betting-dime",
@@ -1015,7 +1220,12 @@
    "category": "unofficial-aggregator",
    "latencyClass": "daily",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.sportsbettingdime.com/news/nfl/week-2-nfl-injury-report-status-updates-tagovailoa-burrow-kittle-more/"
+   }
   },
   {
    "id": "x-insider-accounts",
@@ -1039,7 +1249,12 @@
    "category": "unofficial-social",
    "latencyClass": "link-out",
    "timestampPrecision": "second",
-   "access": "link-out"
+   "access": "link-out",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://x.com/AdamSchefter/status/2101800569065099359"
+   }
   },
   {
    "id": "x-twitter",
@@ -1063,7 +1278,12 @@
    "category": "unofficial-social",
    "latencyClass": "link-out",
    "timestampPrecision": "second",
-   "access": "link-out"
+   "access": "link-out",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://x.com/search?q=NFL%20injury&f=live"
+   }
   },
   {
    "id": "club-practice-injury-report",
@@ -1087,7 +1307,12 @@
    "category": "official-club",
    "latencyClass": "daily",
    "timestampPrecision": "day",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.vikings.com/news/buccaneers-injury-report-week-3-2026-nfl-season"
+   }
   },
   {
    "id": "club-presser-transcript",
@@ -1111,7 +1336,12 @@
    "category": "official-club",
    "latencyClass": "hours",
    "timestampPrecision": "minute",
-   "access": "html"
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.miamidolphins.com/news/transcript-hc-jeff-hafley-press-conference-september-21"
+   }
   },
   {
    "inGame": false,
@@ -1135,7 +1365,12 @@
     "method": "Fetched and read this pass; the page is the league's medical hub (player care, equipment, resources).",
     "evidence": "https://www.nfl.com/playerhealthandsafety/"
    },
-   "notes": "Context only. It documents the protocol a blue tent or a concussion evaluation refers to; it never reports a specific in-game event."
+   "notes": "Context only. It documents the protocol a blue tent or a concussion evaluation refers to; it never reports a specific in-game event.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/playerhealthandsafety/"
+   }
   },
   {
    "inGame": false,
@@ -1159,7 +1394,12 @@
     "method": "Fetched NFL.com/scores: it listed Thursday Night Football Falcons at Packers for Sep 24, 8:15 PM ET, and the full Week 3 slate with 2026 records.",
     "evidence": "https://www.nfl.com/scores/"
    },
-   "notes": "Reader-facing fallback when the partner header lane is blocked. A scoreboard never proves an injury."
+   "notes": "Reader-facing fallback when the partner header lane is blocked. A scoreboard never proves an injury.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/scores/"
+   }
   },
   {
    "inGame": true,
@@ -1183,7 +1423,12 @@
     "method": "The index pattern is read for all 32 clubs by the discovery scan; the host list is checked against the ledger's official allowlist by a test, and each club's probe result is stored in data/clubscan-state.json (blocked clubs are recorded, never skipped).",
     "evidence": "https://www.packers.com/news/"
    },
-   "notes": "Two-read stability promotion: a sentence may only enter the ledger after the identical text is read twice, the sentence names the club, and the article's date resolves to a real game."
+   "notes": "Two-read stability promotion: a sentence may only enter the ledger after the identical text is read twice, the sentence names the club, and the article's date resolves to a real game.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.packers.com/news/"
+   }
   },
   {
    "inGame": true,
@@ -1207,7 +1452,12 @@
     "method": "Fetched this pass: the CIN@HOU game returned 207 plays with per-play wallclock stamps (kickoff 2026-09-20T17:02:38Z) and per-play participant references.",
     "evidence": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401872934/competitions/401872934/plays?limit=4"
    },
-   "notes": "The closest a free feed gets to 'when did this happen'. scripts/watch_live.py polls it during games and logs any play whose own text carries an availability phrase."
+   "notes": "The closest a free feed gets to 'when did this happen'. scripts/watch_live.py polls it during games and logs any play whose own text carries an availability phrase.",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host sports.core.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401872934/competitions/401872934/plays?limit=4"
+   }
   },
   {
    "inGame": true,
@@ -1231,7 +1481,12 @@
     "method": "Endpoint confirmed reachable and CSP-allowed; the reader walks the JSON for any injuries array and drops records without an athlete or status, so an unknown shape yields nothing rather than a guess.",
     "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872934"
    },
-   "notes": "Partner tier: shown as PARTNER FEED · UNVERIFIED and never allowed to ground a verified row."
+   "notes": "Partner tier: shown as PARTNER FEED · UNVERIFIED and never allowed to ground a verified row.",
+   "browserProbe": {
+    "status": "allowed",
+    "method": "Host site.api.espn.com is polled directly by the page's own production browser lane (the CSP connect-src in index.html names exactly these three ESPN hosts), and this lane's endpoint was re-verified as reachable, keyless JSON on that host this pass. Measured 2026-09-24.",
+    "evidence": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872934"
+   }
   },
   {
    "inGame": false,
@@ -1255,7 +1510,12 @@
     "method": "Fetched this pass for 2026-09-20: three games returned with timestamps, venues, scores and a YouTube highlight link each (e.g. ATL 3-34 CAR).",
     "evidence": "https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=2026-09-20&s=American_Football"
    },
-   "notes": "Second independent schedule lane: if ESPN game enumeration fails, this one can still date a club sentence."
+   "notes": "Second independent schedule lane: if ESPN game enumeration fails, this one can still date a club sentence.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=2026-09-20&s=American_Football"
+   }
   },
   {
    "inGame": true,
@@ -1279,7 +1539,12 @@
     "method": "Article text read this pass: 'Jaxson Dart questionable to return with knee injury', published Sept 21, 2026 08:39 PM, describing the medical tent and the locker room visit.",
     "evidence": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/jaxson-dart-questionable-to-return-with-knee-injury"
    },
-   "notes": "Leads only: it can never ground a verified row, and anything it reports stays labelled UNOFFICIAL."
+   "notes": "Leads only: it can never ground a verified row, and anything it reports stays labelled UNOFFICIAL.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/jaxson-dart-questionable-to-return-with-knee-injury"
+   }
   },
   {
    "inGame": true,
@@ -1303,7 +1568,12 @@
     "method": "Listed in this pass with dated notes (e.g. Brooks surgery Sept 23; Dowdle day-to-day Sept 22).",
     "evidence": "https://www.rotowire.com/football/news.php"
    },
-   "notes": "Aggregator: useful for noticing a report early, never evidence."
+   "notes": "Aggregator: useful for noticing a report early, never evidence.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.rotowire.com/football/news.php"
+   }
   },
   {
    "inGame": false,
@@ -1327,7 +1597,12 @@
     "method": "Listed this pass; the Week 2 edition was found during the Bengals@Texans grounding search.",
     "evidence": "https://www.rotowire.com/football/injury-report.php"
    },
-   "notes": "Practice designations only. Never grounds an in-game row."
+   "notes": "Practice designations only. Never grounds an in-game row.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.rotowire.com/football/injury-report.php"
+   }
   },
   {
    "inGame": false,
@@ -1351,7 +1626,12 @@
     "method": "Lane listed this pass from the project's own aggregator set; the page was not opened line by line, so it is recorded as existence-only.",
     "evidence": "https://www.fantasypros.com/nfl/injury-news.php"
    },
-   "notes": "Only ever a discovery hint. Nothing from an aggregator enters the ledger."
+   "notes": "Only ever a discovery hint. Nothing from an aggregator enters the ledger.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.fantasypros.com/nfl/injury-news.php"
+   }
   },
   {
    "inGame": true,
@@ -1375,7 +1655,12 @@
     "method": "Read this pass in search results: entries carry times like '2:03 pm ET September 20, 2026'.",
     "evidence": "https://www.cincinnati.com/story/sports/nfl/bengals/2026/09/20/bengals-texans-week-2-live-score-updates-highlights--live/91860470007/"
    },
-   "notes": "A human reader can watch a club's beat blog while the page is open. Automated reading is not attempted."
+   "notes": "A human reader can watch a club's beat blog while the page is open. Automated reading is not attempted.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.cincinnati.com/story/sports/nfl/bengals/2026/09/20/bengals-texans-week-2-live-score-updates-highlights--live/91860470007/"
+   }
   },
   {
    "inGame": true,
@@ -1399,7 +1684,12 @@
     "method": "Read this pass: the Week 1 entry describes Mahogany's non-contact exit and Ben Bartch replacing him.",
     "evidence": "https://saintswire.usatoday.com/story/sports/nfl/saints/2026/09/13/saints-lions-live-updates-score-highlights--live/91745334007/"
    },
-   "notes": "Its Mahogany note is the lead for the one-row Detroit-New Orleans game, and it is not evidence: a club sentence is still required."
+   "notes": "Its Mahogany note is the lead for the one-row Detroit-New Orleans game, and it is not evidence: a club sentence is still required.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://saintswire.usatoday.com/story/sports/nfl/saints/2026/09/13/saints-lions-live-updates-score-highlights--live/91745334007/"
+   }
   },
   {
    "inGame": false,
@@ -1423,7 +1713,12 @@
     "method": "Index read this pass ('Texans Injury Report Lists Nico Collins Among 4 Players Out vs. Bengals').",
     "evidence": "https://www.si.com/nfl/texans/onsi/all"
    },
-   "notes": "Discovery lane for finding which club page to read; the club page itself is the source of record."
+   "notes": "Discovery lane for finding which club page to read; the club page itself is the source of record.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.si.com/nfl/texans/onsi/all"
+   }
   },
   {
    "inGame": true,
@@ -1447,7 +1742,12 @@
     "method": "Listed as a human-followed link. No keyless read tier exists for video, so nothing is scraped.",
     "evidence": "https://www.youtube.com/@NFL"
    },
-   "notes": "Treated as unofficial here: a clip is an observation a person makes, not a league statement the page can quote."
+   "notes": "Treated as unofficial here: a clip is an observation a person makes, not a league statement the page can quote.",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://www.youtube.com/@NFL"
+   }
   },
   {
    "inGame": true,
@@ -1471,7 +1771,12 @@
     "method": "The JSON tier was re-probed and refused (403), so the lane is offered only as a link a reader can open.",
     "evidence": "https://www.reddit.com/r/nfl/search/?q=injury&restrict_sr=1&sort=new"
    },
-   "notes": "The one-click links on the live rail use this lane. Fan posts never enter the ledger or the log as evidence."
+   "notes": "The one-click links on the live rail use this lane. Fan posts never enter the ledger or the log as evidence.",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://www.reddit.com/r/nfl/search/?q=injury&restrict_sr=1&sort=new"
+   }
   },
   {
    "inGame": true,
@@ -1495,7 +1800,12 @@
     "method": "Link-out lane: no keyless read tier, so it is never fetched by the page or by CI.",
     "evidence": "https://www.tiktok.com/search?q=nfl%20injury"
    },
-   "notes": "Grouped with Instagram and Facebook, which the page already offers as one-click searches."
+   "notes": "Grouped with Instagram and Facebook, which the page already offers as one-click searches.",
+   "browserProbe": {
+    "status": "not-applicable",
+    "method": "Link-out lane: the browser never fetches this host; a reader follows the link in a new tab. No browser fetch is claimed or needed.",
+    "evidence": "https://www.tiktok.com/search?q=nfl%20injury"
+   }
   },
   {
    "id": "nfl-game-pages",
@@ -1519,7 +1829,12 @@
     "method": "Opened the Week 3 Falcons at Packers game page: it shows the 8:15 PM kickoff at Lambeau Field and the injury tables naming Ebukam (hamstring, out), Bako-Bewele (knee, out), Banks (toe, out) and Reed (neck, out).",
     "evidence": "https://www.nfl.com/games/falcons-at-packers-2026-reg-3"
    },
-   "notes": "Useful when a reader wants the league's own page for a game rather than a provider's. Statuses on it are pregame declarations, so they belong in context and follow-ups, never in an in-game row."
+   "notes": "Useful when a reader wants the league's own page for a game rather than a provider's. Statuses on it are pregame declarations, so they belong in context and follow-ups, never in an in-game row.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/games/falcons-at-packers-2026-reg-3"
+   }
   },
   {
    "id": "nfl-report-videos",
@@ -1543,7 +1858,12 @@
     "method": "Opened the Week 2 notable-injuries segment and its sibling clips: each clip names the player and the injury in the page title and description.",
     "evidence": "https://www.nfl.com/videos/notable-injuries-from-week-2-the-nfl-report"
    },
-   "notes": "Good for a dated follow-up claim on an existing row. A video title is not a second source: if only a clip says something, label it as league-published commentary, not club confirmation."
+   "notes": "Good for a dated follow-up claim on an existing row. A video title is not a second source: if only a clip says something, label it as league-published commentary, not club confirmation.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.nfl.com/videos/notable-injuries-from-week-2-the-nfl-report"
+   }
   },
   {
    "id": "nflverse-data",
@@ -1567,7 +1887,12 @@
     "method": "Opened the repository: an active public project (141 commits, release workflow updated within the last week) publishing automated NFL data.",
     "evidence": "https://github.com/nflverse/nflverse-data"
    },
-   "notes": "Kept as the clearest free play-by-play alternative to the ESPN core API, for verification and season-long context. Unofficial tier: it can never ground a verified row."
+   "notes": "Kept as the clearest free play-by-play alternative to the ESPN core API, for verification and season-long context. Unofficial tier: it can never ground a verified row.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://github.com/nflverse/nflverse-data"
+   }
   },
   {
    "id": "pro-football-reference",
@@ -1591,7 +1916,41 @@
     "method": "Fetched the site home page; it served the current 2026 player index. Individual player and game pages were not opened line by line this session, so the lane is recorded as a reference only.",
     "evidence": "https://www.pro-football-reference.com/"
    },
-   "notes": "Use it to sanity-check that a player was actually in a game before a claim is published, never as the evidence for one. Scraping is rate-limited by the site's own robots policy: prefer one-off manual checks."
+   "notes": "Use it to sanity-check that a player was actually in a game before a claim is published, never as the evidence for one. Scraping is rate-limited by the site's own robots policy: prefer one-off manual checks.",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://www.pro-football-reference.com/"
+   }
+  },
+  {
+   "id": "yahoo-nfl-injuries",
+   "name": "Yahoo Sports NFL injury report",
+   "org": "Yahoo Sports",
+   "tier": "unofficial",
+   "role": "injury-aggregator",
+   "url": "https://sports.yahoo.com/nfl/injuries/",
+   "what": "Per-club tables of the current pregame designations with a per-row date column, mirroring the league's Game Status Report and reporters' notes.",
+   "proves": "A third-party mirror of pregame status ('Out (Thumb)', 'Doubtful (Hamstring)' with a 9/24 date column), useful for cross-checking the official report. It never states that an injury happened in a game and never grounds a verified row.",
+   "inGame": false,
+   "autoPublish": false,
+   "latency": "Same day as the league's daily refresh; each row carries its own date.",
+   "verification": {
+    "status": "verified-exists",
+    "checkedOn": "2026-09-24",
+    "method": "Fetched the page this pass and read the Week 3 per-club tables verbatim, e.g. 'Andrei Iosivas ... WR ... Out (Thumb) ... 9/23' (Cincinnati) and 'Caleb Williams ... QB ... Doubtful (Hamstring) ... 9/24' (Chicago).",
+    "evidence": "https://sports.yahoo.com/nfl/injuries/"
+   },
+   "notes": "Added this pass as the dated aggregator mirror. Unofficial: a mirror, not the league's Game Status Report — the league page stays the only official pregame source in the registry.",
+   "category": "unofficial-aggregator",
+   "latencyClass": "daily",
+   "timestampPrecision": "day",
+   "access": "html",
+   "browserProbe": {
+    "status": "not-tested",
+    "method": "Not fetched from a browser by this project: the page's lanes are the ESPN hosts above and the repository's own data files. Whether this host would answer a cross-origin browser fetch was not measured this pass, so no CORS claim is made for it.",
+    "evidence": "https://sports.yahoo.com/nfl/injuries/"
+   }
   }
  ]
 }

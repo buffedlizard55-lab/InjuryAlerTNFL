@@ -69,6 +69,12 @@
 .source-facts dt{font-weight:850;color:#7b909a;text-transform:uppercase;font-size:9px;letter-spacing:.08em;padding-top:2px}
 .source-facts dd{margin:0 0 6px}
 .source-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+.source-chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 9px}
+.source-chip{font-size:9px;font-weight:850;letter-spacing:.06em;color:#41586a;background:#eef4f5;border-radius:6px;padding:3px 8px;text-transform:uppercase;white-space:nowrap}
+.source-chip.chip-strong{background:#d9f4ed;color:#006f61;border:1px solid #a6decf}
+.source-chip.browser-allowed{background:#dff6ea;color:#177250}
+.source-chip.browser-blocked{background:#fce9e6;color:#b2473a}
+.source-chip.browser-not-tested,.source-chip.browser-not-applicable{color:#87989d}
 
 /* Unofficial leads: clearly not part of the verified list. */
 .leads-section{border-top:1px solid var(--line);margin-top:70px;padding-top:51px}

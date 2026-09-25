@@ -11,13 +11,17 @@ const t = Date.parse('2026-09-23T12:00:00Z');
 const a = { id: 'one', player: 'A.J. Brown', team: 'NE', opponent: 'SEA', injury: 'Ankle', position: 'WR', outcome: 'out', gameDate: '2026-09-09', claims: [{ date: '2026-09-10' }] };
 const b = { id: 'two', player: 'Rico Dowdle', team: 'PIT', opponent: 'NE', injury: 'Toe', position: 'RB', outcome: 'returned', gameDate: '2026-09-20', claims: [{ date: '2026-09-22' }] };
 
-test('changing feeds bypass stale Pages edge caches once per minute', () => {
+test('changing feeds bypass stale Pages edge caches once per 30-second bucket', () => {
   const base = 'https://example.github.io/InjuryAlerTNFL/';
   const live = dataURL('./data/live.json', base, t);
-  assert.equal(live.href, `${base}data/live.json?check=${Math.floor(t / 60_000)}`);
+  assert.equal(live.href, `${base}data/live.json?check=${Math.floor(t / 30_000)}`);
   assert.equal(dataURL('./data/live.json', base, t + 10_000).href, live.href);
-  assert.notEqual(dataURL('./data/live.json', base, t + 60_000).href, live.href);
-  assert.ok(dataURL('./data/scoreboard.json', base, t).searchParams.has('check'));
+  assert.notEqual(dataURL('./data/live.json', base, t + 30_000).href, live.href);
+  // Every machine-written file the page reads revalidates on the same clock, so
+  // a new log entry or club-scan candidate is never stuck behind a stale cache.
+  for (const path of ['./data/scoreboard.json', './data/alert-log.json', './data/candidates.json', './data/watch.json']) {
+    assert.ok(dataURL(path, base, t).searchParams.has('check'), `${path} must be cache-busted`);
+  }
   assert.equal(dataURL('./data/archive.json', base, t).search, '');
 });
 
@@ -64,6 +68,19 @@ test('in-game wording is only reported when a provider actually said it', () => 
   assert.deepEqual(both.map(signal => signal.status).slice(0, 2), ['out', 'observed']);
   assert.equal(detectInGameSignals('J. Smith runs for 6 yards up the middle.'), null);
   assert.equal(detectInGameSignals('short'), null);
+});
+test('return-side and got-up wording is surfaced, replay chatter is not', () => {
+  // Pass 8 vocabulary: the brief asks for "does he get up, does he come back".
+  assert.equal(detectInGameSignals('Smith was carted off and is under evaluation on the field.').status, 'evaluated');
+  assert.equal(detectInGameSignals('Jones got up and walked back to the huddle.').status, 'observed');
+  assert.equal(detectInGameSignals('Brown was back on his feet after the hit.').status, 'observed');
+  assert.equal(detectInGameSignals('Williams re-entered the game in the second quarter.').status, 'returned');
+  assert.equal(detectInGameSignals('The replay is under review by the officials.'), null);
+  // The stronger availability phrase still leads when both appear; "may not
+  // return" is return-uncertain wording, not a ruling.
+  const both = detectAllSignals('He was carted off, is under evaluation, and may not return.');
+  assert.deepEqual(both.map(signal => signal.status).slice(0, 2), ['questionable', 'evaluated']);
+  assert.equal(detectInGameSignals('He may return after the next drive.').status, 'questionable');
 });
 test('signal ranking puts availability outcomes above observations', () => {
   const ranked = rankSignals([

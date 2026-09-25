@@ -109,7 +109,8 @@ function trustedLink(url, label, type = 'news') {
       && !parsed.search && !parsed.hash && hostOk
       && (parsed.pathname.startsWith('/news/') || parsed.pathname.startsWith('/videos/')
         || parsed.pathname.startsWith('/game-day/')
-        || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/')))
+        || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/players/'))
+        || (type === 'review' && parsed.hostname === 'www.nfl.com' && parsed.pathname.startsWith('/injuries/')))
       || (parsed.protocol === 'https:' && parsed.hostname === 'www.nfl.com'
         && parsed.pathname.startsWith('/playerhealthandsafety/'));
   } catch { /* Invalid URLs are never followed. */ }
@@ -699,6 +700,7 @@ function sourceCard(entry) {
   chips.append(el('span', `source-chip access-${entry.access}`, `access: ${entry.access.replace(/-/g, ' ')}`));
   chips.append(el('span', 'source-chip', `latency: ${LATENCY_LABEL[entry.latencyClass] || entry.latencyClass}`));
   chips.append(el('span', 'source-chip', `timestamps: ${entry.timestampPrecision}`));
+  if (entry.browserProbe) chips.append(el('span', `source-chip browser-${entry.browserProbe.status}`, `browser: ${entry.browserProbe.status.replace(/-/g, ' ')}`));
   if (entry.autoPublish) chips.append(el('span', 'source-chip chip-strong', 'may ground a verified row'));
   else chips.append(el('span', 'source-chip', 'never grounds a row'));
   card.append(chips);
@@ -870,7 +872,14 @@ const validLog = value => value?.version === 1 && Array.isArray(value.entries);
 const validCandidates = value => value?.version === 1 && Array.isArray(value.candidates);
 const validWatch = value => value?.version === 1 && Array.isArray(value.signals);
 
+let pollInFlight = false;
 async function poll() {
+  // Re-entrancy guard: the 30-second interval and the visibilitychange handler
+  // can overlap. A second poll racing an in-flight fetch would double-fire
+  // notifications and duplicate session-log entries for the same log file.
+  if (pollInFlight) return;
+  pollInFlight = true;
+  try {
   const previousLive = state.live?.incidents || [];
   const beforeIncidents = JSON.stringify(previousLive.map(row => [row.id, row.injury, row.outcome]));
   const beforeLog = (state.alertLog?.entries || []).length;
@@ -926,6 +935,7 @@ async function poll() {
   renderLog();
   renderLaneDashboard();
   renderLiveWatch();
+  } finally { pollInFlight = false; }
 }
 
 /* ------------------------------------------------------------------ notifications */
@@ -1024,11 +1034,23 @@ async function init() {
   await poll();
   await pollLiveLanes();
   state.ready = true;
-  window.setInterval(poll, 60_000);
+  // The tracked files (durable CI record, the log, the club-scan results) are
+  // refreshed every 30 seconds — the fastest clock the Pages edge allows — and
+  // the cache-buster in dataURL() revalidates them on the same 30-second bucket.
+  window.setInterval(poll, 30_000);
   // The live lanes run on their own clocks: the header lane every 10 seconds so
   // a kickoff is noticed immediately, the game lanes every 20 seconds.
   window.setInterval(async () => { if (shouldWatchForInGame(state.scores?.games || [], Date.now())) await pollLiveLanes(); }, LANE_HEADER_MS);
   window.setInterval(async () => { if (currentWatchGames().some(game => game.phase === 'live')) await pollLiveLanes(); }, LANE_GAME_MS);
-  window.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+  // Coming back to the tab: re-check the durable files AND, if a game is in the
+  // watch window, re-run the live lanes immediately. Browsers throttle timers in
+  // background tabs, so a 20-second tick may have been minutes stale by the time
+  // the reader is looking at the page again; this makes the first thing they see
+  // a fresh read instead of the last frozen one.
+  window.addEventListener('visibilitychange', () => {
+    if (document.hidden) return;
+    poll();
+    if (shouldWatchForInGame(state.scores?.games || [], Date.now())) pollLiveLanes();
+  });
 }
 init();

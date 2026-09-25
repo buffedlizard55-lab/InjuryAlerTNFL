@@ -236,6 +236,29 @@ class SourceLedgerTests(unittest.TestCase):
                 self.assertTrue(entry["verification"]["method"])
                 self.assertIn(entry["verification"]["status"],
                               {"verified", "verified-exists", "verified-endpoint", "blocked", "link-out-only", "pending-reprobe"})
+        # Pass 8: the league's weekly injury report was re-probed (it sat as
+        # pending-reprobe) and the Yahoo mirror is registered as unofficial.
+        self.assertNotIn("pending-reprobe", [entry["verification"]["status"] for entry in sources["sources"]])
+        self.assertEqual("verified", by_id["nfl-injury-report"]["verification"]["status"])
+        self.assertEqual("unofficial", by_id["yahoo-nfl-injuries"]["tier"])
+        self.assertFalse(by_id["yahoo-nfl-injuries"]["autoPublish"])
+        # Browser reachability is recorded on every lane and takes only honest
+        # values: what the page's own browser is known to reach, what refused a
+        # measured read, what is never fetched, and what was not measured.
+        allowed_states = {"allowed", "blocked", "not-applicable", "not-tested"}
+        for entry in sources["sources"]:
+            self.assertIn(entry["browserProbe"]["status"], allowed_states)
+        self.assertEqual(
+            {"espn-scoreboard", "espn-scoreboard-header", "espn-summary-plays", "espn-plays-core",
+             "espn-news", "espn-injuries", "espn-core-events", "espn-summary-injuries"},
+            {entry["id"] for entry in sources["sources"] if entry["browserProbe"]["status"] == "allowed"})
+        self.assertEqual(
+            {"nfl-gamecenter-json", "reddit-json", "bluesky-search"},
+            {entry["id"] for entry in sources["sources"] if entry["browserProbe"]["status"] == "blocked"})
+        self.assertEqual(
+            {"x-twitter", "x-insider-accounts", "instagram-facebook-tiktok",
+             "tiktok-search", "reddit-search-live", "youtube-nfl"},
+            {entry["id"] for entry in sources["sources"] if entry["browserProbe"]["status"] == "not-applicable"})
 
     def test_unofficial_leads_never_carry_official_evidence_or_missing_next_steps(self):
         leads = json.loads((ROOT / "data/leads.json").read_text())
@@ -255,7 +278,10 @@ class SourceLedgerTests(unittest.TestCase):
 
     def test_review_flags_and_blocked_people_are_not_in_verified_archive(self):
         validate_review(self.review)
-        self.assertEqual(35, len(self.review["flags"]))
+        # 36 after Pass 8: the league's own Week 3 injury report displays
+        # Bako-Bewele but links to /players/zach-tom/ — an annotated irregularity
+        # on an official page, not a held identity case.
+        self.assertEqual(36, len(self.review["flags"]))
         self.assertEqual(2, sum(flag["disposition"] == "held" for flag in self.review["flags"]))
         published = {row["id"] for row in self.archive["incidents"]}
         for flag in self.review["flags"]:
@@ -283,6 +309,18 @@ class SourceLedgerTests(unittest.TestCase):
         tampered["incidents"][0]["claims"][0]["quote"] = "Unknown event reported in the game."
         with self.assertRaises(InvalidData):
             validate_archive(tampered)
+
+    def test_league_injury_report_page_can_link_but_never_ground_a_game_row(self):
+        # Pass 8 allows nfl.com/injuries/ as an official URL (it is the league's
+        # own pregame page, used for review links and followup claims), but its
+        # table wording ("Game Status: Out") must never ground an in-game
+        # outcome: the outcome grounding regex demands the actual phrase.
+        self.assertTrue(official_url("https://www.nfl.com/injuries/"))
+        row = json.loads(json.dumps(self.archive["incidents"][0]))
+        row["claims"][0]["url"] = "https://www.nfl.com/injuries/"
+        row["claims"][0]["quote"] = "Reed, Neck, Did Not Participate In Practice, Out"
+        with self.assertRaises(InvalidData):
+            validate_incidents([row])
 
     def test_duplicate_and_future_rows_are_rejected(self):
         tampered = json.loads(json.dumps(self.archive))
